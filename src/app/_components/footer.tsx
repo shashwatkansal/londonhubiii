@@ -1,28 +1,91 @@
 import Container from "@/app/_components/container";
-import { EXAMPLE_PATH } from "@/lib/constants";
+import Link from "next/link";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaLinkedinIn,
+  FaInstagram,
+} from "react-icons/fa";
 
 export function Footer() {
   return (
-    <footer className="bg-neutral-50 border-t border-neutral-200 dark:bg-slate-800">
+    <footer className="bg-wef-blue text-white py-16">
       <Container>
-        <div className="py-28 flex flex-col lg:flex-row items-center">
-          <h3 className="text-4xl lg:text-[2.5rem] font-bold tracking-tighter leading-tight text-center lg:text-left mb-10 lg:mb-0 lg:pr-4 lg:w-1/2">
-            Statically Generated with Next.js.
-          </h3>
-          <div className="flex flex-col lg:flex-row justify-center items-center lg:pl-4 lg:w-1/2">
+        <div className="flex flex-col lg:flex-row justify-between items-center">
+          {/* Footer Logo and Description */}
+          <div className="lg:w-1/3 mb-8 lg:mb-0 text-center lg:text-left">
+            <h3 className="text-2xl font-bold mb-4">
+              Global Shapers Community
+            </h3>
+            <p className="text-sm">
+              An initiative of the World Economic Forum, the Global Shapers
+              Community is a network of young people driving dialogue, action,
+              and change.
+            </p>
+          </div>
+
+          {/* Footer Links */}
+          <div className="lg:w-1/3 flex flex-col items-center">
+            <h4 className="text-xl font-semibold mb-4">Explore</h4>
+            <div className="flex flex-col lg:flex-row justify-center items-center space-y-2 lg:space-y-0 lg:space-x-6">
+              <Link href="/about" className="hover:underline">
+                About Us
+              </Link>
+              <Link href="/hubs" className="hover:underline">
+                Our Hubs
+              </Link>
+              <Link href="/impact" className="hover:underline">
+                Our Impact
+              </Link>
+              <Link href="/partners" className="hover:underline">
+                Our Partners
+              </Link>
+            </div>
+          </div>
+
+          {/* Social Media Icons */}
+          <div className="lg:w-1/3 flex justify-center lg:justify-end space-x-6 mt-8 lg:mt-0">
             <a
-              href="https://nextjs.org/docs/app/building-your-application/routing/layouts-and-templates"
-              className="mx-3 bg-black hover:bg-white hover:text-black border border-black text-white font-bold py-3 px-12 lg:px-8 duration-200 transition-colors mb-6 lg:mb-0"
+              href="https://www.facebook.com/globalshapers"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-wef-light-blue"
             >
-              Read Documentation
+              <FaFacebookF size={24} />
             </a>
             <a
-              href={`https://github.com/vercel/next.js/tree/canary/examples/${EXAMPLE_PATH}`}
-              className="mx-3 font-bold hover:underline"
+              href="https://twitter.com/globalshapers"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-wef-light-blue"
             >
-              View on GitHub
+              <FaTwitter size={24} />
+            </a>
+            <a
+              href="https://www.linkedin.com/company/global-shapers"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-wef-light-blue"
+            >
+              <FaLinkedinIn size={24} />
+            </a>
+            <a
+              href="https://www.instagram.com/globalshapers/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-wef-light-blue"
+            >
+              <FaInstagram size={24} />
             </a>
           </div>
+        </div>
+
+        {/* Footer Bottom Text */}
+        <div className="mt-12 text-center">
+          <p className="text-sm">
+            © {new Date().getFullYear()} Global Shapers Community. All rights
+            reserved.
+          </p>
         </div>
       </Container>
     </footer>
