@@ -6,7 +6,7 @@ export default function Header() {
     <header className="bg-wef-gradient text-white shadow-lg">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo and WEF Initiative */}
-        <div className="flex flex-col items-start space-y-2">
+        <div className="flex items-center space-x-4">
           {/* Global Shapers Logo */}
           <Link href="/">
             <Image
@@ -16,6 +16,11 @@ export default function Header() {
               height={50} // Adjust the size as needed
             />
           </Link>
+
+          {/* London Hub III Text */}
+          <div className="text-3xl font-bold whitespace-nowrap">
+            London Hub III
+          </div>
 
           {/* WEF Initiative */}
           <div className="flex items-center space-x-2">
