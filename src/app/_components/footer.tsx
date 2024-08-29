@@ -5,6 +5,7 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
   return (
@@ -13,14 +14,22 @@ export function Footer() {
         <div className="flex flex-col lg:flex-row justify-between items-center">
           {/* Footer Logo and Description */}
           <div className="lg:w-1/3 mb-8 lg:mb-0 text-center lg:text-left">
-            <h3 className="text-2xl font-bold mb-4">
-              Global Shapers Community
-            </h3>
-            <p className="text-sm">
-              An initiative of the World Economic Forum, the Global Shapers
-              Community is a network of young people driving dialogue, action,
-              and change.
-            </p>
+            <div className="flex flex-col items-center lg:items-start">
+              {/* Logo */}
+              <Image
+                src="/assets/images/gslh3_logo.png"
+                alt="Global Shapers Logo"
+                width={150}
+                height={50}
+                className="mb-4"
+              />
+              <h3 className="text-2xl font-bold mb-4">London Hub III</h3>
+              <p className="text-sm">
+                An initiative of the World Economic Forum, the Global Shapers
+                Community is a network of young people driving dialogue, action,
+                and change.
+              </p>
+            </div>
           </div>
 
           {/* Footer Links */}
