@@ -8,7 +8,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="bg-wef-gradient text-white shadow-lg">
+    <header className="bg-wef-gradient text-white shadow-lg py-4">
       <div className="container mx-auto px-4 md:px-6 py-4 flex flex-wrap justify-between items-center">
         {/* Logo and WEF Initiative */}
         <div className="flex items-center space-x-4 flex-1">
@@ -50,7 +50,7 @@ export default function Header() {
         </button>
 
         {/* Navigation */}
-        <nav className="hidden md:flex space-x-4 lg:space-x-6 lg:pr-8">
+        <nav className="hidden md:flex space-x-4 xl:space-x-6 lg:pr-8">
           <Link href="/" className="hover:text-wef-light-blue">
             Home
           </Link>
