@@ -74,7 +74,7 @@ export default function Header() {
         {/* Sign In Button */}
         <div className="hidden md:flex items-center space-x-4 flex-shrink-0">
           <Link href="/signin">
-            <button className="btn btn-outline btn-sm border-white text-white hover:bg-wef-light-blue hover:text-wef-dark-blue">
+            <button className="btn btn-outline btn-sm border-white text-white hover:opacity-80">
               Sign In
             </button>
           </Link>
