@@ -16,13 +16,22 @@ export function Footer() {
           <div className="lg:w-1/3 mb-8 lg:mb-0 text-center lg:text-left">
             <div className="flex flex-col items-center lg:items-start">
               {/* Logo */}
-              <Image
-                src="/assets/images/gslh3_logo.png"
-                alt="Global Shapers Logo"
-                width={150}
-                height={50}
-                className="mb-4"
-              />
+              <div className="flex flex-row space-x-4 py-4 mx-auto md:mx-0">
+                <Image
+                  src="/assets/images/gs_white_logo.png"
+                  alt="Global Shapers Logo"
+                  width={100}
+                  height={100}
+                  className="w-full h-16"
+                />
+                <Image
+                  src="/assets/images/wef_logo.png"
+                  alt="Global Shapers Logo"
+                  width={100}
+                  height={100}
+                  className="w-full h-16"
+                />
+              </div>
               <h3 className="text-2xl font-bold mb-4">London Hub III</h3>
               <p className="text-sm">
                 An initiative of the World Economic Forum, the Global Shapers
@@ -93,6 +102,17 @@ export function Footer() {
           <p className="text-sm">
             © {new Date().getFullYear()} Global Shapers Community. All rights
             reserved.
+          </p>
+          <p className="text-sm mt-2">
+            Built by{" "}
+            <a
+              href="https://www.linkedin.com/in/shashwatkansal/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white underline"
+            >
+              Shashwat Kansal
+            </a>
           </p>
         </div>
       </div>
