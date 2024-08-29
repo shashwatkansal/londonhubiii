@@ -10,6 +10,6 @@ module.exports = {
   // ...
   // Add accepted url for images
   images: {
-    domains: ["assets.weforum.org"],
+    domains: ["assets.weforum.org", "lh3.googleusercontent.com"],
   },
 };

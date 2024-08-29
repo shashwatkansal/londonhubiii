@@ -1,11 +1,26 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { auth } from "@lib/firebaseConfig";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await signOut(auth);
+    setUser(null);
+  };
 
   return (
     <header className="bg-wef-gradient text-white shadow-lg py-4">
@@ -71,13 +86,51 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Sign In Button */}
+        {/* User Profile / Sign In Button */}
         <div className="hidden md:flex items-center space-x-4 flex-shrink-0">
-          <Link href="/signin">
-            <button className="btn btn-outline btn-sm border-white text-white hover:opacity-80">
-              Sign In
-            </button>
-          </Link>
+          {user ? (
+            <div className="dropdown dropdown-end">
+              <label
+                tabIndex={0}
+                className="btn btn-ghost btn-circle avatar cursor-pointer"
+              >
+                <div className="w-10 rounded-full">
+                  {user.photoURL ? (
+                    <Image
+                      src={user.photoURL}
+                      alt="Profile"
+                      width={40}
+                      height={40}
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <div className="bg-gray-700 text-white w-10 h-10 flex items-center justify-center rounded-full">
+                      {user.displayName
+                        ? user.displayName.charAt(0).toUpperCase()
+                        : user.email.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+              </label>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 mt-3"
+              >
+                <li>
+                  <Link href="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <button onClick={handleSignOut}>Sign Out</button>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <Link href="/signin">
+              <button className="btn btn-outline btn-sm border-white text-white hover:opacity-80">
+                Sign In
+              </button>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -100,12 +153,26 @@ export default function Header() {
             <Link href="/partners" className="hover:text-wef-light-blue">
               Our Partners
             </Link>
-            <Link
-              href="/signin"
-              className="btn btn-outline btn-sm border-white text-white hover:bg-wef-light-blue hover:text-wef-dark-blue mt-4"
-            >
-              Sign In
-            </Link>
+            {user ? (
+              <div className="z-20">
+                <Link href="/dashboard" className="hover:text-wef-light-blue">
+                  Dashboard
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="btn btn-outline btn-sm border-white text-white hover:bg-wef-light-blue hover:text-wef-dark-blue mt-4"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/signin"
+                className="btn btn-outline btn-sm border-white text-white hover:bg-wef-light-blue hover:text-wef-dark-blue mt-4 z-20"
+              >
+                Sign In
+              </Link>
+            )}
           </nav>
         </div>
       )}

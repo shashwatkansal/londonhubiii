@@ -1,5 +1,4 @@
 import Container from "@/app/_components/container";
-import { EXAMPLE_PATH } from "@/lib/constants";
 import cn from "classnames";
 
 type Props = {
@@ -9,14 +8,14 @@ type Props = {
 const Alert = ({ preview }: Props) => {
   return (
     <div
-      className={cn("border-b dark:bg-slate-800", {
-        "bg-neutral-800 border-neutral-800 text-white": preview,
+      className={cn("bg-transparent", {
+        "bg-white border-neutral-800 text-white": preview,
         "bg-neutral-50 border-neutral-200": !preview,
       })}
     >
       <Container>
         <div className="py-2 text-center text-sm">
-          {preview ? (
+          {preview && (
             <>
               This page is a preview.{" "}
               <a
@@ -26,17 +25,6 @@ const Alert = ({ preview }: Props) => {
                 Click here
               </a>{" "}
               to exit preview mode.
-            </>
-          ) : (
-            <>
-              The source code for this blog is{" "}
-              <a
-                href={`https://github.com/vercel/next.js/tree/canary/examples/${EXAMPLE_PATH}`}
-                className="underline hover:text-blue-600 duration-200 transition-colors"
-              >
-                available on GitHub
-              </a>
-              .
             </>
           )}
         </div>
