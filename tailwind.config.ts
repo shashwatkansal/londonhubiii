@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Poppins"', "sans-serif"],
+        sans: ['"Apercu"', "sans-serif"],
         serif: ['"Merriweather"', "serif"],
       },
       colors: {
@@ -20,6 +20,10 @@ const config: Config = {
         "wef-white": "#FFFFFF",
         "wef-gray": "#4D4D4D",
         "wef-light-gray": "#EAEAEA",
+      },
+      backgroundImage: {
+        "wef-gradient":
+          "linear-gradient(to bottom right, #2563eb, #1d4ed8, #005293)",
       },
     },
   },

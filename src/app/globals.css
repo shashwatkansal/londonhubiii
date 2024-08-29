@@ -47,3 +47,14 @@
 .animate-slide-in-bottom {
   animation: slideInBottom 1s ease-in-out;
 }
+
+@font-face {
+  font-family: "Apercu";
+  src: url("/assets/fonts/Apercu-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "Apercu";
+}

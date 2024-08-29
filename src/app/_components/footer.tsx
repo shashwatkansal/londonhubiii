@@ -1,16 +1,15 @@
-import Container from "@/app/_components/container";
-import Link from "next/link";
 import {
   FaFacebookF,
   FaTwitter,
   FaLinkedinIn,
   FaInstagram,
 } from "react-icons/fa";
+import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="bg-wef-blue text-white py-16">
-      <Container>
+    <footer className="bg-wef-gradient text-white py-10">
+      <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row justify-between items-center">
           {/* Footer Logo and Description */}
           <div className="lg:w-1/3 mb-8 lg:mb-0 text-center lg:text-left">
@@ -27,17 +26,17 @@ export function Footer() {
           {/* Footer Links */}
           <div className="lg:w-1/3 flex flex-col items-center">
             <h4 className="text-xl font-semibold mb-4">Explore</h4>
-            <div className="flex flex-col lg:flex-row justify-center items-center space-y-2 lg:space-y-0 lg:space-x-6">
-              <Link href="/about" className="hover:underline">
+            <div className="grid grid-cols-2 gap-4 lg:gap-6">
+              <Link href="/about" className="link link-hover text-white">
                 About Us
               </Link>
-              <Link href="/hubs" className="hover:underline">
+              <Link href="/hubs" className="link link-hover text-white">
                 Our Hubs
               </Link>
-              <Link href="/impact" className="hover:underline">
+              <Link href="/impact" className="link link-hover text-white">
                 Our Impact
               </Link>
-              <Link href="/partners" className="hover:underline">
+              <Link href="/partners" className="link link-hover text-white">
                 Our Partners
               </Link>
             </div>
@@ -49,7 +48,7 @@ export function Footer() {
               href="https://www.facebook.com/globalshapers"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-wef-light-blue"
+              className="hover:text-blue-400 transition-colors duration-300"
             >
               <FaFacebookF size={24} />
             </a>
@@ -57,7 +56,7 @@ export function Footer() {
               href="https://twitter.com/globalshapers"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-wef-light-blue"
+              className="hover:text-blue-400 transition-colors duration-300"
             >
               <FaTwitter size={24} />
             </a>
@@ -65,7 +64,7 @@ export function Footer() {
               href="https://www.linkedin.com/company/global-shapers"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-wef-light-blue"
+              className="hover:text-blue-400 transition-colors duration-300"
             >
               <FaLinkedinIn size={24} />
             </a>
@@ -73,7 +72,7 @@ export function Footer() {
               href="https://www.instagram.com/globalshapers/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-wef-light-blue"
+              className="hover:text-blue-400 transition-colors duration-300"
             >
               <FaInstagram size={24} />
             </a>
@@ -87,7 +86,7 @@ export function Footer() {
             reserved.
           </p>
         </div>
-      </Container>
+      </div>
     </footer>
   );
 }

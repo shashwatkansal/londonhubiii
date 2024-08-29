@@ -8,7 +8,7 @@ export default function Index() {
   const morePosts = allPosts.slice(0, 3);
 
   return (
-    <main className="font-sans">
+    <main className="">
       <div>
         {/* Hero Section */}
         <section className="relative bg-wef-blue text-white h-[500px] flex items-center justify-center overflow-hidden">

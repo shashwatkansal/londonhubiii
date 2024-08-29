@@ -1,10 +1,9 @@
 // /src/app/_components/header.tsx
 import Link from "next/link";
-import { ThemeSwitcher } from "./theme-switcher";
 
 export default function Header() {
   return (
-    <header className="bg-wef-blue text-white">
+    <header className="bg-wef-gradient text-white">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <div className="text-2xl font-bold">
@@ -34,7 +33,6 @@ export default function Header() {
           <Link href="/partners" className="hover:text-wef-light-blue">
             Our Partners
           </Link>
-          {/* <ThemeSwitcher /> */}
         </nav>
       </div>
     </header>
