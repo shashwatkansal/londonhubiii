@@ -1,5 +1,3 @@
-// /app/signin/page.tsx
-
 "use client";
 
 import { useState } from "react";
@@ -11,6 +9,11 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
+
+const GoogleIcon = () => (
+  <FcGoogle className="mr-2 text-wef-blue" style={{ fontSize: "1.5rem" }} />
+);
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -61,9 +64,21 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-80">
-        <h2 className="text-2xl font-bold mb-6 text-center">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+      {/* Background Video */}
+      <div className="absolute inset-0 z-0">
+        <video
+          src="/assets/videos/shapers_stock.mp4" // Replace with your video path
+          autoPlay
+          loop
+          muted
+          className="w-full h-full object-cover opacity-60"
+        />
+      </div>
+
+      {/* Sign-In Box */}
+      <div className="relative z-10 bg-white text-wef-blue p-8 rounded-lg shadow-2xl w-96 card card-bordered">
+        <h2 className="text-3xl font-bold mb-6 text-center">
           {isSigningUp ? "Sign Up" : "Sign In"}
         </h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
@@ -72,25 +87,26 @@ export default function SignIn() {
           placeholder="Email"
           value={email}
           onChange={handleEmailChange}
-          className="mb-4 p-2 w-full border rounded"
+          className="input input-bordered w-full mb-4"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={handlePasswordChange}
-          className="mb-4 p-2 w-full border rounded"
+          className="input input-bordered w-full mb-4"
         />
         <button
           onClick={isSigningUp ? handleSignUp : handleSignIn}
-          className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+          className="btn btn-primary w-full mb-4 bg-wef-gradient hover:opacity-80 text-white"
         >
           {isSigningUp ? "Sign Up" : "Sign In"}
         </button>
         <button
           onClick={handleGoogleSignIn}
-          className="bg-red-500 text-white py-2 px-4 rounded w-full mt-4"
+          className="btn btn-outline w-full flex items-center justify-center hover:opacity-60 text-wef-blue"
         >
+          <GoogleIcon />
           Sign in with Google
         </button>
         {!isSigningUp && (
