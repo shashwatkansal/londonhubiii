@@ -19,7 +19,7 @@ export default function Header() {
               alt="Global Shapers Logo"
               width={60} // Adjust the size for medium screens
               height={40} // Adjust the size for medium screens
-              className="w-12 h-auto"
+              className="w-16 h-auto"
             />
           </Link>
 
@@ -35,8 +35,8 @@ export default function Header() {
               src="/assets/images/wef_logo.png" // Replace with WEF logo path
               alt="World Economic Forum Logo"
               width={80} // Adjust the size for medium screens
-              height={25} // Adjust the size for medium screens
-              className="h-auto"
+              height={50} // Adjust the size for medium screens
+              className="h-auto w-24"
             />
           </div>
         </div>
