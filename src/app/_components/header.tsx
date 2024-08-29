@@ -66,9 +66,6 @@ export default function Header() {
           <Link href="/impact" className="hover:text-wef-light-blue">
             Our Impact
           </Link>
-          <Link href="/insights" className="hover:text-wef-light-blue">
-            Insights
-          </Link>
           <Link href="/partners" className="hover:text-wef-light-blue">
             Our Partners
           </Link>
