@@ -1,0 +1,76 @@
+// /src/app/hub/dashboard/page.tsx
+"use client";
+import { requireAuth } from "@lib/requireAuth"; // Adjust the path if necessary
+import { useAuth } from "@lib/auth"; // Custom hook for auth context
+import Image from "next/image";
+import { FaChartBar, FaChartPie, FaUserCircle } from "react-icons/fa";
+
+function DashboardPage() {
+  const { user } = useAuth();
+
+  return (
+    <div className="container mx-auto p-6">
+      {/* User Information Section */}
+      <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
+        <h2 className="text-2xl font-bold mb-4">Your Profile</h2>
+        <div className="flex items-center space-x-4">
+          {user.photoURL ? (
+            <Image
+              src={user.photoURL}
+              alt="Profile"
+              width={80}
+              height={80}
+              className="rounded-full"
+            />
+          ) : (
+            <FaUserCircle size={80} className="text-gray-500" />
+          )}
+          <div>
+            <p className="text-lg font-semibold">
+              {user.displayName || user.email}
+            </p>
+            <p className="text-gray-600">{user.email}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Analytics Dashboard Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Card 1 */}
+        <div className="card bg-base-100 shadow-lg">
+          <div className="card-body">
+            <h2 className="card-title">
+              <FaChartBar className="text-blue-500" /> Total Users
+            </h2>
+            <p className="text-2xl font-bold">1,234</p>
+            <p className="text-gray-600">Increased by 20% this month</p>
+          </div>
+        </div>
+
+        {/* Card 2 */}
+        <div className="card bg-base-100 shadow-lg">
+          <div className="card-body">
+            <h2 className="card-title">
+              <FaChartPie className="text-green-500" /> Engagement Rate
+            </h2>
+            <p className="text-2xl font-bold">75%</p>
+            <p className="text-gray-600">Stable compared to last month</p>
+          </div>
+        </div>
+
+        {/* Card 3 */}
+        <div className="card bg-base-100 shadow-lg">
+          <div className="card-body">
+            <h2 className="card-title">
+              <FaChartBar className="text-red-500" /> Monthly Revenue
+            </h2>
+            <p className="text-2xl font-bold">$12,345</p>
+            <p className="text-gray-600">Decreased by 5% this month</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default requireAuth(DashboardPage);

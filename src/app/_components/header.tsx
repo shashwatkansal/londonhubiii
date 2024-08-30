@@ -87,7 +87,7 @@ export default function Header() {
         </nav>
 
         {/* User Profile / Sign In Button */}
-        <div className="hidden md:flex items-center space-x-4 flex-shrink-0">
+        <div className="hidden md:flex items-center space-x-4 flex-shrink-0 z-20">
           {user ? (
             <div className="dropdown dropdown-end">
               <label
@@ -114,13 +114,18 @@ export default function Header() {
               </label>
               <ul
                 tabIndex={0}
-                className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 mt-3"
+                className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 mt-3 bg-wef-gradient"
               >
                 <li>
-                  <Link href="/dashboard">Dashboard</Link>
+                  <Link href="/hub/dashboard">Dashboard</Link>
                 </li>
                 <li>
-                  <button onClick={handleSignOut}>Sign Out</button>
+                  <button
+                    onClick={handleSignOut}
+                    className="text-red-400 font-bold"
+                  >
+                    Sign Out
+                  </button>
                 </li>
               </ul>
             </div>
@@ -155,7 +160,7 @@ export default function Header() {
             </Link>
             {user ? (
               <div className="z-20">
-                <Link href="/dashboard" className="hover:text-wef-light-blue">
+                <Link href="/hub/dashboard" className="hover:text-wef-light-blue">
                   Dashboard
                 </Link>
                 <button
