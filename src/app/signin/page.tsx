@@ -30,7 +30,7 @@ export default function SignIn() {
   const handleSignIn = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/"); // Redirect to home or any other page
+      router.push("/hub/dashboard");
     } catch (err: any) {
       setError(err.message);
     }
