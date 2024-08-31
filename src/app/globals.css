@@ -58,3 +58,15 @@
 body {
   font-family: "Apercu";
 }
+
+/* Global CSS */
+::selection {
+  background-color: #ff7f50; /* A warm coral orange */
+  color: #ffffff; /* White text for high contrast */
+}
+
+/* For Mozilla Firefox */
+::-moz-selection {
+  background-color: #ff7f50;
+  color: #ffffff;
+}

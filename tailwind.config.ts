@@ -9,15 +9,15 @@ const config: Config = {
   daisyui: {
     themes: [
       {
-        primary: "#005293", // Custom primary color (e.g., WEF blue)
-        secondary: "#89CFF0", // Custom secondary color (light blue)
-        accent: "#4D4D4D", // Accent color (gray)
-        neutral: "#333333", // Neutral color
-        "base-100": "#FFFFFF", // Base color for backgrounds
-        info: "#3ABFF8", // Info color
-        success: "#36D399", // Success color
-        warning: "#FBBD23", // Warning color
-        error: "#F87272", // Error color
+        primary: "#003C71", // Deep blue for strong brand presence
+        secondary: "#89CFF0", // Softer light blue for highlights
+        accent: "#3A3A3A", // Dark gray for accents
+        neutral: "#2C2C2C", // Dark neutral for backgrounds
+        "base-100": "#FFFFFF", // White for base backgrounds
+        info: "#1E90FF", // Bright blue for info highlights
+        success: "#28A745", // Green for success messages
+        warning: "#FFC107", // Yellow for warnings
+        error: "#DC3545", // Red for errors
       },
     ],
   },
@@ -28,16 +28,17 @@ const config: Config = {
         serif: ['"Merriweather"', "serif"],
       },
       colors: {
-        "wef-blue": "#005293",
+        "wef-blue": "#003C71", // Darker blue for a more sophisticated tone
         "wef-light-blue": "#89CFF0",
-        "wef-dark-blue": "#003C71",
+        "wef-dark-blue": "#001F3F", // Even deeper blue for emphasis
         "wef-white": "#FFFFFF",
-        "wef-gray": "#4D4D4D",
-        "wef-light-gray": "#EAEAEA",
+        "wef-gray": "#3A3A3A", // Darker gray for improved contrast
+        "wef-light-gray": "#F5F5F5", // Lighter gray for subtle backgrounds
+        "wef-dark-gray": "#2C2C2C", // For dark mode or high contrast sections
       },
       backgroundImage: {
         "wef-gradient":
-          "linear-gradient(to bottom right, #2563eb, #1d4ed8, #005293)",
+          "linear-gradient(to bottom right, #005293, #003C71, #001F3F)", // Gradient with a blend of blues for depth
       },
     },
   },

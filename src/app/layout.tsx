@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import cn from "classnames";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
+import FlareCursor from "./_components/FlareCursor";
 
 const inter = Inter({ subsets: ["latin"] });
 
