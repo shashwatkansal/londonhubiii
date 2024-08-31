@@ -48,8 +48,8 @@ export function Footer() {
               <Link href="/about" className="link link-hover text-white">
                 About Us
               </Link>
-              <Link href="/hubs" className="link link-hover text-white">
-                Our Hubs
+              <Link href="/shapers" className="link link-hover text-white">
+                Shapers
               </Link>
               <Link href="/impact" className="link link-hover text-white">
                 Our Impact
