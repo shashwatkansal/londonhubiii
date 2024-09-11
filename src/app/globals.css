@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Add this to your globals.css file */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -57,4 +56,16 @@
 
 body {
   font-family: "Apercu";
+}
+
+/* Global CSS */
+::selection {
+  background-color: #ff7f50;
+  color: #ffffff;
+}
+
+/* For Mozilla Firefox */
+::-moz-selection {
+  background-color: #ff7f50;
+  color: #ffffff;
 }
