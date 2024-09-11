@@ -23,23 +23,23 @@ const config: Config = {
   },
   theme: {
     extend: {
-      fontFamily: {
-        sans: ["Apercu", "sans-serif"],
-        serif: ["Merriweather", "serif"],
-      },
-      colors: {
-        "wef-blue": "#003C71", // Darker blue for a more sophisticated tone
-        "wef-light-blue": "#89CFF0",
-        "wef-dark-blue": "#001F3F", // Even deeper blue for emphasis
-        "wef-white": "#FFFFFF",
-        "wef-gray": "#3A3A3A", // Darker gray for improved contrast
-        "wef-light-gray": "#F5F5F5", // Lighter gray for subtle backgrounds
-        "wef-dark-gray": "#2C2C2C", // For dark mode or high contrast sections
-      },
-      backgroundImage: {
-        "wef-gradient":
-          "linear-gradient(to bottom right, #005293, #003C71, #001F3F)", // Gradient with a blend of blues for depth
-      },
+      // fontFamily: {
+      //   sans: ["Apercu", "sans-serif"],
+      //   serif: ["Merriweather", "serif"],
+      // },
+      // colors: {
+      //   "wef-blue": "#003C71", // Darker blue for a more sophisticated tone
+      //   "wef-light-blue": "#89CFF0",
+      //   "wef-dark-blue": "#001F3F", // Even deeper blue for emphasis
+      //   "wef-white": "#FFFFFF",
+      //   "wef-gray": "#3A3A3A", // Darker gray for improved contrast
+      //   "wef-light-gray": "#F5F5F5", // Lighter gray for subtle backgrounds
+      //   "wef-dark-gray": "#2C2C2C", // For dark mode or high contrast sections
+      // },
+      // backgroundImage: {
+      //   "wef-gradient":
+      //     "linear-gradient(to bottom right, #005293, #003C71, #001F3F)", // Gradient with a blend of blues for depth
+      // },
     },
   },
   plugins: [require("daisyui")],
