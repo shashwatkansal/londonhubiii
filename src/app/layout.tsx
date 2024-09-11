@@ -6,7 +6,6 @@ import { Inter } from "next/font/google";
 import cn from "classnames";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
-import FlareCursor from "./_components/FlareCursor";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,11 +42,7 @@ export const metadata: Metadata = {
   },
   robots: "index, follow",
   alternates: {
-    canonical: "https://yourwebsite.com", // Replace with your canonical URL
-    languages: {
-      "en-US": "https://yourwebsite.com/en-us", // Replace with your English URL
-      "es-ES": "https://yourwebsite.com/es-es", // Replace with your Spanish URL, if applicable
-    },
+    canonical: "https://londoniiishapers.com", // Replace with your canonical URL
   },
   viewport: "width=device-width, initial-scale=1.0",
   charset: "UTF-8",

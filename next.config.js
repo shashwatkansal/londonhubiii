@@ -12,4 +12,7 @@ module.exports = {
   images: {
     domains: ["assets.weforum.org", "lh3.googleusercontent.com"],
   },
+  optimization: {
+    minimize: false,
+  }
 };
