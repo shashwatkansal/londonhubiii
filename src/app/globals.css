@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -60,13 +59,13 @@ body {
 }
 
 /* Global CSS */
-/* ::selection {
+::selection {
   background-color: #ff7f50;
   color: #ffffff;
-} */
+}
 
 /* For Mozilla Firefox */
-/* ::-moz-selection {
+::-moz-selection {
   background-color: #ff7f50;
   color: #ffffff;
-} */
+}
