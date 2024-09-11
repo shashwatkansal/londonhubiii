@@ -24,8 +24,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Apercu"', "sans-serif"],
-        serif: ['"Merriweather"', "serif"],
+        sans: ["Apercu", "sans-serif"],
+        serif: ["Merriweather", "serif"],
       },
       colors: {
         "wef-blue": "#003C71", // Darker blue for a more sophisticated tone
