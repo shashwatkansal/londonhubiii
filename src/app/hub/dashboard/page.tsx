@@ -2,14 +2,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import {
-  FaUserCircle,
-  FaEnvelope,
-  FaPhone,
-  FaKey,
-  FaChartBar,
-} from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { FaKey, FaChartBar } from "react-icons/fa";
+import { useRouter } from "next/router";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
