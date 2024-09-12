@@ -12,7 +12,6 @@ const AnalyticsSection = () => {
           <p className="text-gray-600">Increased by 20% this month</p>
         </div>
       </div>
-      {/* More cards can go here */}
     </div>
   );
 };
