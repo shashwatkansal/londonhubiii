@@ -11,39 +11,32 @@ const DashboardPage = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <div className="tabs mb-6">
-        <a
-          className={`tab tab-lifted ${
-            activeTab === "profile" ? "tab-active" : ""
-          }`}
-          onClick={() => setActiveTab("profile")}
-        >
-          Profile
-        </a>
-        <a
-          className={`tab tab-lifted ${
-            activeTab === "analytics" ? "tab-active" : ""
-          }`}
-          onClick={() => setActiveTab("analytics")}
-        >
-          Analytics
-        </a>
-        <a
-          className={`tab tab-lifted ${
-            activeTab === "calendar" ? "tab-active" : ""
-          }`}
-          onClick={() => setActiveTab("calendar")}
-        >
-          Calendar
-        </a>
-        <a
-          className={`tab tab-lifted ${
-            activeTab === "links" ? "tab-active" : ""
-          }`}
-          onClick={() => setActiveTab("links")}
-        >
-          Links
-        </a>
+      {/* Tabs Navigation */}
+      <div className="flex justify-center mb-6">
+        <div className="bg-gray-100 rounded-lg shadow-lg w-full md:w-auto">
+          <div className="flex justify-around md:justify-start">
+            <TabItem
+              label="Profile"
+              active={activeTab === "profile"}
+              onClick={() => setActiveTab("profile")}
+            />
+            <TabItem
+              label="Analytics"
+              active={activeTab === "analytics"}
+              onClick={() => setActiveTab("analytics")}
+            />
+            <TabItem
+              label="Calendar"
+              active={activeTab === "calendar"}
+              onClick={() => setActiveTab("calendar")}
+            />
+            <TabItem
+              label="Links"
+              active={activeTab === "links"}
+              onClick={() => setActiveTab("links")}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Render the active tab */}
@@ -52,6 +45,27 @@ const DashboardPage = () => {
       {activeTab === "calendar" && <CalendarSection />}
       {activeTab === "links" && <LinksSection />}
     </div>
+  );
+};
+
+interface TabItemProps {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}
+
+const TabItem: React.FC<TabItemProps> = ({ label, active, onClick }) => {
+  return (
+    <a
+      onClick={onClick}
+      className={`cursor-pointer px-6 py-3 text-lg font-semibold transition-colors duration-300 ${
+        active
+          ? "bg-blue-500 text-white rounded-t-lg shadow-lg"
+          : "text-gray-700 hover:text-blue-500"
+      }`}
+    >
+      {label}
+    </a>
   );
 };
 
