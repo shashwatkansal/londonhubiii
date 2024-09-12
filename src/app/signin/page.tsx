@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { auth, googleProvider } from "@lib/firebaseConfig";
+import { auth, googleProvider, db } from "@lib/firebaseConfig"; // Ensure db is imported from Firebase config
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signInWithPopup,
 } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore"; // Firestore functions for checking the directory
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 
@@ -27,8 +28,21 @@ export default function SignIn() {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setPassword(e.target.value);
 
+  // Helper function to check if the email exists in the "directory" collection
+  const checkEmailInDirectory = async (email: string): Promise<boolean> => {
+    const docRef = doc(db, "directory", email);
+    const docSnap = await getDoc(docRef);
+    return docSnap.exists(); // Returns true if the document with email exists, false otherwise
+  };
+
   const handleSignIn = async () => {
     try {
+      const emailExists = await checkEmailInDirectory(email);
+      if (!emailExists) {
+        throw new Error(
+          "This email is not authorized for sign-in. Please contact support."
+        );
+      }
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/hub/dashboard");
     } catch (err: any) {
@@ -38,8 +52,14 @@ export default function SignIn() {
 
   const handleSignUp = async () => {
     try {
+      const emailExists = await checkEmailInDirectory(email);
+      if (!emailExists) {
+        throw new Error(
+          "This email is not authorized for sign-up. Please contact support."
+        );
+      }
       await createUserWithEmailAndPassword(auth, email, password);
-      router.push("/");
+      router.push("/hub/dashboard");
     } catch (err: any) {
       setError(err.message);
     }
@@ -47,6 +67,12 @@ export default function SignIn() {
 
   const handleForgotPassword = async () => {
     try {
+      const emailExists = await checkEmailInDirectory(email);
+      if (!emailExists) {
+        throw new Error(
+          "This email is not authorized for password reset. Please contact support."
+        );
+      }
       await sendPasswordResetEmail(auth, email);
       alert("Password reset email sent!");
     } catch (err: any) {
@@ -56,8 +82,17 @@ export default function SignIn() {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
-      router.push("/");
+      const result = await signInWithPopup(auth, googleProvider);
+      const userEmail = result.user.email;
+      if (userEmail) {
+        const emailExists = await checkEmailInDirectory(userEmail);
+        if (!emailExists) {
+          throw new Error(
+            "This email is not authorized for sign-in. Please contact support."
+          );
+        }
+        router.push("/hub/dashboard");
+      }
     } catch (err: any) {
       setError(err.message);
     }
