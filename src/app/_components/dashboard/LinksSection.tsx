@@ -1,4 +1,4 @@
-import { FaBook, FaGoogleDrive, FaLink } from "react-icons/fa";
+import { FaBook, FaBrain, FaGoogleDrive, FaLink } from "react-icons/fa";
 import LinkCard, { LinkCardProps } from "./LinkCard";
 import { SiGooglecalendar } from "react-icons/si";
 
@@ -9,7 +9,7 @@ const linksData: LinkCardProps[] = [
     icon: <FaGoogleDrive />,
   },
   {
-    href: "https://toplink.example.com",
+    href: "https://my.weforum.org/home",
     title: "TopLink",
     icon: <FaLink />,
   },
@@ -17,6 +17,11 @@ const linksData: LinkCardProps[] = [
     href: "https://new.express.adobe.com/webpage/vnOKwPijAc0by?",
     title: "Official Shaper Guide",
     icon: <FaBook />,
+  },
+  {
+    href: "https://intelligence.weforum.org/",
+    title: "WEF Intelligence",
+    icon: <FaBrain />,
   },
   {
     href: "https://calendar.google.com",
