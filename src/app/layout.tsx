@@ -44,7 +44,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://londoniiishapers.com", // Replace with your canonical URL
   },
-  viewport: "width=device-width, initial-scale=1.0",
 };
 
 export default function RootLayout({
@@ -91,11 +90,11 @@ export default function RootLayout({
         className={cn(inter.className, "dark:bg-slate-900 dark:text-slate-400")}
       >
         {/* Header */}
-        <Header />
+        {/* <Header /> */}
         {/* Main Content Area */}
-        <AuthProvider>
-          <div className="min-h-screen">{children}</div>
-        </AuthProvider>
+        {/* <AuthProvider> */}
+        <div className="min-h-screen">{children}</div>
+        {/* </AuthProvider> */}
         {/* Footer */}
         <Footer />
       </body>
