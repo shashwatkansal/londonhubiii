@@ -88,8 +88,6 @@ const ProfileSection = () => {
           background: "#f44336",
           color: "#fff",
         },
-        // Add text to the toast
-        icon: `${error}`,
       });
     }
   };
