@@ -10,7 +10,7 @@ import { AuthProvider } from "@/lib/auth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: `Global Shapers London Hub III - ${CMS_NAME}`,
+  title: `Global Shapers London Hub III`,
   description: `Welcome to the official website of Global Shapers London Hub III. Discover our initiatives, explore our impact, and join us in driving positive change across the world.`,
   keywords:
     "Global Shapers, London Hub, World Economic Forum, community, social impact, young leaders, global initiatives, change-makers",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: "Global Shapers London Hub III",
     description:
       "Discover the initiatives and impact of Global Shapers London Hub III, a community of young leaders driving global change.",
-    url: "https://yourwebsite.com", // Replace with your website's URL
+    url: "https://londoniiishapers.com",
     type: "website",
     images: [
       {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@YourTwitterHandle", // Replace with your Twitter handle
+    site: "@londonshapers3", // Replace with your Twitter handle
     title: "Global Shapers London Hub III",
     description:
       "Join Global Shapers London Hub III in making a global impact.",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   robots: "index, follow",
   alternates: {
-    canonical: "https://londoniiishapers.com", // Replace with your canonical URL
+    canonical: "https://londoniiishapers.com",
   },
 };
 
@@ -93,7 +93,7 @@ export default function RootLayout({
         <Header />
         {/* Main Content Area */}
         <AuthProvider>
-        <div className="min-h-screen">{children}</div>
+          <div className="min-h-screen">{children}</div>
         </AuthProvider>
         {/* Footer */}
         <Footer />
