@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { db } from "@lib/firebaseConfig"; // Import the firebase config for accessing Firestore
-import { doc, getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, query, where } from "firebase/firestore";
 import Image from "next/image";
 import { FaLinkedin, FaInstagram, FaExternalLinkAlt } from "react-icons/fa";
 
@@ -13,31 +13,42 @@ interface Shaper {
   instagram?: string;
   toplink?: string;
   profilepic?: string;
+  externalViewEnabled: boolean;
 }
 
 export default function ShapersPage() {
   const [shapers, setShapers] = useState<Shaper[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch the shapers data from the "directory" collection
+  // Fetch the shapers data from the "directory" collection where externalViewEnabled is true
   useEffect(() => {
     const fetchShapers = async () => {
-      const querySnapshot = await getDocs(collection(db, "directory"));
-      const shapersData: Shaper[] = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        shapersData.push({
-          name: data.name || "Unknown",
-          bio: data.bio || "No bio available",
-          email: data.email,
-          linkedin: data.linkedin || "",
-          instagram: data.instagram || "",
-          toplink: data.toplink || "",
-          profilepic: data.profilepic || "/default-profile.png", // Default image
+      try {
+        const shapersQuery = query(
+          collection(db, "directory"),
+          where("externalViewEnabled", "==", true) // Only fetch profiles with externalViewEnabled set to true
+        );
+        const querySnapshot = await getDocs(shapersQuery);
+        const shapersData: Shaper[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          shapersData.push({
+            name: data.name || "Unknown",
+            bio: data.bio || "No bio available",
+            email: data.email,
+            linkedin: data.linkedin || "",
+            instagram: data.instagram || "",
+            toplink: data.toplink || "",
+            profilepic: data.profilepic || "/default-profile.png", // Default image
+            externalViewEnabled: data.externalViewEnabled || false,
+          });
         });
-      });
-      setShapers(shapersData);
-      setLoading(false);
+        setShapers(shapersData);
+      } catch (error) {
+        console.error("Error fetching shapers: ", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchShapers();
@@ -63,7 +74,7 @@ export default function ShapersPage() {
               >
                 <div className="flex flex-col items-center">
                   <Image
-                    src={shaper.profilepic}
+                    src={shaper.profilepic!}
                     alt={shaper.name}
                     width={120}
                     height={120}

@@ -33,7 +33,7 @@ export default function Index() {
           </div>
         </section>
 
-        {/* London Mission Section */}
+        {/* Mission Section */}
         <section className="py-20 bg-gradient-to-r from-wef-blue to-wef-dark-blue text-center">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-5xl font-extrabold text-white mb-8">
@@ -65,23 +65,131 @@ export default function Index() {
           </div>
         </section>
 
-        {/* Statistics Section */}
+        {/* Impact Section */}
         <section className="py-20 bg-gray-100 text-center">
-          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-12">
-            <div className="transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
-              <h2 className="text-5xl font-extrabold text-blue-900">11,071</h2>
-              <p className="text-2xl text-gray-600 mt-4">Global Shapers</p>
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-5xl font-extrabold text-blue-900 mb-12">
+              Our Impact
+            </h2>
+            <p className="text-xl text-gray-700 mb-12">
+              Through collaboration and innovation, Global Shapers are making
+              real change. Here are a few ways we’re making an impact.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
+              <div className="transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
+                <h2 className="text-5xl font-extrabold text-blue-900">
+                  11,071
+                </h2>
+                <p className="text-2xl text-gray-600 mt-4">Global Shapers</p>
+              </div>
+              <div className="transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
+                <h2 className="text-5xl font-extrabold text-blue-900">502</h2>
+                <p className="text-2xl text-gray-600 mt-4">Hubs</p>
+              </div>
+              <div className="transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
+                <h2 className="text-5xl font-extrabold text-blue-900">155</h2>
+                <p className="text-2xl text-gray-600 mt-4">
+                  Countries and Territories
+                </p>
+              </div>
             </div>
-            <div className="transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
-              <h2 className="text-5xl font-extrabold text-blue-900">502</h2>
-              <p className="text-2xl text-gray-600 mt-4">Hubs</p>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section className="py-20 bg-white text-center">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-5xl font-extrabold text-gray-900 mb-12">
+              Meet the Team
+            </h2>
+            <p className="text-xl text-gray-700 mb-12">
+              Our London Hub is led by a group of passionate individuals. Meet
+              the leaders driving change.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
+              <div className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
+                <Image
+                  src="/assets/images/team1.jpg"
+                  alt="Team Member"
+                  width={200}
+                  height={200}
+                  className="rounded-full mx-auto"
+                />
+                <h3 className="text-3xl font-bold mt-6">Jane Doe</h3>
+                <p className="text-xl text-gray-600">London Hub Curator</p>
+              </div>
+              <div className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
+                <Image
+                  src="/assets/images/team2.jpg"
+                  alt="Team Member"
+                  width={200}
+                  height={200}
+                  className="rounded-full mx-auto"
+                />
+                <h3 className="text-3xl font-bold mt-6">John Smith</h3>
+                <p className="text-xl text-gray-600">Vice-Curator</p>
+              </div>
             </div>
-            <div className="transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
-              <h2 className="text-5xl font-extrabold text-blue-900">155</h2>
-              <p className="text-2xl text-gray-600 mt-4">
-                Countries and Territories
-              </p>
+          </div>
+        </section>
+
+        {/* Partners Section */}
+        <section className="py-20 bg-gray-100 text-center">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-5xl font-extrabold text-blue-900 mb-12">
+              Our Partners
+            </h2>
+            <p className="text-xl text-gray-700 mb-12">
+              We’re proud to collaborate with organizations that share our
+              vision for a more inclusive and sustainable world.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
+              <div className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
+                <Image
+                  src="/assets/images/partner1.png"
+                  alt="Partner 1"
+                  width={150}
+                  height={150}
+                  className="mx-auto"
+                />
+              </div>
+              <div className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
+                <Image
+                  src="/assets/images/partner2.png"
+                  alt="Partner 2"
+                  width={150}
+                  height={150}
+                  className="mx-auto"
+                />
+              </div>
+              <div className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
+                <Image
+                  src="/assets/images/partner3.png"
+                  alt="Partner 3"
+                  width={150}
+                  height={150}
+                  className="mx-auto"
+                />
+              </div>
             </div>
+          </div>
+        </section>
+
+        {/* Call to Action Section */}
+        <section className="py-20 bg-blue-900 text-white text-center">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-5xl font-extrabold mb-8">
+              Ready to Make an Impact?
+            </h2>
+            <p className="text-2xl mb-12">
+              Join the Global Shapers community today and help us build a better
+              future.
+            </p>
+            <Link href="/join">
+              <button className="px-8 py-4 bg-yellow-400 text-blue-900 font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl">
+                Become a Shaper
+              </button>
+            </Link>
           </div>
         </section>
 
