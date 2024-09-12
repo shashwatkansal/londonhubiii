@@ -15,7 +15,6 @@ const ProfileSection = () => {
   const { user } = useAuth();
   const [displayName, setDisplayName] = useState(user.displayName || "");
   const [bio, setBio] = useState("");
-  const [email, setEmail] = useState(user.email || "");
   const [linkedin, setLinkedin] = useState("");
   const [instagram, setInstagram] = useState("");
   const [toplink, setToplink] = useState("");
@@ -24,17 +23,19 @@ const ProfileSection = () => {
   );
   const [externalViewEnabled, setExternalViewEnabled] = useState(false);
 
+  const email = user.email; // Use user's email as the document key
+
   useEffect(() => {
     const loadUserDetails = async () => {
       try {
-        const docRef = doc(db, "users", user.uid);
+        // Fetch the document using email as the key in the "directory" collection
+        const docRef = doc(db, "directory", email);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
           const userData = docSnap.data();
           setDisplayName(userData.name || "");
           setBio(userData.bio || "");
-          setEmail(userData.email || user.email || "");
           setLinkedin(userData.linkedin || "");
           setInstagram(userData.instagram || "");
           setToplink(userData.toplink || "");
@@ -48,14 +49,16 @@ const ProfileSection = () => {
       }
     };
 
-    loadUserDetails();
-  }, [user.uid, user.email, user.photoURL]);
+    if (email) {
+      loadUserDetails();
+    }
+  }, [email, user.photoURL]);
 
   const handleProfileUpdate = async () => {
     try {
-      // Update Firestore document
+      // Update the document in "directory" collection using the email as the document ID
       await setDoc(
-        doc(db, "users", user.uid),
+        doc(db, "directory", email),
         {
           name: displayName,
           bio: bio,
@@ -63,13 +66,13 @@ const ProfileSection = () => {
           instagram: instagram,
           toplink: toplink,
           externalViewEnabled: externalViewEnabled,
+          profilepic: profileImageUrl,
         },
         { merge: true }
       );
 
       // Show success toast
       toast.success("Profile updated successfully!", {
-        icon: "✅",
         style: {
           borderRadius: "10px",
           background: "#4caf50",
@@ -79,20 +82,23 @@ const ProfileSection = () => {
     } catch (error) {
       console.error("Error updating profile: ", error);
       // Show error toast
-      toast.error("Failed to update profile.", {
-        icon: "❌",
+      toast.error("Failed to update profile", {
         style: {
           borderRadius: "10px",
           background: "#f44336",
           color: "#fff",
         },
+        // Add text to the toast
+        icon: `${error}`,
       });
     }
   };
 
   return (
     <div>
+      {/* react-hot-toast container */}
       <div>
+        {/* This will make sure the toast appears correctly */}
         <Toaster />
       </div>
 
