@@ -9,6 +9,7 @@ import {
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useAuth } from "@lib/auth"; // Custom hook for auth context
 import { db } from "@lib/firebaseConfig"; // Firebase configuration
+import toast, { Toaster } from "react-hot-toast"; // Import react-hot-toast
 
 const ProfileSection = () => {
   const { user } = useAuth();
@@ -66,15 +67,35 @@ const ProfileSection = () => {
         { merge: true }
       );
 
-      alert("Profile updated successfully!");
+      // Show success toast
+      toast.success("Profile updated successfully!", {
+        icon: "✅",
+        style: {
+          borderRadius: "10px",
+          background: "#4caf50",
+          color: "#fff",
+        },
+      });
     } catch (error) {
       console.error("Error updating profile: ", error);
-      alert("Failed to update profile.");
+      // Show error toast
+      toast.error("Failed to update profile.", {
+        icon: "❌",
+        style: {
+          borderRadius: "10px",
+          background: "#f44336",
+          color: "#fff",
+        },
+      });
     }
   };
 
   return (
     <div>
+      <div>
+        <Toaster />
+      </div>
+
       <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
         <h2 className="text-2xl font-bold mb-4">Your Profile</h2>
 
