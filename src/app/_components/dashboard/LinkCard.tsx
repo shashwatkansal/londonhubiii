@@ -2,7 +2,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import Image from "next/image";
 import React from "react";
 
-interface LinkCardProps {
+export interface LinkCardProps {
   href: string;
   title: string;
   icon?: React.ReactNode;

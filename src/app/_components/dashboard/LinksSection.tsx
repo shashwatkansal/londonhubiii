@@ -1,8 +1,8 @@
 import { FaBook, FaGoogleDrive, FaLink } from "react-icons/fa";
-import LinkCard from "./LinkCard";
+import LinkCard, { LinkCardProps } from "./LinkCard";
 import { SiGooglecalendar } from "react-icons/si";
 
-const linksData = [
+const linksData: LinkCardProps[] = [
   {
     href: "https://drive.google.com",
     title: "Google Drive",
