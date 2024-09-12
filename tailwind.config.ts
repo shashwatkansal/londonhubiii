@@ -7,6 +7,24 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  daisyui: {
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["light"],
+          primary: "#003C71", // Deep blue for strong brand presence
+          secondary: "#89CFF0", // Softer light blue for highlights
+          accent: "#3A3A3A", // Dark gray for accents
+          neutral: "#2C2C2C", // Dark neutral for backgrounds
+          "base-100": "#FFFFFF", // White for base backgrounds
+          info: "#1E90FF", // Bright blue for info highlights
+          success: "#28A745", // Green for success messages
+          warning: "#FFC107", // Yellow for warnings
+          error: "#DC3545", // Red for errors
+        },
+      }
+    ]
+  },
   theme: {
     extend: {
       fontFamily: {

@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaKey, FaChartBar } from "react-icons/fa";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
@@ -79,7 +79,6 @@ function DashboardPage() {
 
       // Show success toast
       showToast("Profile updated successfully!", "success");
-      router.reload();
     } catch (error) {
       console.error("Error updating profile: ", error);
       showToast("Failed to update profile.", "error");

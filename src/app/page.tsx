@@ -34,9 +34,9 @@ export default function Index() {
         </section>
 
         {/* London Mission Section */}
-        <section className="py-20 bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200 text-center">
+        <section className="py-20 bg-gradient-to-r from-wef-blue to-wef-dark-blue text-center">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-5xl font-extrabold text-blue-900 mb-8">
+            <h2 className="text-5xl font-extrabold text-white mb-8">
               Our Mission in London
             </h2>
             <p className="text-2xl text-white mb-12">
