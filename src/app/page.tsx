@@ -1,12 +1,51 @@
-import Container from "@/app/_components/container";
-import { HeroPost } from "@/app/_components/hero-post";
-import { getAllPosts } from "@/lib/api";
-import Image from "next/image";
+"use client";
+import { useState, useEffect } from "react";
+import { db } from "@lib/firebaseConfig"; // Firebase config for Firestore
+import { getDocs, collection, query, where } from "firebase/firestore";
 import Link from "next/link";
+import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+
+interface TeamMember {
+  name: string;
+  role: string;
+  profilepic: string;
+  externalViewEnabled: boolean;
+}
 
 export default function Index() {
-  const allPosts = getAllPosts();
-  const morePosts = allPosts.slice(0, 3);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      try {
+        const teamQuery = query(
+          collection(db, "directory"),
+          where("externalViewEnabled", "==", true)
+        );
+        const querySnapshot = await getDocs(teamQuery);
+        const membersData: TeamMember[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          membersData.push({
+            name: data.name || "Unknown",
+            role: data.role || "Shaper",
+            profilepic: data.profilepic || "/default-profile.png",
+            externalViewEnabled: data.externalViewEnabled,
+          });
+        });
+        setTeamMembers(membersData);
+      } catch (error) {
+        console.error("Error fetching team members:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeamMembers();
+  }, []);
 
   return (
     <main>
@@ -42,26 +81,63 @@ export default function Index() {
             <p className="text-2xl text-white mb-12">
               The Global Shapers London Hub is a community of young leaders
               dedicated to addressing the city's most pressing challenges.
-              Through innovative projects and partnerships, we aim to foster
-              inclusivity, sustainability, and social impact across London’s
-              diverse communities.
             </p>
-            <div className="py-8">
-              <div className="relative group overflow-hidden rounded-xl shadow-2xl">
-                <Image
-                  src="/assets/images/working.jpg"
-                  alt="Global Shapers London in Action"
-                  width={800}
-                  height={500}
-                  className="transform group-hover:scale-105 transition-transform duration-500 ease-in-out w-full object-cover"
-                />
-              </div>
-            </div>
-            <Link className="" href="/about">
+            <Link href="/about">
               <button className="px-8 py-4 bg-blue-600 text-white font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl">
                 Recruitment is open. Join us!
               </button>
             </Link>
+          </div>
+        </section>
+
+        {/* Team Section with Swiper Slider */}
+        <section className="py-20 bg-white text-center">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-5xl font-extrabold text-gray-900 mb-12">
+              Meet the Team
+            </h2>
+            <p className="text-xl text-gray-700 mb-12">
+              Our London Hub is led by a group of passionate individuals. Meet
+              the leaders driving change.
+            </p>
+
+            {/* Swiper Slider */}
+            {!loading ? (
+              <Swiper
+                spaceBetween={30}
+                slidesPerView={1}
+                breakpoints={{
+                  640: { slidesPerView: 2 },
+                  1024: { slidesPerView: 3 },
+                }}
+              >
+                {teamMembers.map((member, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
+                      <Image
+                        src={member.profilepic}
+                        alt={member.name}
+                        width={200}
+                        height={200}
+                        className="rounded-full mx-auto"
+                      />
+                      <h3 className="text-3xl font-bold mt-6">{member.name}</h3>
+                      <p className="text-xl text-gray-600">{member.role}</p>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            ) : (
+              <p className="text-lg text-gray-500">Loading team members...</p>
+            )}
+            <div className="mt-12">
+              <Link
+                href="/shapers"
+                className="text-blue-600 font-semibold underline"
+              >
+                See All Members
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -73,9 +149,10 @@ export default function Index() {
             </h2>
             <p className="text-xl text-gray-700 mb-12">
               Through collaboration and innovation, Global Shapers are making
-              real change. Here are a few ways we’re making an impact.
+              real change.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
+              {/* Impact Stats */}
               <div className="transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
                 <h2 className="text-5xl font-extrabold text-blue-900">
                   11,071
@@ -91,85 +168,6 @@ export default function Index() {
                 <p className="text-2xl text-gray-600 mt-4">
                   Countries and Territories
                 </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Team Section */}
-        <section className="py-20 bg-white text-center">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-5xl font-extrabold text-gray-900 mb-12">
-              Meet the Team
-            </h2>
-            <p className="text-xl text-gray-700 mb-12">
-              Our London Hub is led by a group of passionate individuals. Meet
-              the leaders driving change.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
-              <div className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
-                <Image
-                  src="/assets/images/team1.jpg"
-                  alt="Team Member"
-                  width={200}
-                  height={200}
-                  className="rounded-full mx-auto"
-                />
-                <h3 className="text-3xl font-bold mt-6">Jane Doe</h3>
-                <p className="text-xl text-gray-600">London Hub Curator</p>
-              </div>
-              <div className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
-                <Image
-                  src="/assets/images/team2.jpg"
-                  alt="Team Member"
-                  width={200}
-                  height={200}
-                  className="rounded-full mx-auto"
-                />
-                <h3 className="text-3xl font-bold mt-6">John Smith</h3>
-                <p className="text-xl text-gray-600">Vice-Curator</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Partners Section */}
-        <section className="py-20 bg-gray-100 text-center">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-5xl font-extrabold text-blue-900 mb-12">
-              FAQs
-            </h2>
-            <p className="text-xl text-gray-700 mb-12">
-              We're proud to collaborate with organizations that share our
-              vision for a more inclusive and sustainable world.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
-              <div className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
-                <Image
-                  src="/assets/images/partner1.png"
-                  alt="Partner 1"
-                  width={150}
-                  height={150}
-                  className="mx-auto"
-                />
-              </div>
-              <div className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
-                <Image
-                  src="/assets/images/partner2.png"
-                  alt="Partner 2"
-                  width={150}
-                  height={150}
-                  className="mx-auto"
-                />
-              </div>
-              <div className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl">
-                <Image
-                  src="/assets/images/partner3.png"
-                  alt="Partner 3"
-                  width={150}
-                  height={150}
-                  className="mx-auto"
-                />
               </div>
             </div>
           </div>
@@ -191,29 +189,6 @@ export default function Index() {
               </button>
             </Link>
           </div>
-        </section>
-
-        {/* More Stories Section */}
-        <section className="bg-blue-50 py-20">
-          <Container>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              {morePosts.map((post) => (
-                <div
-                  key={post.slug}
-                  className="transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl bg-white p-8 rounded-xl"
-                >
-                  <HeroPost
-                    title={post.title}
-                    coverImage={post.coverImage}
-                    date={post.date}
-                    author={post.author}
-                    slug={post.slug}
-                    excerpt={post.excerpt}
-                  />
-                </div>
-              ))}
-            </div>
-          </Container>
         </section>
       </div>
     </main>
