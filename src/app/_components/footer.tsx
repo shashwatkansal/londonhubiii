@@ -55,7 +55,7 @@ export function Footer() {
                 Our Impact
               </Link>
               <Link href="/partners" className="link link-hover text-white">
-                Our Partners
+                FAQs
               </Link>
             </div>
           </div>

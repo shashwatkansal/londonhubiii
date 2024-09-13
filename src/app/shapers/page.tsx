@@ -13,6 +13,7 @@ interface Shaper {
   instagram?: string;
   toplink?: string;
   profilepic?: string;
+  role?: string; // Role (if defined)
   externalViewEnabled: boolean;
 }
 
@@ -41,6 +42,7 @@ export default function ShapersPage() {
             instagram: data.instagram || "",
             toplink: data.toplink || "",
             profilepic: data.profilepic || "/default-profile.png", // Default image
+            role: data.role || "Shaper", // Default to "Shaper" if no role is defined
             externalViewEnabled: data.externalViewEnabled || false,
           });
         });
@@ -76,72 +78,75 @@ export default function ShapersPage() {
             {shapers.map((shaper, index) => (
               <div
                 key={index}
-                className={`bg-white shadow-xl rounded-lg p-8 hover:shadow-2xl duration-500 transform transition-transform ${
+                className={`relative bg-white shadow-xl rounded-lg overflow-hidden hover:shadow-2xl duration-500 transform transition-transform ${
                   expandedIndex === index ? "scale-105" : "hover:scale-105"
-                } cursor-pointer relative group`}
+                } cursor-pointer`}
                 onClick={() => toggleExpand(index)}
               >
-                <div className="flex flex-col items-center">
-                  <div className="relative mb-4">
-                    <Image
-                      src={shaper.profilepic!}
-                      alt={shaper.name}
-                      width={120}
-                      height={120}
-                      className="rounded-full object-cover border-4 border-blue-200 group-hover:border-blue-500 transition-border duration-500"
-                    />
+                {/* Profile Image */}
+                <div className="relative w-full h-64">
+                  <Image
+                    src={shaper.profilepic!}
+                    alt={shaper.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="object-cover"
+                    quality={90} // Improve image quality
+                  />
+                  {/* Role Tag */}
+                  <div className="absolute top-4 left-4 bg-wef-blue text-white text-sm px-4 py-1 rounded-full shadow-lg z-50 uppercase font-bold tracking-wide">
+                    {shaper.role}
                   </div>
-
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2 transition-colors duration-300 group-hover:text-blue-600">
-                    {shaper.name}
-                  </h2>
-
-                  <p
-                    className={`text-gray-600 text-center mb-4 transition-opacity duration-300 ${
-                      expandedIndex === index
-                        ? "opacity-100"
-                        : "group-hover:opacity-80"
-                    }`}
-                  >
-                    {expandedIndex === index
-                      ? shaper.bio // Show full bio when card is expanded
-                      : shaper.bio.length > 100
-                      ? shaper.bio.slice(0, 100) + "..."
-                      : shaper.bio}
-                  </p>
-
-                  <div className="flex space-x-4 mt-4">
-                    {shaper.linkedin && (
-                      <a
-                        href={shaper.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-700 text-2xl transition-transform transform hover:scale-110"
-                      >
-                        <FaLinkedin />
-                      </a>
-                    )}
-                    {shaper.instagram && (
-                      <a
-                        href={shaper.instagram}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-pink-500 hover:text-pink-600 text-2xl transition-transform transform hover:scale-110"
-                      >
-                        <FaInstagram />
-                      </a>
-                    )}
-                    {shaper.toplink && (
-                      <a
-                        href={shaper.toplink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-600 hover:text-gray-700 text-2xl transition-transform transform hover:scale-110"
-                      >
-                        <FaExternalLinkAlt />
-                      </a>
-                    )}
+                  {/* Overlay for Text */}
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-4">
+                    <h2 className="text-white text-2xl font-bold mb-1">
+                      {shaper.name}
+                    </h2>
+                    <p className="text-white text-sm">{shaper.role}</p>
                   </div>
+                </div>
+
+                {/* Expanded Bio */}
+                {expandedIndex === index && (
+                  <div className="bg-white p-4">
+                    <p className="text-gray-700">
+                      {shaper.bio} {/* Full bio shown when expanded */}
+                    </p>
+                  </div>
+                )}
+
+                {/* Social Links */}
+                <div className="absolute top-4 right-4 flex space-x-2">
+                  {shaper.linkedin && (
+                    <a
+                      href={shaper.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white bg-blue-600 rounded-full p-2 hover:bg-blue-700"
+                    >
+                      <FaLinkedin />
+                    </a>
+                  )}
+                  {shaper.instagram && (
+                    <a
+                      href={shaper.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white bg-pink-500 rounded-full p-2 hover:bg-pink-600"
+                    >
+                      <FaInstagram />
+                    </a>
+                  )}
+                  {shaper.toplink && (
+                    <a
+                      href={shaper.toplink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white bg-gray-500 rounded-full p-2 hover:bg-gray-600"
+                    >
+                      <FaExternalLinkAlt />
+                    </a>
+                  )}
                 </div>
               </div>
             ))}

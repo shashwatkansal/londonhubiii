@@ -137,10 +137,10 @@ export default function Index() {
         <section className="py-20 bg-gray-100 text-center">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-5xl font-extrabold text-blue-900 mb-12">
-              Our Partners
+              FAQs
             </h2>
             <p className="text-xl text-gray-700 mb-12">
-              We’re proud to collaborate with organizations that share our
+              We're proud to collaborate with organizations that share our
               vision for a more inclusive and sustainable world.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">

@@ -72,17 +72,14 @@ export default function Header() {
           <Link href="/about" className="hover:text-wef-light-blue">
             About
           </Link>
-          <Link href="/hubs" className="hover:text-wef-light-blue">
-            Hubs
-          </Link>
           <Link href="/shapers" className="hover:text-wef-light-blue">
             Shapers
           </Link>
           <Link href="/impact" className="hover:text-wef-light-blue">
             Our Impact
           </Link>
-          <Link href="/partners" className="hover:text-wef-light-blue">
-            Our Partners
+          <Link href="/faqs" className="hover:text-wef-light-blue">
+            FAQs
           </Link>
         </nav>
 
@@ -146,21 +143,21 @@ export default function Header() {
             <Link href="/" className="hover:text-wef-light-blue">
               Home
             </Link>
-            <Link href="/about" className="hover:text-wef-light-blue">
-              About
-            </Link>
             <Link href="/shapers" className="hover:text-wef-light-blue">
               Shapers
             </Link>
             <Link href="/impact" className="hover:text-wef-light-blue">
               Our Impact
             </Link>
-            <Link href="/partners" className="hover:text-wef-light-blue">
-              Our Partners
+            <Link href="/faqs" className="hover:text-wef-light-blue">
+              FAQs
             </Link>
             {user ? (
               <div className="z-20">
-                <Link href="/hub/dashboard" className="hover:text-wef-light-blue">
+                <Link
+                  href="/hub/dashboard"
+                  className="hover:text-wef-light-blue"
+                >
                   Dashboard
                 </Link>
                 <button
