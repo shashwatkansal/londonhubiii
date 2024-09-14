@@ -24,9 +24,9 @@ export default function Index() {
             <p className="text-xl mt-4 animate-fade-in-up delay-200">
               Local Ideas. Global Support. Real-World Impact.
             </p>
-            <button className="mt-8 px-8 py-4 bg-blue-500 text-white font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl">
+            {/* <button className="mt-8 px-8 py-4 bg-blue-500 text-white font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl">
               Learn More
-            </button>
+            </button> */}
           </div>
         </section>
 
@@ -46,7 +46,7 @@ export default function Index() {
             </p>
             <Link href="/about">
               <button className="px-8 py-4 bg-blue-600 text-white font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl">
-                Learn more about the Global Shapers
+                Learn more about us
               </button>
             </Link>
           </div>
