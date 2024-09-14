@@ -69,9 +69,9 @@ export default function Header() {
           <Link href="/" className="hover:text-wef-light-blue">
             Home
           </Link>
-          <Link href="/about" className="hover:text-wef-light-blue">
+          {/* <Link href="/about" className="hover:text-wef-light-blue">
             About
-          </Link>
+          </Link> */}
           <Link href="/shapers" className="hover:text-wef-light-blue">
             Shapers
           </Link>
