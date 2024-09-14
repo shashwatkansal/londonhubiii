@@ -5,10 +5,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
 import { PiHandshakeFill, PiProjectorScreenChartLight } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Index() {
   return (
     <main>
+      <div>
+        <Toaster />
+      </div>
       <div>
         {/* Hero Section */}
         <section className="relative bg-gradient-to-r from-blue-700 via-blue-800 to-blue-900 text-white h-[500px] flex items-center justify-center overflow-hidden">
@@ -283,12 +287,31 @@ export default function Index() {
               future.
             </p>
             <div className="flex flex-col md:flex-row items-center justify-center space-x-0 md:space-x-4 space-y-4 md:space-y-0">
-              <Link href="/join">
-                <button className="px-8 py-4 bg-white text-wef-blue font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl">
-                  Become a Shaper
-                </button>
-              </Link>
-              <Link href="/join">
+              <button
+                className="px-8 py-4 bg-white text-wef-blue font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl"
+                onClick={() =>
+                  toast.error(
+                    "Unfortunately the applications have closed for this year. Do check back next year!",
+                    {
+                      duration: 5000,
+                      style: {
+                        background: "#333",
+                        color: "#fff",
+                      },
+                      ariaProps: {
+                        role: "status",
+                        "aria-live": "assertive",
+                      },
+                    }
+                  )
+                }
+              >
+                Become a Shaper
+              </button>
+              <Link
+                href="https://docs.google.com/forms/d/e/1FAIpQLScdWAWxr--Z4_c9piHxW8wZSitKUcRquNp4VKVtb3HUFcbSGw/viewform?usp=sharing"
+                target="_blank"
+              >
                 <button className="px-8 py-4 bg-white text-wef-blue font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl">
                   Transfer to London
                 </button>
