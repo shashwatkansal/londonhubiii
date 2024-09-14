@@ -45,8 +45,8 @@ export function Footer() {
           <div className="lg:w-1/3 flex flex-col items-center">
             <h4 className="text-xl font-semibold mb-4">Explore</h4>
             <div className="grid grid-cols-2 gap-4 lg:gap-6">
-              <Link href="/about" className="link link-hover text-white">
-                About Us
+              <Link href="/" className="link link-hover text-white">
+                Home
               </Link>
               <Link href="/shapers" className="link link-hover text-white">
                 Shapers

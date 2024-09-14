@@ -5,6 +5,8 @@ const nextConfig = {
       "assets.weforum.org",
       "lh3.googleusercontent.com",
       "firebasestorage.googleapis.com",
+      "source.unsplash.com",
+      "drive.google.com",
     ],
   },
 };
