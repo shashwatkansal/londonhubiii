@@ -167,7 +167,7 @@ export default function FAQsPage() {
           />
           <p className="text-gray-700 text-lg mt-6">
             The World Economic Forum works to bring global leaders together to
-            tackle the world’s most pressing challenges, from climate change to
+            tackle the world's most pressing challenges, from climate change to
             social inequality. Learn more about the projects and initiatives
             shaping the future.
           </p>

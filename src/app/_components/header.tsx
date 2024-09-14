@@ -114,6 +114,15 @@ export default function Header() {
                 className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 mt-3 bg-wef-gradient"
               >
                 <li>
+                  <p className="hover:cursor-default">
+                    Signed in
+                    {user.displayName
+                      ? ` as ${user.displayName}`
+                      : ` with ${user.email}`}
+                  </p>
+                </li>
+                <hr className="my-2" />
+                <li>
                   <Link href="/hub/dashboard">Dashboard</Link>
                 </li>
                 <li>
@@ -154,6 +163,13 @@ export default function Header() {
             </Link>
             {user ? (
               <div className="z-20">
+                <p>
+                  Signed in
+                  {user.displayName
+                    ? ` as ${user.displayName}`
+                    : ` with ${user.email}`}
+                </p>
+                <hr className="border-white" />
                 <Link
                   href="/hub/dashboard"
                   className="hover:text-wef-light-blue"
