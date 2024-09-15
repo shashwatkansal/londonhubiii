@@ -262,6 +262,10 @@ const ProfileSection = () => {
             <p className="text-md sm:text-lg font-semibold">{email}</p>
             <p className="text-gray-600 text-sm sm:text-base">
               <FaKey className="inline mr-2" /> User ID: {user.uid}
+              <p className="text-xs sm:text-sm text-gray-500 mt-2">
+                Don't share this key with anyone else. This is your unique user
+                ID.
+              </p>
             </p>
           </div>
         </div>

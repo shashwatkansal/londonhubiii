@@ -1,13 +1,35 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProfileSection from "@components/dashboard/ProfileSection";
 import AnalyticsSection from "@components/dashboard/AnalyticsSection";
 import CalendarSection from "@components/dashboard/CalendarSection";
 import LinksSection from "@components/dashboard/LinksSection";
 import { requireAuth } from "@lib/requireAuth";
+import { db } from "@lib/firebaseConfig"; // Import Firestore config
+import { doc, getDoc } from "firebase/firestore"; // For Firestore fetching
+import { useAuth } from "@/lib/auth";
 
 const DashboardPage = () => {
   const [activeTab, setActiveTab] = useState("profile");
+  const [isAdmin, setIsAdmin] = useState(false); // Admin state
+  const { user } = useAuth();
+  // Fetch admin status from Firestore
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      try {
+        const docRef = doc(db, "admins", user.email); // Checking if the user email exists in the "admins" collection
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setIsAdmin(true); // If document exists, user is an admin
+        } else {
+        }
+      } catch (error) {
+        console.error("Error checking admin status: ", error);
+      }
+    };
+
+    checkAdminStatus();
+  }, [user]);
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -20,11 +42,14 @@ const DashboardPage = () => {
               active={activeTab === "profile"}
               onClick={() => setActiveTab("profile")}
             />
-            <TabItem
-              label="Analytics"
-              active={activeTab === "analytics"}
-              onClick={() => setActiveTab("analytics")}
-            />
+            {/* Conditionally render the "Analytics" tab based on admin status */}
+            {isAdmin && (
+              <TabItem
+                label="Admin"
+                active={activeTab === "analytics"}
+                onClick={() => setActiveTab("analytics")}
+              />
+            )}
             <TabItem
               label="Calendar"
               active={activeTab === "calendar"}
@@ -42,7 +67,7 @@ const DashboardPage = () => {
       {/* Render the active tab */}
       <div className="p-4 sm:p-6">
         {activeTab === "profile" && <ProfileSection />}
-        {activeTab === "analytics" && <AnalyticsSection />}
+        {activeTab === "analytics" && isAdmin && <AnalyticsSection />}
         {activeTab === "calendar" && <CalendarSection />}
         {activeTab === "links" && <LinksSection />}
       </div>

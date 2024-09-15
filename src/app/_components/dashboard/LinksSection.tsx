@@ -1,13 +1,9 @@
 import { FaBook, FaBrain, FaGoogleDrive, FaLink } from "react-icons/fa";
 import LinkCard, { LinkCardProps } from "./LinkCard";
 import { SiGooglecalendar } from "react-icons/si";
+import { RiNotionFill } from "react-icons/ri";
 
 const linksData: LinkCardProps[] = [
-  {
-    href: "https://drive.google.com",
-    title: "Google Drive",
-    icon: <FaGoogleDrive />,
-  },
   {
     href: "https://my.weforum.org/home",
     title: "TopLink",
@@ -27,6 +23,18 @@ const linksData: LinkCardProps[] = [
     href: "https://calendar.google.com",
     title: "Google Calendar",
     icon: <SiGooglecalendar />,
+  },
+  {
+    // Notion
+    href: "https://www.notion.so/londonshapers/Global-Shapers-London-III-628c14e4650745aaa5c0f29f6e25100a",
+    title: "Hub's Notion",
+    icon: <RiNotionFill />,
+  },
+  {
+    // Team Allocation Docs
+    href: "https://docs.google.com/document/d/1OFlopDRLcM2CoAdZpn0abeaAXlcKm5Be0YpM7PDrQII",
+    title: "Team Allocations 2024-25",
+    icon: <FaGoogleDrive />,
   },
 ];
 
