@@ -3,21 +3,10 @@
 This repository hosts the official website for the **Global Shapers London Hub III**. The website showcases the hub's mission, ongoing projects, and impact in the local community. It also provides resources for users to get involved, subscribe to the newsletter, and read updates on the hub's activities.
 
 ## Table of Contents
-
-- [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
 - [Contributing](#contributing)
 - [License](#license)
-
-## Features
-
-- **Dynamic Content:** A hero section with parallax effects for modern visuals.
-- **Impact Statistics:** Display live statistics on projects, collaborations, and shapers in action.
-- **Responsive Design:** Optimized for mobile and desktop.
-- **Smooth Scrolling:** Navigation to the `Join Us` call-to-action.
-- **Newsletter Subscription:** A section to subscribe to the latest updates.
-- **Team Section:** Dynamic content to showcase team members.
 
 ## Tech Stack
 
