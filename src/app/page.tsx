@@ -4,17 +4,31 @@ import Image from "next/image";
 import { PiHandshakeFill, PiProjectorScreenChartLight } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
 import toast, { Toaster } from "react-hot-toast";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Index() {
   const callToActionRef = useRef<null | HTMLElement>(null);
+  const [offsetY, setOffsetY] = useState(0);
+
+  const handleScroll = () => {
+    setOffsetY(window.scrollY);
+  };
 
   // Smooth scroll to the CTA section if the URL contains #join-us
   useEffect(() => {
     if (window.location.hash === "#join-us" && callToActionRef.current) {
       callToActionRef.current.scrollIntoView({ behavior: "smooth" });
     }
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const parallaxStyles = {
+    transform: `translateY(${offsetY * 0.5}px) scale(1.1)`,
+    transition: "transform 0.05s ease-out",
+    opacity: 0.4,
+  };
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -29,7 +43,7 @@ export default function Index() {
           alt="Global Shapers Hero Image"
           layout="fill"
           objectFit="cover"
-          className="opacity-40 transform scale-110 transition-all duration-[6000ms] ease-in-out"
+          style={parallaxStyles}
         />
         <div className="relative z-10 text-center">
           <h1 className="text-7xl font-bold drop-shadow-xl animate-fade-in-down">
@@ -50,12 +64,10 @@ export default function Index() {
           <p className="text-2xl text-white mb-12">
             The Global Shapers London III Hub is a dynamic network of young,
             visionary leaders committed to tackling the city's most urgent
-            challenges.
-
-            United by a passion for positive change, we
-            drive innovative projects and collaborations to create a more
-            inclusive, sustainable, and resilient future for all of London's
-            diverse communities.
+            challenges. United by a passion for positive change, we drive
+            innovative projects and collaborations to create a more inclusive,
+            sustainable, and resilient future for all of London's diverse
+            communities.
           </p>
           <Link href="/impact">
             <button className="px-8 py-4 bg-blue-600 text-white font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl animate-slide-in-bottom">
