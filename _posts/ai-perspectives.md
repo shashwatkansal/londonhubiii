@@ -40,10 +40,6 @@ To generate a **10-15 page report** summarizing the key findings and insights fr
 The project aligns with several of the Global Shapers’ impact areas:
 - **Build Inclusive Communities**
 - **Reskill for the Future**
-- **Improve Health & Well-being**
-- **Deliver Basic Needs**
-- **Protect the Planet**
-- **Strengthen Civic Engagement**
 
 ## Strategies and Approach
 
