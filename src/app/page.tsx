@@ -4,10 +4,20 @@ import Image from "next/image";
 import { PiHandshakeFill, PiProjectorScreenChartLight } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
 import toast, { Toaster } from "react-hot-toast";
-import { useEffect, useRef, useState } from "react";
+import {
+  FormEvent,
+  FormEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { db } from "@/lib/firebaseConfig";
+import { MdEmail } from "react-icons/md";
 
 export default function Index() {
   const callToActionRef = useRef<null | HTMLElement>(null);
+  const [email, setEmail] = useState("");
   const [offsetY, setOffsetY] = useState(0);
 
   const handleScroll = () => {
@@ -30,10 +40,33 @@ export default function Index() {
     opacity: 0.4,
   };
 
+  const handleSubscribe = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const subscribeToast = toast.loading("Subscribing...");
+
+    try {
+      await setDoc(
+        doc(db, "subscribers", email),
+        {
+          email: email,
+          timestamp: new Date(),
+        },
+        { merge: true }
+      );
+      toast.success("Thank you for subscribing!", { id: subscribeToast });
+      setEmail(""); // Reset the input after successful subscription
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      toast.error("Failed to subscribe. Please try again.", {
+        id: subscribeToast,
+      });
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gray-50">
       <div>
-        <Toaster />
+        <Toaster position="top-center" reverseOrder={false} />
       </div>
 
       {/* Hero Section */}
@@ -322,6 +355,38 @@ export default function Index() {
               </button>
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-center px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-5xl font-extrabold mb-8 animate-fade-in-down">
+            Stay Connected
+          </h2>
+          <p className="text-xl mb-12 animate-fade-in-up">
+            Subscribe to our newsletter to receive the latest news and exclusive
+            updates.{" "}
+          </p>
+          <form
+            onSubmit={handleSubscribe}
+            className="flex flex-col sm:flex-row justify-center gap-4 items-center"
+          >
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+              className="px-6 py-3 w-full sm:w-auto text-gray-900 bg-white rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-500 ease-in-out animate-pulse-once"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="px-8 py-3 bg-white text-blue-700 font-bold rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+            >
+              Subscribe
+            </button>
+          </form>
         </div>
       </section>
 
