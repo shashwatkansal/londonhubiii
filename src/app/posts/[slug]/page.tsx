@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/api";
@@ -21,6 +22,15 @@ export default async function Post({ params }: Params) {
     <main className="py-4 md:py-8">
       <Alert preview={post.preview} />
       <Container>
+        {/* Back to Our Impact Button */}
+        <div className="mb-8">
+          <Link href="/impact">
+            <button className="text-blue-600 hover:text-blue-800 font-bold underline">
+              ← Back to Our Impact
+            </button>
+          </Link>
+        </div>
+
         <article className="mb-32">
           <PostHeader
             title={post.title}

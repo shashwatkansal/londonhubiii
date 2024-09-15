@@ -15,6 +15,7 @@
     "classnames": "^2.5.1",
     "date-fns": "^3.6.0",
     "firebase": "^10.13.1",
+    "fs": "^0.0.1-security",
     "gray-matter": "^4.0.3",
     "i": "^0.3.7",
     "next": "14.2.9",
