@@ -94,7 +94,7 @@ export default function RootLayout({
         <Header />
         {/* Main Content Area */}
         <AuthProvider>
-          <div className="min-h-screen px-4 md:px-0">{children}</div>
+          <div className="min-h-screen">{children}</div>
         </AuthProvider>
         <Analytics />
         {/* Footer */}

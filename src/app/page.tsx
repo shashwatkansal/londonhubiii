@@ -23,7 +23,7 @@ export default function Index() {
       </div>
       <div>
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-blue-700 via-blue-800 to-blue-900 text-white h-[500px] flex items-center justify-center overflow-hidden">
+        <section className="px-4 relative bg-gradient-to-r from-blue-700 via-blue-800 to-blue-900 text-white h-[500px] flex items-center justify-center overflow-hidden">
           <Image
             src="/assets/images/hub3photo.jpg"
             alt="Global Shapers Hero Image"
@@ -44,7 +44,7 @@ export default function Index() {
           </div>
         </section>
         {/* Mission Section */}
-        <section className="py-20 bg-gradient-to-r from-wef-blue to-wef-dark-blue text-center">
+        <section className="py-20 bg-gradient-to-r from-wef-blue to-wef-dark-blue text-center px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-5xl font-extrabold text-white mb-8">
               Our Mission in London
@@ -64,7 +64,7 @@ export default function Index() {
             </Link>
           </div>
         </section>
-        <section className="py-20 bg-gray-100 text-center">
+        <section className="py-20 bg-gray-100 text-center px-4">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-5xl font-extrabold text-blue-900 mb-12">
               Our Impact in London
@@ -136,7 +136,7 @@ export default function Index() {
         </section>
 
         {/* Six Impact Areas Section */}
-        <section className="py-20 bg-white text-center">
+        <section className="py-20 bg-white text-center px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-extrabold text-blue-900 mb-12">
               Our Six Impact Areas
@@ -256,7 +256,7 @@ export default function Index() {
         </section>
 
         {/* Team Section with Swiper Slider */}
-        <section className="py-20 bg-white text-center">
+        <section className="py-20 bg-white text-center px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-extrabold text-wef-blue mb-12">
               Meet the Team
@@ -285,7 +285,7 @@ export default function Index() {
           </div>
         </section>
 
-        <section className="py-20 bg-white text-center">
+        <section className="py-20 bg-white text-center px-4">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-5xl font-extrabold text-blue-900 mb-8">
               Read Our Newsletter
@@ -318,7 +318,7 @@ export default function Index() {
 
         {/* Call to Action Section */}
         <section
-          className="py-20 bg-gradient-to-r from-wef-blue to-wef-dark-blue text-white text-center"
+          className="py-20 bg-gradient-to-r from-wef-blue to-wef-dark-blue text-white text-center px-4"
           id="join-us" // Add id here for scrolling to work
           ref={callToActionRef}
         >

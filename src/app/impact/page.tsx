@@ -15,7 +15,7 @@ export default async function ImpactPage() {
 
   return (
     <main>
-      <section className="container mx-auto py-10">
+      <section className="container mx-auto py-10 px-4">
         <h1 className="text-7xl font-extrabold mb-8 text-center text-wef-blue py-10">
           Our Impact & Projects
         </h1>

@@ -209,7 +209,7 @@ export default function ShapersPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-gray-100 py-10">
+    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-gray-100 py-10 px-4">
       <div className="container mx-auto">
         <h1 className="text-5xl font-bold text-center mb-12 text-blue-900 animate-fade-in-down transition-transform duration-200">
           Meet Our Shapers
