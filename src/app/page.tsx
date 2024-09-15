@@ -1,13 +1,21 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/swiper-bundle.css";
 import { PiHandshakeFill, PiProjectorScreenChartLight } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
 import toast, { Toaster } from "react-hot-toast";
+import { useEffect, useRef } from "react";
 
 export default function Index() {
+  const callToActionRef = useRef<null | HTMLElement>(null);
+
+  // Scroll to the CTA section if the URL contains #join-us
+  useEffect(() => {
+    if (window.location.hash === "#join-us" && callToActionRef.current) {
+      callToActionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
   return (
     <main>
       <div>
@@ -269,15 +277,51 @@ export default function Index() {
             <div className="mt-12">
               <Link
                 href="/shapers"
-                className="text-blue-600 font-semibold underline"
+                className="text-blue-600 font-semibold underline hover:text-blue-800 transition-colors duration-300"
               >
                 See All Members
               </Link>
             </div>
           </div>
         </section>
+
+        <section className="py-20 bg-white text-center">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-5xl font-extrabold text-blue-900 mb-8">
+              Read Our Newsletter
+            </h2>
+            <p className="text-xl text-gray-700 mb-12">
+              Stay updated with our latest initiatives, impact stories, and
+              events by reading our monthly newsletter. Get the latest insights
+              from Global Shapers London!
+            </p>
+            {/* Newsletter Image */}
+            <Image
+              src="/assets/images/newsletter.png"
+              alt="Global Shapers Newsletter"
+              width={1000}
+              height={600}
+              className="mx-auto rounded-lg shadow-lg"
+            />
+            <div className="mt-8">
+              <Link
+                href="https://www.canva.com/design/DAGLfOjusxQ/5upjRZAU6-L_vDVfJV686A/view?utm_content=DAGLfOjusxQ&utm_campaign=designshare&utm_medium=link&utm_source=editor"
+                target="_blank"
+              >
+                <button className="px-8 py-4 bg-blue-600 text-white font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl">
+                  View Full Newsletter
+                </button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Call to Action Section */}
-        <section className="py-20 bg-gradient-to-r from-wef-blue to-wef-dark-blue text-white text-center">
+        <section
+          className="py-20 bg-gradient-to-r from-wef-blue to-wef-dark-blue text-white text-center"
+          id="join-us" // Add id here for scrolling to work
+          ref={callToActionRef}
+        >
           <div className="max-w-4xl mx-auto">
             <h2 className="text-5xl font-extrabold mb-8">
               Ready to Make an Impact?

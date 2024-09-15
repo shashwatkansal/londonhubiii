@@ -38,7 +38,6 @@ export default function Header() {
         <div className="container mx-auto px-4 md:px-6 py-4 flex flex-wrap justify-between items-center">
           {/* Logo and WEF Initiative */}
           <div className="flex items-center space-x-4 flex-1">
-            {/* Global Shapers Logo */}
             <Link href="/">
               <Image
                 src="/assets/images/gs_white_logo.png"
@@ -49,12 +48,10 @@ export default function Header() {
               />
             </Link>
 
-            {/* London Hub III Text */}
             <div className="text-xl md:text-2xl lg:text-3xl font-bold whitespace-nowrap">
               London Hub III
             </div>
 
-            {/* WEF Initiative */}
             <div className="hidden md:flex items-center space-x-2 flex-shrink-0">
               <span className="text-xs md:text-sm">Initiative of the</span>
               <Image
@@ -85,6 +82,9 @@ export default function Header() {
             </Link>
             <Link href="/impact" className="hover:text-wef-light-blue">
               Our Impact
+            </Link>
+            <Link href="/#join-us" className="hover:text-wef-light-blue">
+              Join Us
             </Link>
             <Link href="/faqs" className="hover:text-wef-light-blue">
               FAQs
@@ -152,7 +152,6 @@ export default function Header() {
             )}
           </div>
         </div>
-
         {/* Mobile Navigation */}
         {menuOpen && (
           <div className="md:hidden bg-wef-gradient text-white">
@@ -166,6 +165,9 @@ export default function Header() {
               <Link href="/impact" className="hover:text-wef-light-blue">
                 Our Impact
               </Link>
+              <Link href="/#join-us" className="hover:text-wef-light-blue">
+              Join Us
+            </Link>
               <Link href="/faqs" className="hover:text-wef-light-blue">
                 FAQs
               </Link>
