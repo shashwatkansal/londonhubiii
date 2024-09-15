@@ -90,13 +90,13 @@ export default function RootLayout({
       <body
         className={cn(inter.className, "dark:bg-slate-900 dark:text-slate-400")}
       >
+        <Analytics />
         {/* Header */}
         <Header />
         {/* Main Content Area */}
         <AuthProvider>
           <div className="min-h-screen">{children}</div>
         </AuthProvider>
-        <Analytics />
         {/* Footer */}
         <Footer />
       </body>

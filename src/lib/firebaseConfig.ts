@@ -27,4 +27,11 @@ const storage = getStorage(app);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
+
+if (typeof window !== "undefined") {
+  if ("measurementId" in firebaseConfig) {
+    getAnalytics();
+  }
+}
+
 export { app, db, storage, auth, googleProvider };
