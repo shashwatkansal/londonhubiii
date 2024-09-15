@@ -9,7 +9,7 @@ import { db } from "@lib/firebaseConfig"; // Import Firestore config
 import { doc, getDoc } from "firebase/firestore"; // For Firestore fetching
 import { useAuth } from "@/lib/auth";
 
-const DashboardPage = () => {
+function DashboardPage() {
   const [activeTab, setActiveTab] = useState("profile");
   const [isAdmin, setIsAdmin] = useState(false); // Admin state
   const { user } = useAuth();

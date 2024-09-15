@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { auth } from "@lib/firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { onAuthStateChange, trackUserPresence } from "@/lib/auth";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -14,7 +13,6 @@ export default function Header() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      trackUserPresence();
     });
     return () => unsubscribe();
   }, []);

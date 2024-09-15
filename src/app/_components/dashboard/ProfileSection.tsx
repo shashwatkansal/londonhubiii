@@ -28,7 +28,7 @@ const generateInitials = (name: string) => {
 };
 
 const ProfileSection = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [displayName, setDisplayName] = useState(user.displayName || "");
   const [bio, setBio] = useState("");
   const [linkedin, setLinkedin] = useState("");
@@ -259,7 +259,12 @@ const ProfileSection = () => {
           </div>
 
           <div className="flex-1 text-center sm:text-left">
-            <p className="text-md sm:text-lg font-semibold">{email}</p>
+            <p className="text-md sm:text-lg font-semibold">
+              {email}
+              <span className="text-xs sm:text-sm text-gray-500 ml-2">
+                {isAdmin && "Admin"}
+              </span>
+            </p>
             <p className="text-gray-600 text-sm sm:text-base">
               <FaKey className="inline mr-2" /> User ID: {user.uid}
               <p className="text-xs sm:text-sm text-gray-500 mt-2">
