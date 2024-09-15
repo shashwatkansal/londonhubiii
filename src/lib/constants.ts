@@ -1,4 +1,4 @@
-export const EXAMPLE_PATH = "blog-starter";
-export const CMS_NAME = "Markdown";
+export const EXAMPLE_PATH = "global-shapers-london-hub-iii";
+export const CMS_NAME = "London Hub III - Official Website";
 export const HOME_OG_IMAGE_URL =
-  "https://og-image.vercel.app/Next.js%20Blog%20Starter%20Example.png?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg";
+  "https://firebasestorage.googleapis.com/v0/b/london-hub-iii.appspot.com/o/Global%20shapers%20logo%20III%20(1).png?alt=media&token=7d0a71e5-2075-48ce-ac9e-1847b74a58f2";
