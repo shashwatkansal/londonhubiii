@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import cn from "classnames";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -95,6 +96,7 @@ export default function RootLayout({
         <AuthProvider>
           <div className="min-h-screen">{children}</div>
         </AuthProvider>
+        <Analytics />
         {/* Footer */}
         <Footer />
       </body>

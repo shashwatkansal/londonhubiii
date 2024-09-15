@@ -119,6 +119,16 @@ const FAQSection = () => {
   // Tab content for Manage FAQs
   const renderManageFAQContent = () => (
     <div>
+      <h4
+        className="
+        text-center text-lg
+        bg-blue-100 text-blue-800
+        p-4 rounded-lg shadow-lg
+        mb-8
+      "
+      >
+        Manage your FAQs here. You can add, edit, and delete FAQs as needed.
+      </h4>
       {/* Add/Edit FAQ Form */}
       <form
         onSubmit={handleAddOrUpdateFAQ}
@@ -205,6 +215,17 @@ const FAQSection = () => {
         <h1 className="text-5xl font-extrabold text-center mb-12 text-blue-900">
           Admin Dashboard
         </h1>
+        <p
+          className="
+          text-center text-lg
+          bg-blue-100 text-blue-800
+          p-4 rounded-lg shadow-lg
+          mb-8
+        "
+        >
+          Welcome to the Admin Dashboard! Here you can manage your FAQs, view
+          analytics, and more
+        </p>
 
         {/* Tabs */}
         <div className="flex justify-center mb-8">
@@ -218,7 +239,7 @@ const FAQSection = () => {
           >
             Manage FAQs
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveTab("otherTab")}
             className={`${
               activeTab === "otherTab"
@@ -227,7 +248,7 @@ const FAQSection = () => {
             } px-4 py-2 rounded-lg mx-2`}
           >
             Other Tab
-          </button>
+          </button> */}
         </div>
 
         {/* Tab Content */}
