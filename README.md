@@ -7,10 +7,6 @@ This repository hosts the official website for the **Global Shapers London Hub I
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
-- [Development](#development)
-- [Production](#production)
-- [Deployment](#deployment)
-- [Environment Variables](#environment-variables)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -32,6 +28,7 @@ This repository hosts the official website for the **Global Shapers London Hub I
 - **Notifications:** react-hot-toast for real-time notifications
 - **Forms:** Google Forms (for user interaction)
 - **Analytics:** Firebase Analytics (for tracking user interaction)
+- **Deployment:** Vercel
 
 ## Installation
 
