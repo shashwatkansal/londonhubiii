@@ -77,24 +77,31 @@ export default function Index() {
           layout="fill"
           objectFit="cover"
           style={parallaxStyles}
+          className="opacity-70"
         />
-        <div className="relative z-10 text-center">
-          <h1 className="text-7xl font-bold drop-shadow-xl animate-fade-in-down">
+        <div className="absolute inset-0 bg-gradient-to-t from-black opacity-40"></div>
+        <div className="relative z-10 text-center animate-fade-in-down">
+          <h1 className="text-6xl md:text-7xl font-bold text-white drop-shadow-xl leading-tight">
             Change Begins Here
           </h1>
-          <p className="text-xl mt-4 animate-fade-in-up delay-200">
+          <p className="text-lg md:text-2xl mt-4 animate-fade-in-up delay-200 text-white tracking-wide">
             Local Ideas. Global Support. Real-World Impact.
           </p>
         </div>
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 bg-gradient-to-r from-wef-blue to-wef-dark-blue text-center px-4">
-        <div className="max-w-4xl mx-auto">
+      <section
+        id="mission"
+        className="py-20 bg-gradient-to-b from-wef-blue to-wef-dark-blue text-center px-4 relative"
+      >
+        {/* Optional subtle pattern */}
+        <div className="absolute inset-0 opacity-10 bg-pattern-dots-md"></div>
+        <div className="max-w-4xl mx-auto relative z-10">
           <h2 className="text-5xl font-extrabold text-white mb-8 animate-fade-in-down">
             Our Mission in London
           </h2>
-          <p className="text-2xl text-white mb-12">
+          <p className="text-lg md:text-2xl text-gray-200 mb-12 animate-fade-in-up">
             The Global Shapers London III Hub is a dynamic network of young,
             visionary leaders committed to tackling the city's most urgent
             challenges. United by a passion for positive change, we drive
@@ -103,7 +110,7 @@ export default function Index() {
             communities.
           </p>
           <Link href="/impact">
-            <button className="px-8 py-4 bg-blue-600 text-white font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl animate-slide-in-bottom">
+            <button className="px-8 py-4 bg-blue-600 text-white font-bold rounded-full shadow-lg hover:shadow-2xl transform hover:scale-110 transition-transform duration-300 animate-slide-in-bottom">
               Learn More About Our Projects
             </button>
           </Link>
