@@ -4,12 +4,14 @@ import {
   collection,
   addDoc,
   updateDoc,
+  deleteDoc,
   query,
   where,
   getDocs,
   doc,
   Timestamp,
   getDoc,
+  setDoc,
 } from "firebase/firestore";
 import {
   getStorage,
@@ -173,15 +175,15 @@ const CreatePostSection = () => {
         }
       } else {
         // If creating a new post or draft
-        const postRef = collection(db, "posts");
-        await addDoc(postRef, updatedPost);
+        const postRef = doc(db, "posts", slug);
+        await setDoc(postRef, updatedPost);
         toast.success(
           status === "draft"
             ? "Draft saved successfully!"
             : "Post published successfully!"
         );
       }
-
+      drafts.push(updatedPost); // Add the new draft to the local state
       // Reset form
       setPost({
         title: "",
@@ -202,9 +204,25 @@ const CreatePostSection = () => {
       setEditingDraftId(null); // Reset draft edit mode
     } catch (error) {
       console.error("Error saving post:", error);
-      toast.error("Failed to save post." + error.message);
+      toast.error("Failed to save post." + (error as Error).message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Function to delete a draft
+  const deleteDraft = async (draftId: string) => {
+    try {
+      await deleteDoc(doc(db, "posts", draftId));
+      toast.success("Draft deleted successfully!");
+
+      // Remove the deleted draft from the local state
+      setDrafts((prevDrafts) =>
+        prevDrafts.filter((draft) => draft.slug !== draftId)
+      );
+    } catch (error) {
+      console.error("Error deleting draft:", error);
+      toast.error("Failed to delete draft.");
     }
   };
 
@@ -306,6 +324,16 @@ const CreatePostSection = () => {
         {/* Cover Image */}
         <div>
           <FileUpload onFileChange={(file) => setCoverImageFile(file)} />
+          {post.coverImage && (
+            <div className="mt-4">
+              <p className="text-gray-600">Current Cover Image:</p>
+              <img
+                src={post.coverImage}
+                alt="Current cover"
+                className="mt-2 max-w-full h-auto rounded"
+              />
+            </div>
+          )}
         </div>
 
         {/* OG Image URL */}
@@ -363,6 +391,12 @@ const CreatePostSection = () => {
                   onClick={() => loadDraft(draft)}
                 >
                   Edit this Draft
+                </button>
+                <button
+                  className="mt-4 ml-4 px-4 py-2 bg-red-600 text-white font-bold rounded-lg"
+                  onClick={() => deleteDraft(draft.slug)}
+                >
+                  Delete this Draft
                 </button>
               </li>
             ))}
