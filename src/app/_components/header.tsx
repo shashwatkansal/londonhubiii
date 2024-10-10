@@ -5,10 +5,15 @@ import { useState, useEffect } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { auth } from "@lib/firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { db } from "@lib/firebaseConfig"; // Firestore
+import { collection, addDoc } from "firebase/firestore"; // Firestore methods
+import toast from "react-hot-toast";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [feedbackOpen, setFeedbackOpen] = useState(false); // For feedback modal
+  const [feedbackText, setFeedbackText] = useState(""); // For feedback text
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -22,14 +27,46 @@ export default function Header() {
     setUser(null);
   };
 
+  // Function to handle feedback submission
+  const handleFeedbackSubmit = async () => {
+    if (!feedbackText.trim()) {
+      toast.error("Feedback cannot be empty.");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "user_feedback"), {
+        feedback: feedbackText,
+        user: user ? user.email : "Anonymous",
+        createdAt: new Date(),
+      });
+      setFeedbackText(""); // Clear feedback form
+      setFeedbackOpen(false); // Close modal after submission
+      toast.success("Feedback submitted successfully!");
+    } catch (error) {
+      console.log("Error submitting feedback: ", error);
+      toast.error("Failed to submit feedback. Please try again.");
+    }
+  };
+
   return (
     <>
-      {/* Banner showing when logged in */}
+      {/* Existing Header and Banner */}
       {user && (
-        <div>
-          <div className="bg-yellow-500 text-black text-center py-2">
-            🚧 This website is currently under development. Some features may
-            not be fully functional. 🚧
+        <div className="">
+          <div className="bg-yellow-500 text-black text-center py-2 flex justify-center items-center mx-auto space-x-4 px-4">
+            <p className="">
+              🚧 This website is currently under development. Some features may
+              not be fully functional. 🚧
+            </p>
+            <div>
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+                onClick={() => setFeedbackOpen(true)} // Open feedback modal
+              >
+                Provide Feedback
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -166,8 +203,8 @@ export default function Header() {
                 Our Impact
               </Link>
               <Link href="/#join-us" className="hover:text-wef-light-blue">
-              Join Us
-            </Link>
+                Join Us
+              </Link>
               <Link href="/faqs" className="hover:text-wef-light-blue">
                 FAQs
               </Link>
@@ -205,6 +242,35 @@ export default function Header() {
           </div>
         )}
       </header>
+
+      {/* Feedback Modal */}
+      {feedbackOpen && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 className="text-xl font-bold mb-4">Submit Feedback</h2>
+            <textarea
+              className="w-full h-32 p-2 border border-gray-300 rounded"
+              value={feedbackText}
+              onChange={(e) => setFeedbackText(e.target.value)}
+              placeholder="Enter your feedback here..."
+            />
+            <div className="mt-4 flex justify-end space-x-4">
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded"
+                onClick={() => setFeedbackOpen(false)} // Close modal
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-green-500 text-white px-4 py-2 rounded"
+                onClick={handleFeedbackSubmit} // Submit feedback
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
