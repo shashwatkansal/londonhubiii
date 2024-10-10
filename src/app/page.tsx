@@ -358,55 +358,60 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-center px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-5xl font-extrabold mb-8 animate-fade-in-down">
-            Stay Connected
-          </h2>
-          <p className="text-xl mb-12 animate-fade-in-up">
-            Subscribe to our newsletter to receive the latest news and exclusive
-            updates.{" "}
-          </p>
-          <form
-            onSubmit={handleSubscribe}
-            className="flex flex-col sm:flex-row justify-center gap-4 items-center"
-          >
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              required
-              className="px-6 py-3 w-full sm:w-auto text-gray-900 bg-white rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-500 ease-in-out animate-pulse-once"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="px-8 py-3 bg-white text-blue-700 font-bold rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+      {/* // Stay Connected Section */}
+      <section className="py-20 bg-gradient-to-r from-blue-400 to-blue-600 text-white text-center px-4">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+          {/* Left side: Content */}
+          <div className="animate-fade-in-down">
+            <h2 className="text-5xl font-extrabold mb-6">Stay Connected</h2>
+            <p className="text-xl mb-8">
+              Subscribe to our newsletter to receive the latest news and
+              exclusive updates.
+            </p>
+          </div>
+
+          {/* Right side: Form */}
+          <div className="bg-white p-6 rounded-lg shadow-md animate-fade-in-up">
+            <form
+              onSubmit={handleSubscribe}
+              className="flex flex-col gap-4 items-center"
             >
-              Subscribe
-            </button>
-          </form>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+                className="px-6 py-3 w-full text-gray-900 bg-white border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-500 ease-in-out"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button
+                type="submit"
+                className="w-full md:w-auto px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
         </div>
       </section>
 
-      {/* Call to Action Section */}
       <section
-        className="py-20 bg-gradient-to-r from-wef-blue to-wef-dark-blue text-white text-center px-4"
+        className="py-20 bg-gradient-to-r from-blue-700 to-blue-900 text-white text-center px-4"
         id="join-us"
         ref={callToActionRef}
       >
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-5xl font-extrabold mb-8 animate-fade-in-down">
+        <div className="max-w-5xl mx-auto animate-fade-in-down">
+          <h2 className="text-6xl font-extrabold mb-8">
             Ready to Make an Impact?
           </h2>
           <p className="text-2xl mb-12 animate-fade-in-up">
             Join the Global Shapers community today and help us build a better
             future.
           </p>
-          <div className="flex flex-col md:flex-row items-center justify-center space-x-0 md:space-x-4 space-y-4 md:space-y-0">
+          <div className="flex flex-wrap justify-center gap-6">
             <button
-              className="px-8 py-4 bg-white text-wef-blue font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl"
+              className="px-10 py-5 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold rounded-full shadow-md hover:shadow-xl transform hover:scale-110 transition-transform duration-300"
               onClick={() =>
                 toast.error(
                   "Unfortunately, the applications have closed for this year. Do check back next year!",
@@ -430,7 +435,7 @@ export default function Index() {
               href="https://docs.google.com/forms/d/e/1FAIpQLScdWAWxr--Z4_c9piHxW8wZSitKUcRquNp4VKVtb3HUFcbSGw/viewform?usp=sharing"
               target="_blank"
             >
-              <button className="px-8 py-4 bg-white text-wef-blue font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl">
+              <button className="px-10 py-5 bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold rounded-full shadow-md hover:shadow-xl transform hover:scale-110 transition-transform duration-300">
                 Transfer to London
               </button>
             </Link>
