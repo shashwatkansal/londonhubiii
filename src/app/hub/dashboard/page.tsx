@@ -8,6 +8,7 @@ import { requireAuth } from "@lib/requireAuth";
 import { db } from "@lib/firebaseConfig"; // Import Firestore config
 import { doc, getDoc } from "firebase/firestore"; // For Firestore fetching
 import { useAuth } from "@/lib/auth";
+import CreatePostSection from "@/app/_components/dashboard/CreatePostSection";
 
 function DashboardPage() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -60,6 +61,11 @@ function DashboardPage() {
               active={activeTab === "links"}
               onClick={() => setActiveTab("links")}
             />
+            <TabItem
+              label="Create Post"
+              active={activeTab === "create-post"} // New tab
+              onClick={() => setActiveTab("create-post")}
+            />
           </div>
         </div>
       </div>
@@ -70,10 +76,11 @@ function DashboardPage() {
         {activeTab === "analytics" && isAdmin && <AnalyticsSection />}
         {activeTab === "calendar" && <CalendarSection />}
         {activeTab === "links" && <LinksSection />}
+        {activeTab === "create-post" && <CreatePostSection />}
       </div>
     </div>
   );
-};
+}
 
 interface TabItemProps {
   label: string;
