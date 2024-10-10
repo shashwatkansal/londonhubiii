@@ -111,67 +111,69 @@ export default function Index() {
       </section>
 
       {/* Impact Section */}
-      <section className="py-20 bg-gray-100 text-center px-4">
+      <section className="py-20 bg-gradient-to-b from-blue-50 to-white text-center px-4">
         <div className="max-w-5xl mx-auto">
+          {/* Heading */}
           <h2 className="text-5xl font-extrabold text-blue-900 mb-12 animate-fade-in-down">
             Our Impact in London
           </h2>
-          <p className="text-xl text-gray-700 mb-12 animate-fade-in-up">
+          <p className="text-xl text-gray-600 mb-12 animate-fade-in-up">
             In the heart of London, Global Shapers are driving real change
             through innovative solutions and collaborative efforts.
           </p>
 
+          {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
-            {/* Global Shapers */}
-            <div className="relative bg-white p-8 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 hover:shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-700 opacity-10 rounded-lg"></div>
+            {/* Shapers in Action */}
+            <div className="relative bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-700 opacity-10 rounded-xl"></div>
               <div className="relative z-10">
                 <div className="mb-4 text-center">
                   <span className="text-blue-900 text-6xl font-extrabold">
                     25
                   </span>
                 </div>
-                <div className="text-gray-600 text-xl font-medium">
+                <div className="text-gray-700 text-xl font-medium">
                   Shapers in Action
                 </div>
                 <div className="mt-4">
-                  <RiTeamFill className="w-12 h-12 mx-auto text-blue-600" />
+                  <RiTeamFill className="w-14 h-14 mx-auto text-blue-600" />
                 </div>
               </div>
             </div>
 
-            {/* Projects */}
-            <div className="relative bg-white p-8 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 hover:shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 opacity-10 rounded-lg"></div>
+            {/* Local Projects Ongoing */}
+            <div className="relative bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300">
+              <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 opacity-10 rounded-xl"></div>
               <div className="relative z-10">
                 <div className="mb-4 text-center">
                   <span className="text-blue-900 text-6xl font-extrabold">
                     6
                   </span>
                 </div>
-                <div className="text-gray-600 text-xl font-medium">
+                <div className="text-gray-700 text-xl font-medium">
                   Local Projects Ongoing
                 </div>
                 <div className="mt-4">
-                  <PiProjectorScreenChartLight className="w-12 h-12 mx-auto text-green-600" />
+                  <PiProjectorScreenChartLight className="w-14 h-14 mx-auto text-green-600" />
                 </div>
               </div>
             </div>
 
             {/* Collaborations */}
-            <div className="relative bg-white p-8 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 hover:shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 opacity-10 rounded-lg"></div>
+            <div className="relative bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 opacity-10 rounded-xl"></div>
               <div className="relative z-10">
                 <div className="mb-4 text-center">
                   <span className="text-blue-900 text-6xl font-extrabold">
                     15
                   </span>
                 </div>
-                <div className="text-gray-600 text-xl font-medium">
+                <div className="text-gray-700 text-xl font-medium">
                   Local Collaborations and Partnerships
                 </div>
                 <div className="mt-4">
-                  <PiHandshakeFill className="w-12 h-12 mx-auto text-purple-600" />
+                  <PiHandshakeFill className="w-14 h-14 mx-auto text-purple-600" />
                 </div>
               </div>
             </div>
