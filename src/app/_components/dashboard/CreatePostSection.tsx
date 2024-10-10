@@ -206,6 +206,10 @@ const CreatePostSection = () => {
     <section className="max-w-3xl mx-auto">
       <h2 className="text-3xl font-extrabold mb-6 text-center">
         {editingDraftId ? "Edit Draft" : "Create a New Post"}
+        <p className="text-sm text-gray-600 mt-2 text-center max-w-md mx-auto">
+          Ensure you save the draft once you're done editing, or publish the
+          post when you're ready. Otherwise, your changes will be lost.
+        </p>
       </h2>
       <form className="space-y-4">
         {/* Title */}
@@ -252,6 +256,10 @@ const CreatePostSection = () => {
             formats={quillFormats}
             placeholder="Write your post content here..."
             className="bg-white"
+            style={{
+              fontFamily:
+                "'Aperçu', 'Avenir', 'Proxima Nova', Arial, sans-serif",
+            }}
           />
         </div>
 
