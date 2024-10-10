@@ -4,14 +4,8 @@ import Image from "next/image";
 import { PiHandshakeFill, PiProjectorScreenChartLight } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
 import toast, { Toaster } from "react-hot-toast";
-import {
-  FormEvent,
-  FormEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { addDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import { MdEmail } from "react-icons/md";
 
@@ -43,6 +37,11 @@ export default function Index() {
   const handleSubscribe = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const subscribeToast = toast.loading("Subscribing...");
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      toast.error("Please enter a valid email.", { id: subscribeToast });
+      return;
+    }
 
     try {
       await setDoc(
@@ -78,6 +77,7 @@ export default function Index() {
           objectFit="cover"
           style={parallaxStyles}
           className="opacity-70"
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black opacity-40"></div>
         <div className="relative z-10 text-center animate-fade-in-down">
@@ -95,7 +95,6 @@ export default function Index() {
         id="mission"
         className="py-20 bg-gradient-to-b from-wef-blue to-wef-dark-blue text-center px-4 relative"
       >
-        {/* Optional subtle pattern */}
         <div className="absolute inset-0 opacity-10 bg-pattern-dots-md"></div>
         <div className="max-w-4xl mx-auto relative z-10">
           <h2 className="text-5xl font-extrabold text-white mb-8 animate-fade-in-down">
@@ -120,7 +119,6 @@ export default function Index() {
       {/* Impact Section */}
       <section className="py-20 bg-gradient-to-b from-blue-50 to-white text-center px-4">
         <div className="max-w-5xl mx-auto">
-          {/* Heading */}
           <h2 className="text-5xl font-extrabold text-blue-900 mb-12 animate-fade-in-down">
             Our Impact in London
           </h2>
@@ -129,9 +127,7 @@ export default function Index() {
             through innovative solutions and collaborative efforts.
           </p>
 
-          {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
-            {/* Shapers in Action */}
             <div className="relative bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-700 opacity-10 rounded-xl"></div>
               <div className="relative z-10">
@@ -149,7 +145,6 @@ export default function Index() {
               </div>
             </div>
 
-            {/* Local Projects Ongoing */}
             <div className="relative bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300">
               <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 opacity-10 rounded-xl"></div>
               <div className="relative z-10">
@@ -167,7 +162,6 @@ export default function Index() {
               </div>
             </div>
 
-            {/* Collaborations */}
             <div className="relative bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 opacity-10 rounded-xl"></div>
               <div className="relative z-10">
@@ -377,16 +371,13 @@ export default function Index() {
       {/* // Stay Connected Section */}
       <section className="py-20 bg-gradient-to-r from-blue-400 to-blue-600 text-white text-center px-4">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-8">
-          {/* Left side: Content */}
           <div className="animate-fade-in-down">
             <h2 className="text-5xl font-extrabold mb-6">Stay Connected</h2>
             <p className="text-xl mb-8">
-              Subscribe to our newsletter to receive the latest news and
-              exclusive updates.
+              Subscribe to our newsletter to receive the latest updates.
             </p>
           </div>
 
-          {/* Right side: Form */}
           <div className="bg-white p-6 rounded-lg shadow-md animate-fade-in-up">
             <form
               onSubmit={handleSubscribe}
