@@ -307,28 +307,35 @@ export default function Index() {
       </section>
 
       {/* Team Section with Swiper Slider */}
-      <section className="py-20 bg-white text-center px-4">
+      <section className="py-20 bg-gradient-to-b from-white to-gray-100 text-center px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-extrabold text-wef-blue mb-12">
+          {/* Heading */}
+          <h2 className="text-5xl font-extrabold text-wef-blue mb-8 animate-fade-in-down">
             Meet the Team
           </h2>
-          <p className="text-xl text-gray-700 mb-12">
+          <p className="text-xl text-gray-700 mb-12 animate-fade-in-up">
             Our London Hub is led by a group of passionate individuals. Meet the
             leaders driving change.
           </p>
 
-          {/* Swiper Slider with Christmas Image */}
-          <Image
-            src="/assets/images/christmas.jpg"
-            alt="Christmas Celebration"
-            width={800}
-            height={600}
-            className="rounded-lg mx-auto"
-          />
+          {/* Image Slider or Static Image */}
+          <div className="relative w-full h-auto max-w-4xl mx-auto rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
+            <Image
+              src="/assets/images/christmas.jpg"
+              alt="Christmas Celebration"
+              width={800}
+              height={600}
+              className="rounded-lg object-cover w-full h-full"
+            />
+            {/* Optional image overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40"></div>
+          </div>
+
+          {/* See All Members CTA */}
           <div className="mt-12">
             <Link
               href="/shapers"
-              className="text-blue-600 font-semibold underline hover:text-blue-800 transition-colors duration-300"
+              className="px-8 py-4 bg-blue-600 text-white font-bold rounded-full shadow-md hover:shadow-xl hover:bg-blue-700 transform hover:scale-105 transition-transform duration-300"
             >
               See All Members
             </Link>
