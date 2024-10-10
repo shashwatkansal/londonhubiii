@@ -69,7 +69,7 @@ export default function Index() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-700 via-blue-800 to-blue-900 text-white h-[500px] flex items-center justify-center overflow-hidden">
+      <section className="relative bg-gradient-to-r from-blue-700 via-blue-800 to-blue-900 text-white min-h-screen flex items-center justify-center overflow-hidden">
         <Image
           src="/assets/images/hub3photo.jpg"
           alt="Global Shapers Hero Image"
@@ -80,13 +80,18 @@ export default function Index() {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black opacity-40"></div>
-        <div className="relative z-10 text-center animate-fade-in-down">
-          <h1 className="text-6xl md:text-7xl font-bold text-white drop-shadow-xl leading-tight">
+        <div className="relative z-10 text-center animate-fade-in-down px-4">
+          <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-xl leading-tight">
             Change Begins Here
           </h1>
           <p className="text-lg md:text-2xl mt-4 animate-fade-in-up delay-200 text-white tracking-wide">
             Local Ideas. Global Support. Real-World Impact.
           </p>
+          <Link href="#mission">
+            <button className="mt-8 px-8 py-4 bg-blue-600 text-white font-bold rounded-full shadow-lg hover:shadow-2xl transform hover:scale-110 transition-transform duration-300 animate-slide-in-bottom">
+              Explore Our Mission
+            </button>
+          </Link>
         </div>
       </section>
 
