@@ -8,6 +8,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { addDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import { MdEmail } from "react-icons/md";
+import { ReactTyped } from "react-typed";
 
 export default function Index() {
   const callToActionRef = useRef<null | HTMLElement>(null);
@@ -80,13 +81,22 @@ export default function Index() {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black opacity-40"></div>
-        <div className="relative z-10 text-center animate-fade-in-down px-4">
-          <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-xl leading-tight">
+        <div className="relative z-10 text-center px-4">
+          <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-xl leading-tight animate-fade-in-down">
             Change Begins Here
           </h1>
-          <p className="text-lg md:text-2xl mt-4 animate-fade-in-up delay-200 text-white tracking-wide">
-            Local Ideas. Global Support. Real-World Impact.
-          </p>
+
+          {/* Typewriter Effect */}
+          <br />
+          <ReactTyped
+            strings={["Local Ideas.", "Global Support.", "Real-World Impact."]}
+            typeSpeed={50}
+            backSpeed={30}
+            loop
+            backDelay={1500}
+            className="text-lg md:text-2xl mt-4 text-white tracking-wide"
+          />
+          <br />
           <Link href="#mission">
             <button className="mt-8 px-8 py-4 bg-blue-600 text-white font-bold rounded-full shadow-lg hover:shadow-2xl transform hover:scale-110 transition-transform duration-300 animate-slide-in-bottom">
               Explore Our Mission
