@@ -1,15 +1,16 @@
+import { Timestamp } from "firebase/firestore";
 import { type Author } from "./author";
 
 export type Post = {
-  slug: string;
   title: string;
-  date: string;
-  coverImage: string;
-  author: Author;
   excerpt: string;
+  content: string;
+  coverImage: string;
   ogImage: {
     url: string;
   };
-  content: string;
-  preview?: boolean;
+  slug: string;
+  author: Author;
+  date: Timestamp;
+  status: "draft" | "published";
 };

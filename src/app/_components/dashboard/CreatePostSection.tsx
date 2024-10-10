@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import {
   collection,
@@ -8,6 +9,7 @@ import {
   getDocs,
   doc,
   Timestamp,
+  getDoc,
 } from "firebase/firestore";
 import {
   getStorage,
@@ -15,59 +17,47 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import { db } from "@lib/firebaseConfig"; // Firestore config
+import { db } from "@lib/firebaseConfig";
 import { useAuth } from "@/lib/auth";
 import { toast } from "react-hot-toast";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import FileUpload from "./file-upload";
+import { Post } from "@/interfaces/post";
 
 // Dynamically import ReactQuill to prevent server-side rendering issues
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
+// Slug generation function
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric characters with hyphens
+    .replace(/^-+|-+$/g, ""); // Remove any leading or trailing hyphens
+}
+
 const CreatePostSection = () => {
   const { user } = useAuth(); // Get current user
-  const [title, setTitle] = useState("");
-  const [excerpt, setExcerpt] = useState("");
-  const [content, setContent] = useState(""); // Content from ReactQuill
-  const [coverImage, setCoverImage] = useState("");
+  const [post, setPost] = useState<Post>({
+    title: "",
+    excerpt: "",
+    content: "",
+    coverImage: "",
+    ogImage: { url: "" }, // Ensure ogImage is initialized with an empty url
+    slug: "",
+    author: {
+      name: user?.displayName || "Anonymous",
+      email: user?.email || "unknown@example.com",
+      picture: "", // Default to empty string
+    },
+    date: Timestamp.now(),
+    status: "draft",
+  });
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null); // File for cover image
   const [loading, setLoading] = useState(false);
-  const [drafts, setDrafts] = useState<any[]>([]); // Store user drafts
+  const [drafts, setDrafts] = useState<Post[]>([]); // Store user drafts
   const [editingDraftId, setEditingDraftId] = useState<string | null>(null); // Track the draft being edited
-
-  // Quill modules for controlling the toolbar (you can customize it further)
-  const quillModules = {
-    toolbar: [
-      [{ header: "1" }, { header: "2" }, { font: [] }],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["bold", "italic", "underline", "strike"], // toggled buttons
-      ["blockquote", "code-block"],
-      [{ align: [] }],
-      ["link", "image", "video"], // media buttons
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-      ["clean"], // remove formatting button
-    ],
-  };
-
-  const quillFormats = [
-    "header",
-    "font",
-    "list",
-    "bullet",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "code-block",
-    "link",
-    "image",
-    "video",
-    "color",
-    "background",
-    "align",
-  ];
 
   // Fetch drafts created by the current user
   useEffect(() => {
@@ -82,7 +72,7 @@ const CreatePostSection = () => {
         const userDrafts = draftDocs.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        }));
+        })) as Post[];
         setDrafts(userDrafts);
       }
     };
@@ -90,11 +80,23 @@ const CreatePostSection = () => {
     fetchDrafts();
   }, [user]);
 
-  // Handle file selection for cover image
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setCoverImageFile(e.target.files[0]);
-    }
+  // Handle form updates
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { id, value } = e.target;
+    setPost((prevPost) => ({
+      ...prevPost,
+      [id]: value,
+    }));
+  };
+
+  // Handle ReactQuill content change
+  const handleContentChange = (value: string) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      content: value,
+    }));
   };
 
   // Function to upload image to Firebase Storage
@@ -108,6 +110,9 @@ const CreatePostSection = () => {
         "state_changed",
         (snapshot) => {
           // Optionally, handle progress updates here
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done`);
         },
         (error) => {
           console.error("Upload failed:", error);
@@ -125,52 +130,51 @@ const CreatePostSection = () => {
   const savePost = async (status: "draft" | "published") => {
     setLoading(true);
 
-    if (!title || !excerpt || !content) {
+    // Validate form inputs
+    if (!post.title || !post.excerpt || !post.content) {
       toast.error("Please fill in all fields.");
       setLoading(false);
       return;
     }
 
     try {
-      let uploadedImageUrl = coverImage;
+      let uploadedImageUrl = post.coverImage;
 
       // If the user selected a new file, upload it
       if (coverImageFile) {
         uploadedImageUrl = await uploadImage(coverImageFile);
       }
 
+      const slug = generateSlug(post.title);
+
+      // Prepare post data
+      const updatedPost = {
+        ...post,
+        coverImage: uploadedImageUrl || "",
+        slug,
+        status,
+        date: Timestamp.now(),
+      };
+
       if (editingDraftId) {
         // If editing an existing draft, update it
         const docRef = doc(db, "posts", editingDraftId);
-        await updateDoc(docRef, {
-          title,
-          excerpt,
-          content,
-          coverImage: uploadedImageUrl || "",
-          status,
-          date: Timestamp.now(),
-        });
-        toast.success(
-          status === "draft"
-            ? "Draft updated successfully!"
-            : "Post published successfully!"
-        );
+        const docSnapshot = await getDoc(docRef); // Check if the document exists
+
+        if (docSnapshot.exists()) {
+          await updateDoc(docRef, updatedPost);
+          toast.success(
+            status === "draft"
+              ? "Draft updated successfully!"
+              : "Post published successfully!"
+          );
+        } else {
+          toast.error("No document found to update.");
+        }
       } else {
         // If creating a new post or draft
         const postRef = collection(db, "posts");
-        const newPost = {
-          title,
-          excerpt,
-          content,
-          coverImage: uploadedImageUrl || "",
-          author: {
-            name: user?.displayName || "Anonymous",
-            email: user?.email || "unknown@example.com",
-          },
-          date: Timestamp.now(),
-          status,
-        };
-        await addDoc(postRef, newPost);
+        await addDoc(postRef, updatedPost);
         toast.success(
           status === "draft"
             ? "Draft saved successfully!"
@@ -179,27 +183,35 @@ const CreatePostSection = () => {
       }
 
       // Reset form
-      setTitle("");
-      setExcerpt("");
-      setContent("");
-      setCoverImage("");
+      setPost({
+        title: "",
+        excerpt: "",
+        content: "",
+        coverImage: "",
+        ogImage: { url: "" },
+        slug: "",
+        author: {
+          name: user?.displayName || "Anonymous",
+          email: user?.email || "unknown@example.com",
+          picture: "",
+        },
+        date: Timestamp.now(),
+        status: "draft",
+      });
       setCoverImageFile(null); // Clear the file input
       setEditingDraftId(null); // Reset draft edit mode
     } catch (error) {
       console.error("Error saving post:", error);
-      toast.error("Failed to save post.");
+      toast.error("Failed to save post." + error.message);
     } finally {
       setLoading(false);
     }
   };
 
   // Function to load a draft into the form for editing
-  const loadDraft = (draft: any) => {
-    setTitle(draft.title);
-    setExcerpt(draft.excerpt);
-    setContent(draft.content);
-    setCoverImage(draft.coverImage || "");
-    setEditingDraftId(draft.id); // Track the draft being edited
+  const loadDraft = (draft: Post) => {
+    setPost(draft);
+    setEditingDraftId(draft.slug); // Track the draft being edited
   };
 
   return (
@@ -221,8 +233,8 @@ const CreatePostSection = () => {
             type="text"
             id="title"
             className="w-full px-4 py-2 border rounded-lg"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={post.title}
+            onChange={handleInputChange}
             placeholder="Enter the post title"
             required
           />
@@ -236,8 +248,8 @@ const CreatePostSection = () => {
           <textarea
             id="excerpt"
             className="w-full px-4 py-2 border rounded-lg"
-            value={excerpt}
-            onChange={(e) => setExcerpt(e.target.value)}
+            value={post.excerpt}
+            onChange={handleInputChange}
             placeholder="Enter a short description of the post"
             required
           />
@@ -250,10 +262,38 @@ const CreatePostSection = () => {
           </label>
           <ReactQuill
             theme="snow"
-            value={content}
-            onChange={setContent}
-            modules={quillModules}
-            formats={quillFormats}
+            value={post.content}
+            onChange={handleContentChange}
+            modules={{
+              toolbar: [
+                [{ header: "1" }, { header: "2" }, { font: [] }],
+                [{ list: "ordered" }, { list: "bullet" }],
+                ["bold", "italic", "underline", "strike"],
+                ["blockquote", "code-block"],
+                [{ align: [] }],
+                ["link", "image", "video"],
+                [{ color: [] }, { background: [] }],
+                ["clean"],
+              ],
+            }}
+            formats={[
+              "header",
+              "font",
+              "list",
+              "bullet",
+              "bold",
+              "italic",
+              "underline",
+              "strike",
+              "blockquote",
+              "code-block",
+              "link",
+              "image",
+              "video",
+              "color",
+              "background",
+              "align",
+            ]}
             placeholder="Write your post content here..."
             className="bg-white"
             style={{
@@ -266,6 +306,26 @@ const CreatePostSection = () => {
         {/* Cover Image */}
         <div>
           <FileUpload onFileChange={(file) => setCoverImageFile(file)} />
+        </div>
+
+        {/* OG Image URL */}
+        <div>
+          <label htmlFor="ogImage" className="block text-lg font-semibold mb-2">
+            Open Graph Image URL (Optional)
+          </label>
+          <input
+            type="text"
+            id="ogImage"
+            className="w-full px-4 py-2 border rounded-lg"
+            value={post.ogImage.url}
+            onChange={(e) =>
+              setPost((prevPost) => ({
+                ...prevPost,
+                ogImage: { url: e.target.value },
+              }))
+            }
+            placeholder="Enter the OG image URL (optional)"
+          />
         </div>
 
         {/* Save as Draft or Publish Buttons */}
@@ -295,7 +355,7 @@ const CreatePostSection = () => {
           <h3 className="text-2xl font-semibold mb-4">Your Drafts</h3>
           <ul className="space-y-4">
             {drafts.map((draft) => (
-              <li key={draft.id} className="p-4 border rounded-lg shadow-md">
+              <li key={draft.slug} className="p-4 border rounded-lg shadow-md">
                 <h4 className="text-xl font-bold">{draft.title}</h4>
                 <p className="text-sm text-gray-600">{draft.excerpt}</p>
                 <button

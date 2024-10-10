@@ -9,12 +9,14 @@ import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 
 export default async function Post({ params }: Params) {
-  const post = getPostBySlug(params.slug);
+  // Fetch the post data asynchronously
+  const post = await getPostBySlug(params.slug);
 
   if (!post) {
     return notFound();
   }
 
+  // Convert Markdown content to HTML
   const content = await markdownToHtml(post.content || "");
 
   return (
@@ -50,8 +52,9 @@ type Params = {
   };
 };
 
-export function generateMetadata({ params }: Params): Metadata {
-  const post = getPostBySlug(params.slug);
+// Async function to generate metadata, as we fetch post data asynchronously
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const post = await getPostBySlug(params.slug);
 
   if (!post) {
     return notFound();
@@ -63,13 +66,14 @@ export function generateMetadata({ params }: Params): Metadata {
     title,
     openGraph: {
       title,
-      images: [post.ogImage.url],
+      images: [post.ogImage?.url || ""], // Ensure the ogImage URL is present
     },
   };
 }
 
+// Async function to generate static params for dynamic routes
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts(); // Ensure we await the posts fetching
 
   return posts.map((post) => ({
     slug: post.slug,

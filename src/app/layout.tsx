@@ -7,6 +7,7 @@ import cn from "classnames";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
 import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -91,6 +92,7 @@ export default function RootLayout({
         className={cn(inter.className, "dark:bg-slate-900 dark:text-slate-400")}
       >
         <Analytics />
+        <Toaster position="top-center" reverseOrder={false} />
         {/* Header */}
         <Header />
         {/* Main Content Area */}
