@@ -1,19 +1,26 @@
-import { useAuth } from "@/lib/auth";
-import { db } from "@lib/firebaseConfig"; // Import Firestore config
+import { useState, useEffect } from "react";
 import {
-  addDoc,
   collection,
-  doc,
-  getDocs,
-  query,
-  Timestamp,
+  addDoc,
   updateDoc,
+  query,
   where,
+  getDocs,
+  doc,
+  Timestamp,
 } from "firebase/firestore";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import { db } from "@lib/firebaseConfig"; // Firestore config
+import { useAuth } from "@/lib/auth";
 import { toast } from "react-hot-toast";
+import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
+import FileUpload from "./file-upload";
 
 // Dynamically import ReactQuill to prevent server-side rendering issues
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
@@ -24,6 +31,7 @@ const CreatePostSection = () => {
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState(""); // Content from ReactQuill
   const [coverImage, setCoverImage] = useState("");
+  const [coverImageFile, setCoverImageFile] = useState<File | null>(null); // File for cover image
   const [loading, setLoading] = useState(false);
   const [drafts, setDrafts] = useState<any[]>([]); // Store user drafts
   const [editingDraftId, setEditingDraftId] = useState<string | null>(null); // Track the draft being edited
@@ -82,6 +90,37 @@ const CreatePostSection = () => {
     fetchDrafts();
   }, [user]);
 
+  // Handle file selection for cover image
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setCoverImageFile(e.target.files[0]);
+    }
+  };
+
+  // Function to upload image to Firebase Storage
+  const uploadImage = async (file: File) => {
+    const storage = getStorage();
+    const storageRef = ref(storage, `cover-images/${file.name}_${Date.now()}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    return new Promise<string>((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Optionally, handle progress updates here
+        },
+        (error) => {
+          console.error("Upload failed:", error);
+          reject(error);
+        },
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        }
+      );
+    });
+  };
+
   // Function to save a post (either draft or published)
   const savePost = async (status: "draft" | "published") => {
     setLoading(true);
@@ -93,6 +132,13 @@ const CreatePostSection = () => {
     }
 
     try {
+      let uploadedImageUrl = coverImage;
+
+      // If the user selected a new file, upload it
+      if (coverImageFile) {
+        uploadedImageUrl = await uploadImage(coverImageFile);
+      }
+
       if (editingDraftId) {
         // If editing an existing draft, update it
         const docRef = doc(db, "posts", editingDraftId);
@@ -100,7 +146,7 @@ const CreatePostSection = () => {
           title,
           excerpt,
           content,
-          coverImage: coverImage || "",
+          coverImage: uploadedImageUrl || "",
           status,
           date: Timestamp.now(),
         });
@@ -116,7 +162,7 @@ const CreatePostSection = () => {
           title,
           excerpt,
           content,
-          coverImage: coverImage || "",
+          coverImage: uploadedImageUrl || "",
           author: {
             name: user?.displayName || "Anonymous",
             email: user?.email || "unknown@example.com",
@@ -137,6 +183,7 @@ const CreatePostSection = () => {
       setExcerpt("");
       setContent("");
       setCoverImage("");
+      setCoverImageFile(null); // Clear the file input
       setEditingDraftId(null); // Reset draft edit mode
     } catch (error) {
       console.error("Error saving post:", error);
@@ -210,20 +257,7 @@ const CreatePostSection = () => {
 
         {/* Cover Image */}
         <div>
-          <label
-            htmlFor="coverImage"
-            className="block text-lg font-semibold mb-2"
-          >
-            Cover Image URL (Optional)
-          </label>
-          <input
-            type="text"
-            id="coverImage"
-            className="w-full px-4 py-2 border rounded-lg"
-            value={coverImage}
-            onChange={(e) => setCoverImage(e.target.value)}
-            placeholder="Enter the cover image URL (optional)"
-          />
+          <FileUpload onFileChange={(file) => setCoverImageFile(file)} />
         </div>
 
         {/* Save as Draft or Publish Buttons */}
