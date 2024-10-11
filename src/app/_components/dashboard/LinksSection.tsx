@@ -1,7 +1,14 @@
-import { FaBook, FaBrain, FaGoogleDrive, FaLink } from "react-icons/fa";
+"use client";
+import { useState, useEffect } from "react";
 import LinkCard, { LinkCardProps } from "./LinkCard";
 import { SiGooglecalendar } from "react-icons/si";
 import { RiNotionFill } from "react-icons/ri";
+import { FaBook, FaBrain, FaGoogleDrive, FaLink } from "react-icons/fa";
+import { useAuth } from "@/lib/auth";
+import { Link } from "@/interfaces/links";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/lib/firebaseConfig";
+import toast from "react-hot-toast";
 
 const linksData: LinkCardProps[] = [
   {
@@ -39,6 +46,71 @@ const linksData: LinkCardProps[] = [
 ];
 
 const LinksSection = () => {
+  const { user } = useAuth();
+  const [links, setLinks] = useState<LinkCardProps[]>([]); // Initialize with no links
+  const [newLink, setNewLink] = useState<Link>({
+    href: "",
+    iconName: "",
+    title: "",
+  });
+  const [iconLibrary, setIconLibrary] = useState("fa"); // Default to FontAwesome (fa)
+
+  // Fetch user's saved links from Firestore
+  useEffect(() => {
+    const fetchLinks = async () => {
+      if (user) {
+        const docRef = doc(db, "users", user.uid); // Fetch by user ID
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const userLinks = docSnap.data().links || [];
+          setLinks(userLinks); // Set user links
+        }
+      }
+    };
+
+    fetchLinks();
+  }, [user]);
+
+  // Handle new link input changes
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setNewLink((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Function to get icon from the correct library
+  const getIconComponent = (library: string, iconName: string) => {
+    const libraryIcons = iconLibrary[library.toLowerCase()];
+    return libraryIcons ? libraryIcons[iconName] : null;
+  };
+
+  // Save new link to Firestore and update the state
+  const addLink = async () => {
+    if (!newLink.title || !newLink.href || !newLink.iconName) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    const IconComponent = getIconComponent(iconLibrary, newLink.iconName);
+
+    if (!IconComponent) {
+      toast.error("Invalid icon or icon library. Please try again.");
+      return;
+    }
+
+    const userLink = { ...newLink, icon: <IconComponent /> };
+    const updatedLinks = [...links, userLink];
+
+    setLinks(updatedLinks); // Update the state
+
+    // Save to Firestore
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      await setDoc(docRef, { links: updatedLinks }, { merge: true });
+    }
+  };
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Useful Links</h2>
@@ -52,6 +124,59 @@ const LinksSection = () => {
             image={link.image}
           />
         ))}
+        {links.map((link, index) => (
+          <LinkCard
+            key={index}
+            href={link.href}
+            title={link.title}
+            icon={link.icon}
+          />
+        ))}
+      </div>
+
+      {/* Add New Link Section */}
+      <div className="mt-8">
+        <h3 className="text-xl font-bold">Add a New Link</h3>
+        <div className="mt-4">
+          <input
+            type="text"
+            name="title"
+            value={newLink.title}
+            onChange={handleInputChange}
+            placeholder="Link Title"
+            className="w-full p-2 mb-4 border"
+          />
+          <input
+            type="url"
+            name="href"
+            value={newLink.href}
+            onChange={handleInputChange}
+            placeholder="Link URL"
+            className="w-full p-2 mb-4 border"
+          />
+          <input
+            type="text"
+            name="iconName"
+            value={newLink.iconName}
+            onChange={handleInputChange}
+            placeholder="Icon Name (e.g., FaLink)"
+            className="w-full p-2 mb-4 border"
+          />
+          <input
+            type="text"
+            name="iconLibrary"
+            value={iconLibrary}
+            onChange={(e) => setIconLibrary(e.target.value)}
+            placeholder="Icon Library (e.g., fa, si, ri)"
+            className="w-full p-2 mb-4 border"
+          />
+          <button
+            onClick={addLink}
+            className="bg-blue-500 text-white px-4 py-2"
+          >
+            Add Link
+          </button>
+        </div>
       </div>
     </div>
   );
