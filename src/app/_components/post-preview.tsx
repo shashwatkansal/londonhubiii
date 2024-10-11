@@ -3,11 +3,12 @@ import Link from "next/link";
 import Avatar from "./avatar";
 import CoverImage from "./cover-image";
 import DateFormatter from "./date-formatter";
+import { Timestamp } from "firebase/firestore";
 
 type Props = {
   title: string;
   coverImage: string;
-  date: string;
+  date: Timestamp;
   excerpt: string;
   authors: Author[];
   slug: string;

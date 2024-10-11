@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import Avatar from "./avatar";
 import CoverImage from "./cover-image";
 import DateFormatter from "./date-formatter";
@@ -7,7 +8,7 @@ import { type Author } from "@/interfaces/author";
 type Props = {
   title: string;
   coverImage: string;
-  date: string | Date; // Support both string and Date types
+  date: Timestamp | Date; // Support both string and Date types
   authors: Author[];
 };
 
