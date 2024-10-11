@@ -74,7 +74,7 @@ const CreatePostSection = () => {
         const userDrafts = draftDocs.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        })) as Post[];
+        })) as unknown as Post[];
         setDrafts(userDrafts);
       }
     };
@@ -111,7 +111,6 @@ const CreatePostSection = () => {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          // Optionally, handle progress updates here
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log(`Upload is ${progress}% done`);
@@ -158,24 +157,19 @@ const CreatePostSection = () => {
         date: Timestamp.now(),
       };
 
-      if (editingDraftId) {
-        // If editing an existing draft, update it
-        const docRef = doc(db, "posts", editingDraftId);
-        const docSnapshot = await getDoc(docRef); // Check if the document exists
+      const postRef = doc(db, "posts", slug);
+      const docSnapshot = await getDoc(postRef); // Check if the document exists
 
-        if (docSnapshot.exists()) {
-          await updateDoc(docRef, updatedPost);
-          toast.success(
-            status === "draft"
-              ? "Draft updated successfully!"
-              : "Post published successfully!"
-          );
-        } else {
-          toast.error("No document found to update.");
-        }
+      if (docSnapshot.exists()) {
+        // Update existing post
+        await updateDoc(postRef, updatedPost);
+        toast.success(
+          status === "draft"
+            ? "Draft updated successfully!"
+            : "Post updated successfully!"
+        );
       } else {
-        // If creating a new post or draft
-        const postRef = doc(db, "posts", slug);
+        // Create a new post
         await setDoc(postRef, updatedPost);
         toast.success(
           status === "draft"
@@ -184,6 +178,7 @@ const CreatePostSection = () => {
         );
       }
       drafts.push(updatedPost); // Add the new draft to the local state
+
       // Reset form
       setPost({
         title: "",
