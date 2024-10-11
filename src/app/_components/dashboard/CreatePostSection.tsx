@@ -58,6 +58,7 @@ const CreatePostSection = () => {
     ], // Initialize with current user as default author
     date: Timestamp.now(),
     status: "draft",
+    authorsIndex: [],
   });
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -75,7 +76,7 @@ const CreatePostSection = () => {
       if (user?.email) {
         const draftsQuery = query(
           collection(db, "posts"),
-          where("authors.email", "==", user.email),
+          where("authorsIndex", "array-contains", user.email), // Search by author's email
           where("status", "==", "draft")
         );
         const draftDocs = await getDocs(draftsQuery);
@@ -188,12 +189,16 @@ const CreatePostSection = () => {
 
       const slug = generateSlug(post.title);
 
+      // Generate authorsIndex array from authors' emails
+      const authorsIndex = post.authors.map((author) => author.email);
+
       // Prepare post data
       const updatedPost = {
         ...post,
         coverImage: uploadedImageUrl || "",
         slug,
         status,
+        authorsIndex, // Include the authorsIndex array in the post data
         date: Timestamp.now(),
       };
 
@@ -232,7 +237,8 @@ const CreatePostSection = () => {
             email: user?.email || "unknown@example.com",
             picture: "",
           },
-        ], // Reset to initial state with only current user
+        ],
+        authorsIndex: [],
         date: Timestamp.now(),
         status: "draft",
       });

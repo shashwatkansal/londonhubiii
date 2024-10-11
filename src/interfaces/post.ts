@@ -13,4 +13,5 @@ export type Post = {
   authors: Author[];
   date: Timestamp;
   status: "draft" | "published";
+  authorsIndex: string[];
 };

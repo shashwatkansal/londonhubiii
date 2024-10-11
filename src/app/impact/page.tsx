@@ -33,7 +33,7 @@ export default async function ImpactPage() {
             title={heroPost.title}
             coverImage={heroPost.coverImage}
             date={heroPost.date}
-            author={heroPost.author}
+            authors={heroPost.authors}
             slug={heroPost.slug}
             excerpt={heroPost.excerpt}
           />
