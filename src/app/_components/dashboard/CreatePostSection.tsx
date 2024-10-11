@@ -42,6 +42,7 @@ function generateSlug(title: string): string {
 
 const CreatePostSection = () => {
   const { user } = useAuth(); // Get current user
+  const [isAdmin, setIsAdmin] = useState(false);
   const [post, setPost] = useState<Post>({
     title: "",
     excerpt: "",
@@ -71,16 +72,55 @@ const CreatePostSection = () => {
   const [newAuthorEmail, setNewAuthorEmail] = useState("");
   const [newAuthorPicture, setNewAuthorPicture] = useState("");
 
+  // Fetch if the user is an admin
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (user?.email) {
+        const adminDocRef = doc(db, "admins", user.email);
+        const adminDocSnap = await getDoc(adminDocRef);
+
+        if (adminDocSnap.exists()) {
+          setIsAdmin(true); // Set user as admin if document with their email exists
+        } else {
+          setIsAdmin(false);
+        }
+      }
+    };
+
+    checkAdminStatus();
+  }, [user]);
+
   // Fetch both drafts and published posts
   useEffect(() => {
     const fetchPosts = async () => {
       if (user?.email) {
+        let draftsQuery;
+        let publishedQuery;
+
+        // Fetch all posts for admins, otherwise only fetch posts for the user
+        if (isAdmin) {
+          draftsQuery = query(
+            collection(db, "posts"),
+            where("status", "==", "draft")
+          );
+          publishedQuery = query(
+            collection(db, "posts"),
+            where("status", "==", "published")
+          );
+        } else {
+          draftsQuery = query(
+            collection(db, "posts"),
+            where("authorsIndex", "array-contains", user.email),
+            where("status", "==", "draft")
+          );
+          publishedQuery = query(
+            collection(db, "posts"),
+            where("authorsIndex", "array-contains", user.email),
+            where("status", "==", "published")
+          );
+        }
+
         // Fetch drafts
-        const draftsQuery = query(
-          collection(db, "posts"),
-          where("authorsIndex", "array-contains", user.email),
-          where("status", "==", "draft")
-        );
         const draftDocs = await getDocs(draftsQuery);
         const userDrafts = draftDocs.docs.map((doc) => ({
           id: doc.id,
@@ -88,11 +128,6 @@ const CreatePostSection = () => {
         })) as unknown as Post[];
 
         // Fetch published posts
-        const publishedQuery = query(
-          collection(db, "posts"),
-          where("authorsIndex", "array-contains", user.email),
-          where("status", "==", "published")
-        );
         const publishedDocs = await getDocs(publishedQuery);
         const userPublished = publishedDocs.docs.map((doc) => ({
           id: doc.id,
@@ -105,7 +140,7 @@ const CreatePostSection = () => {
     };
 
     fetchPosts();
-  }, [user]);
+  }, [user, isAdmin]);
 
   // Handle form updates
   const handleInputChange = (
@@ -491,7 +526,10 @@ const CreatePostSection = () => {
             {drafts.map((draft) => (
               <li key={draft.slug} className="p-4 border rounded-lg shadow-md">
                 <h4 className="text-xl font-bold">{draft.title}</h4>
-                <p className="text-sm text-gray-600">{draft.excerpt}</p>
+                <p className="text-sm text-gray-600">
+                  {draft.excerpt} - By{" "}
+                  {draft.authors.map((a) => a.name).join(", ")}
+                </p>
                 <button
                   className="mt-4 px-4 py-2 bg-blue-600 text-white font-bold rounded-lg"
                   onClick={() => loadPost(draft)}
@@ -518,7 +556,10 @@ const CreatePostSection = () => {
             {publishedPosts.map((post) => (
               <li key={post.slug} className="p-4 border rounded-lg shadow-md">
                 <h4 className="text-xl font-bold">{post.title}</h4>
-                <p className="text-sm text-gray-600">{post.excerpt}</p>
+                <p className="text-sm text-gray-600">
+                  {post.excerpt} - By{" "}
+                  {post.authors.map((a) => a.name).join(", ")}
+                </p>
                 <button
                   className="mt-4 px-4 py-2 bg-blue-600 text-white font-bold rounded-lg"
                   onClick={() => loadPost(post)}
