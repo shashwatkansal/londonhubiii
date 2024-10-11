@@ -243,7 +243,7 @@ const CreatePostSection = () => {
       // Generate authorsIndex array from authors' emails
       const authorsIndex = post.authors.map((author) => author.email);
 
-      // Prepare post data
+      // Prepare updated post data
       const updatedPost = {
         ...post,
         coverImage: uploadedImageUrl || "",
@@ -257,12 +257,12 @@ const CreatePostSection = () => {
       const docSnapshot = await getDoc(postRef);
 
       if (docSnapshot.exists()) {
-        // Update existing post
+        // Update existing post (re-publish or revert to draft)
         await updateDoc(postRef, updatedPost);
         toast.success(
           status === "draft"
-            ? "Draft updated successfully!"
-            : "Post updated successfully!"
+            ? "Post reverted to draft successfully!"
+            : "Post updated and published successfully!"
         );
       } else {
         // Create a new post
