@@ -560,23 +560,25 @@ const CreatePostSection = () => {
       {/* Display Published Posts */}
       {publishedPosts.length > 0 && (
         <section className="mt-8">
-          <h3 className="text-2xl font-semibold mb-4">Your Published Posts</h3>
+          <h3 className="text-2xl font-semibold mb-4">
+            {!isAdmin && <span>Your</span>} Published Posts
+          </h3>
           <ul className="space-y-4">
             {publishedPosts.map((post) => (
-                <li key={post.slug} className="p-4 border rounded-lg shadow-md">
-                  <h4 className="text-xl font-bold">{post.title}</h4>
-                  <p className="text-sm text-gray-600">
-                    {post.excerpt} - By{" "}
-                    {post.authors.map((a) => a.name).join(", ")}
-                  </p>
-                  <button
-                    className="mt-4 px-4 py-2 bg-blue-600 text-white font-bold rounded-lg"
-                    onClick={() => loadPost(post)}
-                  >
+              <li key={post.slug} className="p-4 border rounded-lg shadow-md">
+                <h4 className="text-xl font-bold">{post.title}</h4>
+                <p className="text-sm text-gray-600">
+                  {post.excerpt} - By{" "}
+                  {post.authors.map((a) => a.name).join(", ")}
+                </p>
+                <button
+                  className="mt-4 px-4 py-2 bg-blue-600 text-white font-bold rounded-lg"
+                  onClick={() => loadPost(post)}
+                >
                   Edit this Post
-                  </button>
-                </li>
-              ))}
+                </button>
+              </li>
+            ))}
           </ul>
         </section>
       )}
