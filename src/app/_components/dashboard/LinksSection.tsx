@@ -53,7 +53,22 @@ const LinksSection = () => {
     iconName: "",
     title: "",
   });
-  const [iconLibrary, setIconLibrary] = useState("fa"); // Default to FontAwesome (fa)
+  const [iconLibrary, setIconLibrary] = useState<{
+    [key: string]: { [key: string]: React.ComponentType };
+  }>({
+    fa: {
+      FaLink,
+      FaBook,
+      FaBrain,
+      FaGoogleDrive,
+    },
+    si: {
+      SiGooglecalendar,
+    },
+    ri: {
+      RiNotionFill,
+    },
+  }); // Default to FontAwesome (fa)
 
   // Fetch user's saved links from Firestore
   useEffect(() => {
@@ -68,7 +83,7 @@ const LinksSection = () => {
       }
     };
 
-    fetchLinks();
+    // Removed unused variable 'libraryIcons'
   }, [user]);
 
   // Handle new link input changes
@@ -133,60 +148,6 @@ const LinksSection = () => {
           />
         ))}
       </div>
-
-      {/* Add New Link Section */}
-      {isAdmin && (
-        <div className="mt-8">
-          <h3 className="text-xl font-bold">
-            Add a New Link{" "}
-            <span>
-              <span className="bg-gray-500 text-white px-2 py-1 ml-2 rounded text-sm">
-                Admin Only
-              </span>
-            </span>
-          </h3>
-          <div className="mt-4">
-            <input
-              type="text"
-              name="title"
-              value={newLink.title}
-              onChange={handleInputChange}
-              placeholder="Link Title"
-              className="w-full p-2 mb-4 border"
-            />
-            <input
-              type="url"
-              name="href"
-              value={newLink.href}
-              onChange={handleInputChange}
-              placeholder="Link URL"
-              className="w-full p-2 mb-4 border"
-            />
-            <input
-              type="text"
-              name="iconName"
-              value={newLink.iconName}
-              onChange={handleInputChange}
-              placeholder="Icon Name (e.g., FaLink)"
-              className="w-full p-2 mb-4 border"
-            />
-            <input
-              type="text"
-              name="iconLibrary"
-              value={iconLibrary}
-              onChange={(e) => setIconLibrary(e.target.value)}
-              placeholder="Icon Library (e.g., fa, si, ri)"
-              className="w-full p-2 mb-4 border"
-            />
-            <button
-              onClick={addLink}
-              className="bg-blue-500 text-white px-4 py-2"
-            >
-              Add Link
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
