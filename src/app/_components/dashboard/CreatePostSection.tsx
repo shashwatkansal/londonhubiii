@@ -26,6 +26,7 @@ import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import FileUpload from "./file-upload";
 import { Post } from "@/interfaces/post";
+import { Author } from "@/interfaces/author";
 
 // Dynamically import ReactQuill to prevent server-side rendering issues
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
@@ -46,20 +47,27 @@ const CreatePostSection = () => {
     excerpt: "",
     content: "",
     coverImage: "",
-    ogImage: { url: "" }, // Ensure ogImage is initialized with an empty url
+    ogImage: { url: "" },
     slug: "",
-    author: {
-      name: user?.displayName || "Anonymous",
-      email: user?.email || "unknown@example.com",
-      picture: "", // Default to empty string
-    },
+    authors: [
+      {
+        name: user?.displayName || "Anonymous",
+        email: user?.email || "unknown@example.com",
+        picture: "",
+      },
+    ], // Initialize with current user as default author
     date: Timestamp.now(),
     status: "draft",
   });
-  const [coverImageFile, setCoverImageFile] = useState<File | null>(null); // File for cover image
+  const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [drafts, setDrafts] = useState<Post[]>([]); // Store user drafts
-  const [editingDraftId, setEditingDraftId] = useState<string | null>(null); // Track the draft being edited
+  const [drafts, setDrafts] = useState<Post[]>([]);
+  const [editingDraftId, setEditingDraftId] = useState<string | null>(null);
+
+  // New state for managing additional authors
+  const [newAuthorName, setNewAuthorName] = useState("");
+  const [newAuthorEmail, setNewAuthorEmail] = useState("");
+  const [newAuthorPicture, setNewAuthorPicture] = useState("");
 
   // Fetch drafts created by the current user
   useEffect(() => {
@@ -67,7 +75,7 @@ const CreatePostSection = () => {
       if (user?.email) {
         const draftsQuery = query(
           collection(db, "posts"),
-          where("author.email", "==", user.email),
+          where("authors.email", "==", user.email),
           where("status", "==", "draft")
         );
         const draftDocs = await getDocs(draftsQuery);
@@ -98,6 +106,38 @@ const CreatePostSection = () => {
     setPost((prevPost) => ({
       ...prevPost,
       content: value,
+    }));
+  };
+
+  // Function to add an author
+  const addAuthor = () => {
+    if (!newAuthorName || !newAuthorEmail) {
+      toast.error("Please enter both name and email for the author.");
+      return;
+    }
+
+    const newAuthor: Author = {
+      name: newAuthorName,
+      email: newAuthorEmail,
+      picture: newAuthorPicture || "", // Optional picture
+    };
+
+    setPost((prevPost) => ({
+      ...prevPost,
+      authors: [...prevPost.authors, newAuthor], // Add new author
+    }));
+
+    // Clear the input fields
+    setNewAuthorName("");
+    setNewAuthorEmail("");
+    setNewAuthorPicture("");
+  };
+
+  // Function to remove an author by index
+  const removeAuthor = (index: number) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      authors: prevPost.authors.filter((_, i) => i !== index),
     }));
   };
 
@@ -158,7 +198,7 @@ const CreatePostSection = () => {
       };
 
       const postRef = doc(db, "posts", slug);
-      const docSnapshot = await getDoc(postRef); // Check if the document exists
+      const docSnapshot = await getDoc(postRef);
 
       if (docSnapshot.exists()) {
         // Update existing post
@@ -177,7 +217,6 @@ const CreatePostSection = () => {
             : "Post published successfully!"
         );
       }
-      drafts.push(updatedPost); // Add the new draft to the local state
 
       // Reset form
       setPost({
@@ -187,16 +226,18 @@ const CreatePostSection = () => {
         coverImage: "",
         ogImage: { url: "" },
         slug: "",
-        author: {
-          name: user?.displayName || "Anonymous",
-          email: user?.email || "unknown@example.com",
-          picture: "",
-        },
+        authors: [
+          {
+            name: user?.displayName || "Anonymous",
+            email: user?.email || "unknown@example.com",
+            picture: "",
+          },
+        ], // Reset to initial state with only current user
         date: Timestamp.now(),
         status: "draft",
       });
-      setCoverImageFile(null); // Clear the file input
-      setEditingDraftId(null); // Reset draft edit mode
+      setCoverImageFile(null);
+      setEditingDraftId(null);
     } catch (error) {
       console.error("Error saving post:", error);
       toast.error("Failed to save post." + (error as Error).message);
@@ -211,7 +252,6 @@ const CreatePostSection = () => {
       await deleteDoc(doc(db, "posts", draftId));
       toast.success("Draft deleted successfully!");
 
-      // Remove the deleted draft from the local state
       setDrafts((prevDrafts) =>
         prevDrafts.filter((draft) => draft.slug !== draftId)
       );
@@ -224,7 +264,7 @@ const CreatePostSection = () => {
   // Function to load a draft into the form for editing
   const loadDraft = (draft: Post) => {
     setPost(draft);
-    setEditingDraftId(draft.slug); // Track the draft being edited
+    setEditingDraftId(draft.slug);
   };
 
   return (
@@ -314,6 +354,55 @@ const CreatePostSection = () => {
                 "'Aperçu', 'Avenir', 'Proxima Nova', Arial, sans-serif",
             }}
           />
+        </div>
+
+        {/* Authors */}
+        <div>
+          <label className="block text-lg font-semibold mb-2">Authors</label>
+          {post.authors.map((author, index) => (
+            <div key={index} className="flex items-center mb-2 space-x-4">
+              <p>{author.name}</p>
+              <button
+                type="button"
+                className="text-red-500 underline"
+                onClick={() => removeAuthor(index)}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+
+          {/* Add new author fields */}
+          <div className="mt-4">
+            <input
+              type="text"
+              className="w-full px-4 py-2 border rounded-lg mb-2"
+              placeholder="Author Name"
+              value={newAuthorName}
+              onChange={(e) => setNewAuthorName(e.target.value)}
+            />
+            <input
+              type="email"
+              className="w-full px-4 py-2 border rounded-lg mb-2"
+              placeholder="Author Email"
+              value={newAuthorEmail}
+              onChange={(e) => setNewAuthorEmail(e.target.value)}
+            />
+            <input
+              type="text"
+              className="w-full px-4 py-2 border rounded-lg mb-2"
+              placeholder="Author Picture URL (Optional)"
+              value={newAuthorPicture}
+              onChange={(e) => setNewAuthorPicture(e.target.value)}
+            />
+            <button
+              type="button"
+              className="px-4 py-2 bg-green-500 text-white rounded-lg"
+              onClick={addAuthor}
+            >
+              Add Author
+            </button>
+          </div>
         </div>
 
         {/* Cover Image */}

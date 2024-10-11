@@ -10,7 +10,7 @@ export type Post = {
     url: string;
   };
   slug: string;
-  author: Author[];
+  authors: Author[];
   date: Timestamp;
   status: "draft" | "published";
 };
