@@ -1,14 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
-import LinkCard, { LinkCardProps } from "./LinkCard";
-import { SiGooglecalendar } from "react-icons/si";
-import { RiNotionFill } from "react-icons/ri";
-import { FaBook, FaBrain, FaGoogleDrive, FaLink } from "react-icons/fa";
-import { useAuth } from "@/lib/auth";
 import { Link } from "@/interfaces/links";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useAuth } from "@/lib/auth";
 import { db } from "@/lib/firebaseConfig";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { FaBook, FaBrain, FaGoogleDrive, FaLink } from "react-icons/fa";
+import { RiNotionFill } from "react-icons/ri";
+import { SiGooglecalendar } from "react-icons/si";
+import LinkCard, { LinkCardProps } from "./LinkCard";
 
 const linksData: LinkCardProps[] = [
   {
@@ -46,7 +46,7 @@ const linksData: LinkCardProps[] = [
 ];
 
 const LinksSection = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [links, setLinks] = useState<LinkCardProps[]>([]); // Initialize with no links
   const [newLink, setNewLink] = useState<Link>({
     href: "",
@@ -135,49 +135,58 @@ const LinksSection = () => {
       </div>
 
       {/* Add New Link Section */}
-      <div className="mt-8">
-        <h3 className="text-xl font-bold">Add a New Link</h3>
-        <div className="mt-4">
-          <input
-            type="text"
-            name="title"
-            value={newLink.title}
-            onChange={handleInputChange}
-            placeholder="Link Title"
-            className="w-full p-2 mb-4 border"
-          />
-          <input
-            type="url"
-            name="href"
-            value={newLink.href}
-            onChange={handleInputChange}
-            placeholder="Link URL"
-            className="w-full p-2 mb-4 border"
-          />
-          <input
-            type="text"
-            name="iconName"
-            value={newLink.iconName}
-            onChange={handleInputChange}
-            placeholder="Icon Name (e.g., FaLink)"
-            className="w-full p-2 mb-4 border"
-          />
-          <input
-            type="text"
-            name="iconLibrary"
-            value={iconLibrary}
-            onChange={(e) => setIconLibrary(e.target.value)}
-            placeholder="Icon Library (e.g., fa, si, ri)"
-            className="w-full p-2 mb-4 border"
-          />
-          <button
-            onClick={addLink}
-            className="bg-blue-500 text-white px-4 py-2"
-          >
-            Add Link
-          </button>
+      {isAdmin && (
+        <div className="mt-8">
+          <h3 className="text-xl font-bold">
+            Add a New Link{" "}
+            <span>
+              <span className="bg-gray-500 text-white px-2 py-1 ml-2 rounded text-sm">
+                Admin Only
+              </span>
+            </span>
+          </h3>
+          <div className="mt-4">
+            <input
+              type="text"
+              name="title"
+              value={newLink.title}
+              onChange={handleInputChange}
+              placeholder="Link Title"
+              className="w-full p-2 mb-4 border"
+            />
+            <input
+              type="url"
+              name="href"
+              value={newLink.href}
+              onChange={handleInputChange}
+              placeholder="Link URL"
+              className="w-full p-2 mb-4 border"
+            />
+            <input
+              type="text"
+              name="iconName"
+              value={newLink.iconName}
+              onChange={handleInputChange}
+              placeholder="Icon Name (e.g., FaLink)"
+              className="w-full p-2 mb-4 border"
+            />
+            <input
+              type="text"
+              name="iconLibrary"
+              value={iconLibrary}
+              onChange={(e) => setIconLibrary(e.target.value)}
+              placeholder="Icon Library (e.g., fa, si, ri)"
+              className="w-full p-2 mb-4 border"
+            />
+            <button
+              onClick={addLink}
+              className="bg-blue-500 text-white px-4 py-2"
+            >
+              Add Link
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
