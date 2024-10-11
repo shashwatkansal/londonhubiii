@@ -333,6 +333,15 @@ const CreatePostSection = () => {
           post when you're ready. Otherwise, your changes will be lost.
         </p>
       </h2>
+      {isAdmin && (
+        <div className="p-4 mb-6 bg-yellow-100 border border-yellow-300 rounded-lg">
+          <p className="text-yellow-800">
+            You are viewing this as an <strong>Admin</strong>. You have access
+            to all posts in the system. Please ensure to contact the post author
+            before making changes, as this post might not belong to you.
+          </p>
+        </div>
+      )}
       <form className="space-y-4">
         {/* Title */}
         <div>
@@ -554,20 +563,20 @@ const CreatePostSection = () => {
           <h3 className="text-2xl font-semibold mb-4">Your Published Posts</h3>
           <ul className="space-y-4">
             {publishedPosts.map((post) => (
-              <li key={post.slug} className="p-4 border rounded-lg shadow-md">
-                <h4 className="text-xl font-bold">{post.title}</h4>
-                <p className="text-sm text-gray-600">
-                  {post.excerpt} - By{" "}
-                  {post.authors.map((a) => a.name).join(", ")}
-                </p>
-                <button
-                  className="mt-4 px-4 py-2 bg-blue-600 text-white font-bold rounded-lg"
-                  onClick={() => loadPost(post)}
-                >
+                <li key={post.slug} className="p-4 border rounded-lg shadow-md">
+                  <h4 className="text-xl font-bold">{post.title}</h4>
+                  <p className="text-sm text-gray-600">
+                    {post.excerpt} - By{" "}
+                    {post.authors.map((a) => a.name).join(", ")}
+                  </p>
+                  <button
+                    className="mt-4 px-4 py-2 bg-blue-600 text-white font-bold rounded-lg"
+                    onClick={() => loadPost(post)}
+                  >
                   Edit this Post
-                </button>
-              </li>
-            ))}
+                  </button>
+                </li>
+              ))}
           </ul>
         </section>
       )}
