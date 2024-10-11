@@ -55,14 +55,15 @@ const CreatePostSection = () => {
         email: user?.email || "unknown@example.com",
         picture: "",
       },
-    ], // Initialize with current user as default author
+    ],
+    authorsIndex: [],
     date: Timestamp.now(),
     status: "draft",
-    authorsIndex: [],
   });
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [drafts, setDrafts] = useState<Post[]>([]);
+  const [publishedPosts, setPublishedPosts] = useState<Post[]>([]);
   const [editingDraftId, setEditingDraftId] = useState<string | null>(null);
 
   // New state for managing additional authors
@@ -70,13 +71,14 @@ const CreatePostSection = () => {
   const [newAuthorEmail, setNewAuthorEmail] = useState("");
   const [newAuthorPicture, setNewAuthorPicture] = useState("");
 
-  // Fetch drafts created by the current user
+  // Fetch both drafts and published posts
   useEffect(() => {
-    const fetchDrafts = async () => {
+    const fetchPosts = async () => {
       if (user?.email) {
+        // Fetch drafts
         const draftsQuery = query(
           collection(db, "posts"),
-          where("authorsIndex", "array-contains", user.email), // Search by author's email
+          where("authorsIndex", "array-contains", user.email),
           where("status", "==", "draft")
         );
         const draftDocs = await getDocs(draftsQuery);
@@ -84,11 +86,25 @@ const CreatePostSection = () => {
           id: doc.id,
           ...doc.data(),
         })) as unknown as Post[];
+
+        // Fetch published posts
+        const publishedQuery = query(
+          collection(db, "posts"),
+          where("authorsIndex", "array-contains", user.email),
+          where("status", "==", "published")
+        );
+        const publishedDocs = await getDocs(publishedQuery);
+        const userPublished = publishedDocs.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as unknown as Post[];
+
         setDrafts(userDrafts);
+        setPublishedPosts(userPublished);
       }
     };
 
-    fetchDrafts();
+    fetchPosts();
   }, [user]);
 
   // Handle form updates
@@ -267,16 +283,16 @@ const CreatePostSection = () => {
     }
   };
 
-  // Function to load a draft into the form for editing
-  const loadDraft = (draft: Post) => {
-    setPost(draft);
-    setEditingDraftId(draft.slug);
+  // Function to load a post (draft or published) into the form for editing
+  const loadPost = (postToEdit: Post) => {
+    setPost(postToEdit);
+    setEditingDraftId(postToEdit.slug);
   };
 
   return (
     <section className="max-w-3xl mx-auto">
       <h2 className="text-3xl font-extrabold mb-6 text-center">
-        {editingDraftId ? "Edit Draft" : "Create a New Post"}
+        {editingDraftId ? "Edit Post" : "Create a New Post"}
         <p className="text-sm text-gray-600 mt-2 text-center max-w-md mx-auto">
           Ensure you save the draft once you're done editing, or publish the
           post when you're ready. Otherwise, your changes will be lost.
@@ -478,7 +494,7 @@ const CreatePostSection = () => {
                 <p className="text-sm text-gray-600">{draft.excerpt}</p>
                 <button
                   className="mt-4 px-4 py-2 bg-blue-600 text-white font-bold rounded-lg"
-                  onClick={() => loadDraft(draft)}
+                  onClick={() => loadPost(draft)}
                 >
                   Edit this Draft
                 </button>
@@ -487,6 +503,27 @@ const CreatePostSection = () => {
                   onClick={() => deleteDraft(draft.slug)}
                 >
                   Delete this Draft
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Display Published Posts */}
+      {publishedPosts.length > 0 && (
+        <section className="mt-8">
+          <h3 className="text-2xl font-semibold mb-4">Your Published Posts</h3>
+          <ul className="space-y-4">
+            {publishedPosts.map((post) => (
+              <li key={post.slug} className="p-4 border rounded-lg shadow-md">
+                <h4 className="text-xl font-bold">{post.title}</h4>
+                <p className="text-sm text-gray-600">{post.excerpt}</p>
+                <button
+                  className="mt-4 px-4 py-2 bg-blue-600 text-white font-bold rounded-lg"
+                  onClick={() => loadPost(post)}
+                >
+                  Edit this Post
                 </button>
               </li>
             ))}
