@@ -3,13 +3,14 @@ import CoverImage from "@/app/_components/cover-image";
 import { type Author } from "@/interfaces/author";
 import Link from "next/link";
 import DateFormatter from "./date-formatter";
+import { Timestamp } from "firebase/firestore";
 
 type Props = {
   title: string;
   coverImage: string;
-  date: string;
+  date: Timestamp;
   excerpt: string;
-  author: Author;
+  authors: Author[];
   slug: string;
 };
 
@@ -18,7 +19,7 @@ export function HeroPost({
   coverImage,
   date,
   excerpt,
-  author,
+  authors,
   slug,
 }: Props) {
   return (
@@ -39,7 +40,13 @@ export function HeroPost({
         </div>
         <div>
           <p className="text-lg leading-relaxed mb-4">{excerpt}</p>
-          <Avatar name={author.name} picture={author.picture} />
+          {authors.map((author) => (
+            <Avatar
+              key={author.name}
+              name={author.name}
+              picture={author.picture}
+            />
+          ))}
         </div>
       </div>
     </section>

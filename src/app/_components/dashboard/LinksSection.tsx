@@ -1,7 +1,8 @@
+"use client";
 import { FaBook, FaBrain, FaGoogleDrive, FaLink } from "react-icons/fa";
-import LinkCard, { LinkCardProps } from "./LinkCard";
-import { SiGooglecalendar } from "react-icons/si";
 import { RiNotionFill } from "react-icons/ri";
+import { SiGooglecalendar } from "react-icons/si";
+import LinkCard, { LinkCardProps } from "./LinkCard";
 
 const linksData: LinkCardProps[] = [
   {

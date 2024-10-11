@@ -18,8 +18,12 @@ const CoverImage = ({ title, src, slug }: Props) => {
       })}
       width={1300}
       height={630}
+      layout="responsive" // Ensures responsive images
+      priority={slug ? true : false} // Prioritize images if it's linked
+      objectFit="cover" // Ensures image is properly scaled
     />
   );
+
   return (
     <div className="sm:mx-0">
       {slug ? (

@@ -2,24 +2,22 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/api";
-import markdownToHtml from "@/lib/markdownToHtml";
-import Alert from "@/app/_components/alert";
 import Container from "@/app/_components/container";
 import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 
 export default async function Post({ params }: Params) {
-  const post = getPostBySlug(params.slug);
+  // Fetch the post data asynchronously
+  const post = await getPostBySlug(params.slug);
 
   if (!post) {
     return notFound();
   }
-
-  const content = await markdownToHtml(post.content || "");
+  const content = post.content;
 
   return (
     <main className="py-4 md:py-8">
-      <Alert preview={post.preview} />
+      {/* <Alert preview={post.preview} /> */}
       <Container>
         {/* Back to Our Impact Button */}
         <div className="mb-8">
@@ -35,7 +33,7 @@ export default async function Post({ params }: Params) {
             title={post.title}
             coverImage={post.coverImage}
             date={post.date}
-            author={post.author}
+            authors={post.authors}
           />
           <PostBody content={content} />
         </article>
@@ -50,8 +48,9 @@ type Params = {
   };
 };
 
-export function generateMetadata({ params }: Params): Metadata {
-  const post = getPostBySlug(params.slug);
+// Async function to generate metadata, as we fetch post data asynchronously
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const post = await getPostBySlug(params.slug);
 
   if (!post) {
     return notFound();
@@ -63,13 +62,14 @@ export function generateMetadata({ params }: Params): Metadata {
     title,
     openGraph: {
       title,
-      images: [post.ogImage.url],
+      images: [post.ogImage?.url || ""], // Ensure the ogImage URL is present
     },
   };
 }
 
+// Async function to generate static params for dynamic routes
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts(); // Ensure we await the posts fetching
 
   return posts.map((post) => ({
     slug: post.slug,

@@ -6,11 +6,18 @@ import { getAllPosts } from "@/lib/api";
 
 // This component fetches posts on the server and renders them dynamically
 export default async function ImpactPage() {
-  // Fetch posts using your custom function (assuming this is synchronous)
-  const allPosts: Post[] = getAllPosts();
+  // Fetch posts asynchronously from Firestore
+  let allPosts: Post[] = [];
 
-  // Hero post is the first post, and the rest are more stories
-  const heroPost = allPosts[0];
+  try {
+    allPosts = await getAllPosts(); // Make sure this function is awaited as it's async
+  } catch (error) {
+    console.error("Failed to fetch posts:", error);
+    allPosts = [];
+  }
+
+  // Ensure there's at least one post for the hero post
+  const heroPost = allPosts.length > 0 ? allPosts[0] : null;
   const morePosts = allPosts.slice(1);
 
   return (
@@ -20,20 +27,32 @@ export default async function ImpactPage() {
           Our Impact & Projects
         </h1>
 
-        {heroPost && (
+        {/* Render Hero Post if available */}
+        {heroPost ? (
           <HeroPost
             title={heroPost.title}
             coverImage={heroPost.coverImage}
             date={heroPost.date}
-            author={heroPost.author}
+            authors={heroPost.authors}
             slug={heroPost.slug}
             excerpt={heroPost.excerpt}
           />
+        ) : (
+          <p className="text-center text-xl text-gray-500">
+            No impact posts available at the moment. Please check back later.
+          </p>
         )}
 
         <SectionSeparator />
 
-        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+        {/* Render more posts if they exist */}
+        {morePosts.length > 0 ? (
+          <MoreStories posts={morePosts} />
+        ) : (
+          <p className="text-center text-lg text-gray-400 mt-10">
+            No more stories to show.
+          </p>
+        )}
       </section>
     </main>
   );

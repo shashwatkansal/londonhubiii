@@ -1,86 +1,121 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation"; // Next.js navigation hooks
+import { db } from "@lib/firebaseConfig"; // Firestore config
+import { doc, getDoc } from "firebase/firestore"; // Firestore methods
+import { requireAuth } from "@lib/requireAuth"; // Require authentication wrapper
+import { useAuth } from "@/lib/auth"; // Custom auth hook
+
+// Dashboard sections
 import ProfileSection from "@components/dashboard/ProfileSection";
 import AnalyticsSection from "@components/dashboard/AnalyticsSection";
 import CalendarSection from "@components/dashboard/CalendarSection";
 import LinksSection from "@components/dashboard/LinksSection";
-import { requireAuth } from "@lib/requireAuth";
-import { db } from "@lib/firebaseConfig"; // Import Firestore config
-import { doc, getDoc } from "firebase/firestore"; // For Firestore fetching
-import { useAuth } from "@/lib/auth";
 import CreatePostSection from "@/app/_components/dashboard/CreatePostSection";
 
+enum Tab {
+  Profile = "profile",
+  Analytics = "analytics",
+  Calendar = "calendar",
+  Links = "links",
+  CreatePost = "create-post",
+}
+
 function DashboardPage() {
-  const [activeTab, setActiveTab] = useState("profile");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get("tab") || Tab.Profile;
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab as Tab);
   const [isAdmin, setIsAdmin] = useState(false); // Admin state
   const { user } = useAuth();
+
   // Fetch admin status from Firestore
   useEffect(() => {
     const checkAdminStatus = async () => {
+      if (!user?.email) return;
       try {
-        const docRef = doc(db, "admins", user.email); // Checking if the user email exists in the "admins" collection
+        const docRef = doc(db, "admins", user.email);
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setIsAdmin(true); // If document exists, user is an admin
-        } else {
-        }
+        if (docSnap.exists()) setIsAdmin(true);
       } catch (error) {
         console.error("Error checking admin status: ", error);
       }
     };
-
     checkAdminStatus();
   }, [user]);
+
+  const handleTabChange = (tab: Tab) => {
+    setActiveTab(tab);
+  };
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
       {/* Tabs Navigation */}
-      <div className="flex justify-center mb-6">
-        <div className="bg-gray-100 rounded-lg shadow-lg w-full sm:w-auto">
-          <div className="flex flex-col sm:flex-row justify-around sm:justify-start">
-            <TabItem
-              label="Profile"
-              active={activeTab === "profile"}
-              onClick={() => setActiveTab("profile")}
-            />
-            {/* Conditionally render the "Analytics" tab based on admin status */}
-            {isAdmin && (
-              <TabItem
-                label="Admin"
-                active={activeTab === "analytics"}
-                onClick={() => setActiveTab("analytics")}
-              />
-            )}
-            <TabItem
-              label="Calendar"
-              active={activeTab === "calendar"}
-              onClick={() => setActiveTab("calendar")}
-            />
-            <TabItem
-              label="Links"
-              active={activeTab === "links"}
-              onClick={() => setActiveTab("links")}
-            />
-            <TabItem
-              label="Create Post"
-              active={activeTab === "create-post"} // New tab
-              onClick={() => setActiveTab("create-post")}
-            />
-          </div>
-        </div>
-      </div>
+      <TabNavigation
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        isAdmin={isAdmin}
+      />
 
       {/* Render the active tab */}
       <div className="p-4 sm:p-6">
-        {activeTab === "profile" && <ProfileSection />}
-        {activeTab === "analytics" && isAdmin && <AnalyticsSection />}
-        {activeTab === "calendar" && <CalendarSection />}
-        {activeTab === "links" && <LinksSection />}
-        {activeTab === "create-post" && <CreatePostSection />}
+        {activeTab === Tab.Profile && <ProfileSection />}
+        {activeTab === Tab.Analytics && isAdmin && <AnalyticsSection />}
+        {activeTab === Tab.Calendar && <CalendarSection />}
+        {activeTab === Tab.Links && <LinksSection />}
+        {activeTab === Tab.CreatePost && <CreatePostSection />}
       </div>
     </div>
   );
 }
+
+interface TabNavigationProps {
+  activeTab: Tab;
+  onTabChange: (tab: Tab) => void;
+  isAdmin: boolean;
+}
+
+const TabNavigation: React.FC<TabNavigationProps> = ({
+  activeTab,
+  onTabChange,
+  isAdmin,
+}) => {
+  return (
+    <div className="flex justify-center mb-6">
+      <div className="bg-gray-100 rounded-lg shadow-lg w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row justify-around sm:justify-start">
+          <TabItem
+            label="Profile"
+            active={activeTab === Tab.Profile}
+            onClick={() => onTabChange(Tab.Profile)}
+          />
+          {isAdmin && (
+            <TabItem
+              label="Admin"
+              active={activeTab === Tab.Analytics}
+              onClick={() => onTabChange(Tab.Analytics)}
+            />
+          )}
+          <TabItem
+            label="Calendar"
+            active={activeTab === Tab.Calendar}
+            onClick={() => onTabChange(Tab.Calendar)}
+          />
+          <TabItem
+            label="Links"
+            active={activeTab === Tab.Links}
+            onClick={() => onTabChange(Tab.Links)}
+          />
+          <TabItem
+            label="Create Post"
+            active={activeTab === Tab.CreatePost}
+            onClick={() => onTabChange(Tab.CreatePost)}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface TabItemProps {
   label: string;

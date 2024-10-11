@@ -1,15 +1,14 @@
-// /src/lib/requireAuth.tsx
-
 "use client";
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useAuth } from "@lib/auth"; // Assuming you have a custom auth hook that uses Firebase
+import { useAuth } from "@lib/auth";
+import Spinner from "@components/Spinner";
 
 export function requireAuth(Component: any) {
   return function AuthenticatedComponent(props: any) {
     const router = useRouter();
-    const { user, loading } = useAuth(); // Custom hook to get the user
+    const { user, loading } = useAuth();
 
     useEffect(() => {
       if (!loading && !user) {
@@ -18,7 +17,11 @@ export function requireAuth(Component: any) {
     }, [user, loading, router]);
 
     if (loading || !user) {
-      return <p>Loading...</p>; // Loading state or a spinner
+      return (
+        <div className="flex justify-center items-center min-h-screen">
+          <Spinner aria-label="Loading user authentication..." />{" "}
+        </div>
+      );
     }
 
     return <Component {...props} />;

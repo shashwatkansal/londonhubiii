@@ -3,13 +3,14 @@ import Link from "next/link";
 import Avatar from "./avatar";
 import CoverImage from "./cover-image";
 import DateFormatter from "./date-formatter";
+import { Timestamp } from "firebase/firestore";
 
 type Props = {
   title: string;
   coverImage: string;
-  date: string;
+  date: Timestamp;
   excerpt: string;
-  author: Author;
+  authors: Author[];
   slug: string;
 };
 
@@ -18,7 +19,7 @@ export function PostPreview({
   coverImage,
   date,
   excerpt,
-  author,
+  authors,
   slug,
 }: Props) {
   return (
@@ -35,7 +36,9 @@ export function PostPreview({
         <DateFormatter dateString={date} />
       </div>
       <p className="text-lg leading-relaxed mb-4">{excerpt}</p>
-      <Avatar name={author.name} picture={author.picture} />
+      {authors.map((author) => (
+        <Avatar key={author.name} name={author.name} picture={author.picture} />
+      ))}
     </div>
   );
 }
