@@ -54,7 +54,7 @@ export function Footer() {
               <Link href="/impact" className="link link-hover text-white">
                 Our Impact
               </Link>
-              <Link href="/partners" className="link link-hover text-white">
+              <Link href="/faqs" className="link link-hover text-white">
                 FAQs
               </Link>
             </div>
@@ -63,7 +63,7 @@ export function Footer() {
           {/* Social Media Icons */}
           <div className="lg:w-1/3 flex justify-center lg:justify-end space-x-6 mt-8 lg:mt-0">
             <a
-              href="https://www.facebook.com/globalshapers"
+              href="https://www.facebook.com/londonshapersIII"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-blue-400 transition-colors duration-300"
@@ -79,7 +79,7 @@ export function Footer() {
               <FaTwitter size={24} />
             </a>
             <a
-              href="https://www.linkedin.com/company/global-shapers"
+              href="https://www.linkedin.com/company/86249324"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-blue-400 transition-colors duration-300"
@@ -87,7 +87,7 @@ export function Footer() {
               <FaLinkedinIn size={24} />
             </a>
             <a
-              href="https://www.instagram.com/globalshapers/"
+              href="https://www.instagram.com/londonshapersiii/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-blue-400 transition-colors duration-300"
