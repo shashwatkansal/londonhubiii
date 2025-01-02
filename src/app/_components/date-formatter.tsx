@@ -1,34 +1,42 @@
-import { parseISO, format } from "date-fns";
-import { Timestamp } from "firebase/firestore"; // Import Firebase Timestamp type
+import { parseISO, format, isValid } from "date-fns";
+import { Timestamp } from "firebase/firestore";
+import { Input } from "postcss";
 
 type Props = {
-  dateString: string | Date | Timestamp | null; // Accept multiple date types
+  dateString: string | Date | Timestamp | null; // Support multiple date types, including undefined
 };
 
 const DateFormatter = ({ dateString }: Props) => {
-  if (!dateString) {
-    return <span>Invalid date</span>;
-  }
+  // Define a helper function to parse the date input
+  const parseDate = (
+    input: string | Date | Timestamp | null | undefined
+  ): Date | null => {
+    if (!input) return null;
 
-  // Handle Firebase Timestamp objects
-  let date: Date;
-  if (dateString instanceof Timestamp) {
-    date = dateString.toDate();
-  } else if (typeof dateString === "string") {
-    // Handle ISO date strings
-    date = parseISO(dateString);
-  } else {
-    // Assume it's a Date object
-    date = dateString;
-  }
+    if (input instanceof Timestamp) {
+      return input.toDate();
+    }
 
-  // Check for invalid date
-  if (isNaN(date.getTime())) {
+    if (typeof input === "string") {
+      const parsedDate = parseISO(input);
+      return isValid(parsedDate) ? parsedDate : null;
+    }
+
+    if (input instanceof Date && isValid(input)) {
+      return input;
+    }
+
+    return null; // Return null for unsupported or invalid formats
+  };
+
+  const date = parseDate(dateString);
+
+  if (!date) {
     return <span>Invalid date</span>;
   }
 
   return (
-    <time dateTime={date.toISOString()}>{format(date, "LLLL d, yyyy")}</time>
+    <time dateTime={date.toISOString()}>{format(date, "MMMM d, yyyy")}</time>
   );
 };
 

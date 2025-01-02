@@ -66,7 +66,7 @@ export default function Header() {
     try {
       await addDoc(collection(db, "user_feedback"), {
         feedback: feedbackText,
-        user: user ? user.email : "Anonymous",
+        user: user ? user.email : "Unknown",
         createdAt: new Date(),
       });
       setFeedbackText("");
@@ -97,7 +97,7 @@ export default function Header() {
             ? isScrolled
               ? "bg-wef-gradient shadow-lg"
               : "bg-transparent"
-            : "bg-wef-gradient shadow-lg"
+            : "bg-wef-gradient shadow-lg relative"
         }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}

@@ -13,6 +13,7 @@ import {
   QueryDocumentSnapshot,
   DocumentReference,
   CollectionReference,
+  Timestamp,
 } from "firebase/firestore";
 
 export enum Role {
@@ -56,7 +57,7 @@ export interface Post {
   authorsIndex: Email[];
   content: RichTextBlock;
   coverImage: string;
-  date: string;
+  date: Timestamp;
   excerpt: string;
   ogImage: {
     url: string;
