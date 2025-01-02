@@ -20,17 +20,17 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import { ReactTyped } from "react-typed";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Index() {
     const callToActionRef = useRef<null | HTMLElement>(null);
     const [email, setEmail] = useState("");
-    const [offsetY, setOffsetY] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
+    const { scrollY } = useScroll();
+    const opacity = useTransform(scrollY, [0, 300], [1, 0.5]);
 
     useEffect(() => {
         const handleScroll = () => {
-            setOffsetY(window.scrollY);
             setIsVisible(window.scrollY > 100);
         };
 
@@ -41,11 +41,6 @@ export default function Index() {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
-
-    const parallaxStyles = {
-        transform: `translateY(${offsetY * 0.5}px)`,
-        transition: "transform 0.05s ease-out",
-    };
 
     const handleSubscribe = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -86,23 +81,22 @@ export default function Index() {
 
             {/* Enhanced Hero Section */}
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0">
+                <motion.div className="absolute inset-0" style={{ opacity }}>
                     <Image
                         src="/assets/images/hub3photo.jpg"
                         alt="Global Shapers Hero"
                         layout="fill"
                         objectFit="cover"
-                        style={parallaxStyles}
                         className="opacity-60"
                         priority
                     />
-                </div>
+                </motion.div>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-transparent"></div>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1 }}
+                    transition={{ duration: 2 }}
                     className="relative z-10 text-center px-4 max-w-5xl mx-auto"
                 >
                     <h1 className="text-6xl md:text-8xl font-bold text-white mb-8 leading-tight">
@@ -130,12 +124,18 @@ export default function Index() {
                         className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6"
                     >
                         <Link href="#mission">
-                            <button className="px-8 py-4 bg-white text-blue-900 font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-lg">
+                            <button
+                                className="px-8 py-4 bg-white text-blue-900 font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-lg"
+                                aria-label="Explore Our Mission"
+                            >
                                 Explore Our Mission
                             </button>
                         </Link>
                         <Link href="#join-us">
-                            <button className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-blue-900 transition-all duration-300 text-lg">
+                            <button
+                                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-blue-900 transition-all duration-300 text-lg"
+                                aria-label="Join Us"
+                            >
                                 Join Us
                             </button>
                         </Link>
@@ -475,19 +475,6 @@ export default function Index() {
                         ))}
                     </div>
                 </motion.div>
-                {/* Add this at the bottom of the Impact Areas Section */}
-                <div className="absolute bottom-0 left-0 w-full overflow-hidden">
-                    <svg
-                        viewBox="0 0 1440 120"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M0 0L60 10C120 20 240 40 360 50C480 60 600 60 720 55C840 50 960 40 1080 35C1200 30 1320 30 1380 30L1440 30V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z"
-                            fill="white"
-                        />
-                    </svg>
-                </div>
             </section>
 
             {/* Simplified Meet Our Change Makers Section */}
@@ -810,6 +797,7 @@ export default function Index() {
                                 )
                             }
                             className="px-10 py-5 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                            aria-label="Become a Shaper"
                         >
                             Become a Shaper
                         </button>
@@ -817,7 +805,10 @@ export default function Index() {
                             href="https://docs.google.com/forms/d/e/1FAIpQLScdWAWxr--Z4_c9piHxW8wZSitKUcRquNp4VKVtb3HUFcbSGw/viewform"
                             target="_blank"
                         >
-                            <button className="px-10 py-5 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                            <button
+                                className="px-10 py-5 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                                aria-label="Transfer to London"
+                            >
                                 Transfer to London
                             </button>
                         </Link>
