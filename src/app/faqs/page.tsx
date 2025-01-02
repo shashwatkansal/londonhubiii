@@ -37,7 +37,7 @@ export default function FAQPage() {
         fetchFAQs();
     }, []);
 
-    const categories = ["All", ...new Set(faqs.map((faq) => faq.category))];
+    const categories = ["All", ...Array.from(new Set(faqs.map((faq) => faq.category)))];
 
     const filteredFAQs = faqs.filter(
         (faq) =>

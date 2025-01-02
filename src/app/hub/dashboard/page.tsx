@@ -47,7 +47,7 @@ function DashboardPage() {
 
     const handleTabChange = (tab: Tab) => {
         setActiveTab(tab);
-        router.push(`/hub/dashboard?tab=${tab}`, undefined, { shallow: true });
+        router.push(`/hub/dashboard?tab=${tab}`);
     };
 
     return (
