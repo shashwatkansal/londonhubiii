@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import { auth, db } from "@lib/firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
@@ -11,18 +11,13 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
-    interface User {
-        displayName?: string | null;
-        email: string;
-        photoURL?: string;
-    }
-
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState(null);
     const [feedbackOpen, setFeedbackOpen] = useState(false);
     const [feedbackText, setFeedbackText] = useState("");
     const [isScrolled, setIsScrolled] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const [imageError, setImageError] = useState(false);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -79,10 +74,7 @@ export default function Header() {
         }
     };
 
-    const getUserInitials = (user: {
-        displayName: string;
-        email: string[];
-    }) => {
+    const getUserInitials = (user) => {
         if (user.displayName) {
             return user.displayName
                 .split(" ")
@@ -160,13 +152,14 @@ export default function Header() {
                                     }
                                     className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center cursor-pointer overflow-hidden"
                                 >
-                                    {user.photoURL ? (
+                                    {user.photoURL && !imageError ? (
                                         <Image
                                             src={user.photoURL}
-                                            alt="Profile"
+                                            alt={user.displayName || user.email}
                                             width={40}
                                             height={40}
                                             className="rounded-full"
+                                            onError={() => setImageError(true)}
                                         />
                                     ) : (
                                         <div className="w-full h-full bg-blue-500 flex items-center justify-center text-white font-semibold">
