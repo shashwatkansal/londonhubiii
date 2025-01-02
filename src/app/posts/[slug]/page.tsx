@@ -32,7 +32,7 @@ export default async function Post({ params }: Params) {
           <PostHeader
             title={post.title}
             coverImage={post.coverImage}
-            date={post.date}
+            date={new Date(post.date)}
             authors={post.authors}
           />
           <PostBody content={content} />

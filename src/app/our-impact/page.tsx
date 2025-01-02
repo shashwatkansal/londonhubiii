@@ -1,8 +1,8 @@
 import { HeroPost } from "@/app/_components/hero-post";
 import { MoreStories } from "@/app/_components/more-stories";
 import { SectionSeparator } from "@/app/_components/section-separator";
-import { Post } from "@/interfaces/post";
 import { getAllPosts } from "@/lib/api";
+import { Post } from "../database/models";
 
 // This component fetches posts on the server and renders them dynamically
 export default async function ImpactPage() {
@@ -32,7 +32,7 @@ export default async function ImpactPage() {
           <HeroPost
             title={heroPost.title}
             coverImage={heroPost.coverImage}
-            date={heroPost.date}
+            date={new Date(heroPost.date)}
             authors={heroPost.authors}
             slug={heroPost.slug}
             excerpt={heroPost.excerpt}

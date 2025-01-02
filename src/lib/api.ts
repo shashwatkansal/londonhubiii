@@ -1,4 +1,4 @@
-import { Post } from "@/interfaces/post";
+import { Post } from "@/app/database/models";
 import { db } from "@/lib/firebaseConfig"; // Import Firebase Firestore config
 import {
   collection,

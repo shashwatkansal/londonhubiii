@@ -1,4 +1,4 @@
-import { Post } from "@/interfaces/post";
+import { Post } from "../database/models";
 import { PostPreview } from "./post-preview";
 
 type Props = {
@@ -17,7 +17,7 @@ export function MoreStories({ posts }: Props) {
             key={post.slug}
             title={post.title}
             coverImage={post.coverImage}
-            date={post.date}
+            date={new Date(post.date)}
             authors={post.authors}
             slug={post.slug}
             excerpt={post.excerpt}

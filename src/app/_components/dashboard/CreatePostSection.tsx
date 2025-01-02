@@ -1,32 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
 import {
-  collection,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  query,
-  where,
-  getDocs,
-  doc,
-  Timestamp,
-  getDoc,
-  setDoc,
-} from "firebase/firestore";
-import {
   getStorage,
   ref,
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "@lib/firebaseConfig";
 import { useAuth } from "@/lib/auth";
 import { toast } from "react-hot-toast";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import FileUpload from "./file-upload";
-import { Post } from "@/interfaces/post";
-import { Author } from "@/interfaces/author";
+import { Author, Post, postsHelpers } from "@/app/database/models";
 
 // Dynamically import ReactQuill to prevent server-side rendering issues
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
@@ -36,12 +23,12 @@ function generateSlug(title: string): string {
   return title
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric characters with hyphens
-    .replace(/^-+|-+$/g, ""); // Remove any leading or trailing hyphens
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 const CreatePostSection = () => {
-  const { user } = useAuth(); // Get current user
+  const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
   const [post, setPost] = useState<Post>({
     title: "",
@@ -58,7 +45,7 @@ const CreatePostSection = () => {
       },
     ],
     authorsIndex: [],
-    date: Timestamp.now(),
+    date: Timestamp.now().toDate().toISOString(),
     status: "draft",
   });
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
@@ -78,12 +65,7 @@ const CreatePostSection = () => {
       if (user?.email) {
         const adminDocRef = doc(db, "admins", user.email);
         const adminDocSnap = await getDoc(adminDocRef);
-
-        if (adminDocSnap.exists()) {
-          setIsAdmin(true); // Set user as admin if document with their email exists
-        } else {
-          setIsAdmin(false);
-        }
+        setIsAdmin(adminDocSnap.exists());
       }
     };
 
@@ -93,49 +75,25 @@ const CreatePostSection = () => {
   // Fetch both drafts and published posts
   useEffect(() => {
     const fetchPosts = async () => {
-      if (user?.email) {
-        let draftsQuery;
-        let publishedQuery;
+      if (!user?.email) return;
 
-        // Fetch all posts for admins, otherwise only fetch posts for the user
-        if (isAdmin) {
-          draftsQuery = query(
-            collection(db, "posts"),
-            where("status", "==", "draft")
-          );
-          publishedQuery = query(
-            collection(db, "posts"),
-            where("status", "==", "published")
-          );
-        } else {
-          draftsQuery = query(
-            collection(db, "posts"),
-            where("authorsIndex", "array-contains", user.email),
-            where("status", "==", "draft")
-          );
-          publishedQuery = query(
-            collection(db, "posts"),
-            where("authorsIndex", "array-contains", user.email),
-            where("status", "==", "published")
-          );
-        }
+      try {
+        const allPosts = await postsHelpers.getAll();
 
-        // Fetch drafts
-        const draftDocs = await getDocs(draftsQuery);
-        const userDrafts = draftDocs.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as unknown as Post[];
+        // Filter posts based on admin status and authorship
+        const filterPosts = (posts: Post[], status: "draft" | "published") => {
+          return posts.filter(
+            (post) =>
+              (isAdmin || post.authorsIndex.includes(user.email)) &&
+              post.status === status
+          );
+        };
 
-        // Fetch published posts
-        const publishedDocs = await getDocs(publishedQuery);
-        const userPublished = publishedDocs.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as unknown as Post[];
-
-        setDrafts(userDrafts);
-        setPublishedPosts(userPublished);
+        setDrafts(filterPosts(allPosts, "draft"));
+        setPublishedPosts(filterPosts(allPosts, "published"));
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        toast.error("Failed to fetch posts");
       }
     };
 
@@ -171,15 +129,16 @@ const CreatePostSection = () => {
     const newAuthor: Author = {
       name: newAuthorName,
       email: newAuthorEmail,
-      picture: newAuthorPicture || "", // Optional picture
+      picture: newAuthorPicture || "",
     };
 
     setPost((prevPost) => ({
       ...prevPost,
-      authors: [...prevPost.authors, newAuthor], // Add new author
+      authors: [...prevPost.authors, newAuthor],
+      authorsIndex: [...prevPost.authorsIndex, newAuthor.email],
     }));
 
-    // Clear the input fields
+    // Clear input fields
     setNewAuthorName("");
     setNewAuthorEmail("");
     setNewAuthorPicture("");
@@ -190,6 +149,7 @@ const CreatePostSection = () => {
     setPost((prevPost) => ({
       ...prevPost,
       authors: prevPost.authors.filter((_, i) => i !== index),
+      authorsIndex: prevPost.authorsIndex.filter((_, i) => i !== index),
     }));
   };
 
@@ -207,10 +167,7 @@ const CreatePostSection = () => {
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log(`Upload is ${progress}% done`);
         },
-        (error) => {
-          console.error("Upload failed:", error);
-          reject(error);
-        },
+        reject,
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
           resolve(downloadURL);
@@ -223,7 +180,6 @@ const CreatePostSection = () => {
   const savePost = async (status: "draft" | "published") => {
     setLoading(true);
 
-    // Validate form inputs
     if (!post.title || !post.excerpt || !post.content) {
       toast.error("Please fill in all fields.");
       setLoading(false);
@@ -233,40 +189,31 @@ const CreatePostSection = () => {
     try {
       let uploadedImageUrl = post.coverImage;
 
-      // If the user selected a new file, upload it
       if (coverImageFile) {
         uploadedImageUrl = await uploadImage(coverImageFile);
       }
 
       const slug = generateSlug(post.title);
 
-      // Generate authorsIndex array from authors' emails
-      const authorsIndex = post.authors.map((author) => author.email);
-
-      // Prepare updated post data
-      const updatedPost = {
+      const updatedPost: Post = {
         ...post,
-        coverImage: uploadedImageUrl || "",
+        coverImage: uploadedImageUrl,
         slug,
         status,
-        authorsIndex, // Include the authorsIndex array in the post data
-        date: Timestamp.now(),
+        date: new Date().toISOString(),
       };
 
-      const postRef = doc(db, "posts", slug);
-      const docSnapshot = await getDoc(postRef);
+      const existingPost = await postsHelpers.getBySlug(slug);
 
-      if (docSnapshot.exists()) {
-        // Update existing post (re-publish or revert to draft)
-        await updateDoc(postRef, updatedPost);
+      if (existingPost) {
+        await postsHelpers.update(slug, updatedPost);
         toast.success(
           status === "draft"
-            ? "Post reverted to draft successfully!"
-            : "Post updated and published successfully!"
+            ? "Draft updated successfully!"
+            : "Post updated successfully!"
         );
       } else {
-        // Create a new post
-        await setDoc(postRef, updatedPost);
+        await postsHelpers.create(updatedPost);
         toast.success(
           status === "draft"
             ? "Draft saved successfully!"
@@ -290,14 +237,14 @@ const CreatePostSection = () => {
           },
         ],
         authorsIndex: [],
-        date: Timestamp.now(),
+        date: new Date().toISOString(),
         status: "draft",
       });
       setCoverImageFile(null);
       setEditingDraftId(null);
     } catch (error) {
       console.error("Error saving post:", error);
-      toast.error("Failed to save post." + (error as Error).message);
+      toast.error("Failed to save post: " + (error as Error).message);
     } finally {
       setLoading(false);
     }
@@ -306,22 +253,29 @@ const CreatePostSection = () => {
   // Function to delete a draft
   const deleteDraft = async (draftId: string) => {
     try {
-      await deleteDoc(doc(db, "posts", draftId));
+      await postsHelpers.delete(draftId);
       toast.success("Draft deleted successfully!");
-
       setDrafts((prevDrafts) =>
         prevDrafts.filter((draft) => draft.slug !== draftId)
       );
     } catch (error) {
       console.error("Error deleting draft:", error);
-      toast.error("Failed to delete draft.");
+      toast.error("Failed to delete draft");
     }
   };
 
-  // Function to load a post (draft or published) into the form for editing
-  const loadPost = (postToEdit: Post) => {
-    setPost(postToEdit);
-    setEditingDraftId(postToEdit.slug);
+  // Function to load a post for editing
+  const loadPost = async (postToEdit: Post) => {
+    try {
+      const fullPost = await postsHelpers.getBySlug(postToEdit.slug);
+      if (fullPost) {
+        setPost(fullPost);
+        setEditingDraftId(fullPost.slug);
+      }
+    } catch (error) {
+      console.error("Error loading post:", error);
+      toast.error("Failed to load post");
+    }
   };
 
   return (

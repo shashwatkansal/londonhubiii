@@ -1,14 +1,14 @@
 import Avatar from "@/app/_components/avatar";
 import CoverImage from "@/app/_components/cover-image";
-import { type Author } from "@/interfaces/author";
 import Link from "next/link";
 import DateFormatter from "./date-formatter";
 import { Timestamp } from "firebase/firestore";
+import { Author } from "../database/models";
 
 type Props = {
   title: string;
   coverImage: string;
-  date: Timestamp;
+  date: Timestamp | Date;
   excerpt: string;
   authors: Author[];
   slug: string;
