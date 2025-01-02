@@ -21,7 +21,7 @@ export default async function Post({ params }: Params) {
       <Container>
         {/* Back to Our Impact Button */}
         <div className="mb-8">
-          <Link href="/impact">
+          <Link href="/our-impact">
             <button className="text-blue-600 hover:text-blue-800 font-bold underline">
               ← Back to Our Impact
             </button>

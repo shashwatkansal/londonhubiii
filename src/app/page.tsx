@@ -119,7 +119,7 @@ export default function Index() {
             transition={{ delay: 1, duration: 1 }}
             className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6"
           >
-            <Link href="#mission">
+            <Link href="#mission" passHref>
               <button
                 className="px-8 py-4 bg-white text-blue-900 font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-lg"
                 aria-label="Explore Our Mission"
@@ -216,7 +216,7 @@ export default function Index() {
             communities.
           </p>
           <div className="flex justify-center">
-            <Link href="/impact">
+            <Link href="/our-impact">
               <button className="px-10 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white font-bold rounded-full shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
                 Learn More About Our Projects
               </button>
@@ -319,7 +319,7 @@ export default function Index() {
             transition={{ delay: 0.5, duration: 0.5 }}
             className="mt-16 text-center"
           >
-            <Link href="/impact">
+            <Link href="/our-impact">
               <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
                 Learn More About Our Projects
               </button>
