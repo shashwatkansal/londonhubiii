@@ -124,7 +124,7 @@ export default function Header() {
               Home: "/",
               Shapers: "/shapers",
               "Our Impact": "/our-impact",
-              "Join Us": "#join-us",
+              "Join Us": "/#join-us",
               FAQs: "/faqs",
             }).map(([key, value]) => (
               <Link
