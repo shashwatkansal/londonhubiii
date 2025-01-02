@@ -3,274 +3,286 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { auth } from "@lib/firebaseConfig";
+import { auth, db } from "@lib/firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { db } from "@lib/firebaseConfig"; // Firestore
-import { collection, addDoc } from "firebase/firestore"; // Firestore methods
+import { collection, addDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const [feedbackOpen, setFeedbackOpen] = useState(false); // For feedback modal
-  const [feedbackText, setFeedbackText] = useState(""); // For feedback text
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [user, setUser] = useState(null);
+    const [feedbackOpen, setFeedbackOpen] = useState(false);
+    const [feedbackText, setFeedbackText] = useState("");
+    const [isScrolled, setIsScrolled] = useState(false);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+        });
 
-  const handleSignOut = async () => {
-    await signOut(auth);
-    setUser(null);
-  };
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
 
-  // Function to handle feedback submission
-  const handleFeedbackSubmit = async () => {
-    if (!feedbackText.trim()) {
-      toast.error("Feedback cannot be empty.");
-      return;
-    }
+        window.addEventListener("scroll", handleScroll);
 
-    try {
-      await addDoc(collection(db, "user_feedback"), {
-        feedback: feedbackText,
-        user: user ? user.email : "Anonymous",
-        createdAt: new Date(),
-      });
-      setFeedbackText(""); // Clear feedback form
-      setFeedbackOpen(false); // Close modal after submission
-      toast.success("Feedback submitted successfully!");
-    } catch (error) {
-      console.log("Error submitting feedback: ", error);
-      toast.error("Failed to submit feedback. Please try again.");
-    }
-  };
+        return () => {
+            unsubscribe();
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
-  return (
-    <>
-      {/* Existing Header and Banner */}
-      {user && (
-        <div className="">
-          <div className="bg-yellow-500 text-black text-center py-2 flex justify-center items-center mx-auto space-x-4 px-4">
-            <p className="">
-              🚧 This website is currently under development. Some features may
-              not be fully functional. 🚧
-            </p>
-            <div>
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-                onClick={() => setFeedbackOpen(true)} // Open feedback modal
-              >
-                Provide Feedback
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+    const handleSignOut = async () => {
+        await signOut(auth);
+        setUser(null);
+    };
 
-      <header className="bg-wef-gradient text-white shadow-lg py-4">
-        <div className="container mx-auto px-4 md:px-6 py-4 flex flex-wrap justify-between items-center">
-          {/* Logo and WEF Initiative */}
-          <div className="flex items-center space-x-4 flex-1">
-            <Link href="/">
-              <Image
-                src="/assets/images/gs_white_logo.png"
-                alt="Global Shapers Logo"
-                width={60}
-                height={40}
-                className="w-16 h-auto"
-              />
-            </Link>
+    const handleFeedbackSubmit = async () => {
+        if (!feedbackText.trim()) {
+            toast.error("Feedback cannot be empty.");
+            return;
+        }
 
-            <div className="text-xl md:text-2xl lg:text-3xl font-bold whitespace-nowrap">
-              London Hub III
-            </div>
+        try {
+            await addDoc(collection(db, "user_feedback"), {
+                feedback: feedbackText,
+                user: user ? user.email : "Anonymous",
+                createdAt: new Date(),
+            });
+            setFeedbackText("");
+            setFeedbackOpen(false);
+            toast.success("Feedback submitted successfully!");
+        } catch (error) {
+            console.error("Error submitting feedback: ", error);
+            toast.error("Failed to submit feedback. Please try again.");
+        }
+    };
 
-            <div className="hidden md:flex items-center space-x-2 flex-shrink-0">
-              <span className="text-xs md:text-sm">Initiative of the</span>
-              <Image
-                src="/assets/images/wef_logo.png"
-                alt="World Economic Forum Logo"
-                width={80}
-                height={50}
-                className="h-auto w-24"
-              />
-            </div>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden text-white"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-          </button>
-
-          {/* Navigation */}
-          <nav className="hidden md:flex space-x-4 xl:space-x-6 lg:pr-8">
-            <Link href="/" className="hover:text-wef-light-blue">
-              Home
-            </Link>
-            <Link href="/shapers" className="hover:text-wef-light-blue">
-              Shapers
-            </Link>
-            <Link href="/impact" className="hover:text-wef-light-blue">
-              Our Impact
-            </Link>
-            <Link href="/#join-us" className="hover:text-wef-light-blue">
-              Join Us
-            </Link>
-            <Link href="/faqs" className="hover:text-wef-light-blue">
-              FAQs
-            </Link>
-          </nav>
-
-          {/* User Profile / Sign In Button */}
-          <div className="hidden md:flex items-center space-x-4 flex-shrink-0 z-20">
-            {user ? (
-              <div className="dropdown dropdown-end">
-                <label
-                  tabIndex={0}
-                  className="btn btn-ghost btn-circle avatar cursor-pointer"
-                >
-                  <div className="w-10 rounded-full">
-                    {user.photoURL ? (
-                      <Image
-                        src={user.photoURL}
-                        alt="Profile"
-                        width={40}
-                        height={40}
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <div className="bg-gray-700 text-white w-10 h-10 flex items-center justify-center rounded-full">
-                        {user.displayName
-                          ? user.displayName.charAt(0).toUpperCase()
-                          : user.email.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                  </div>
-                </label>
-                <ul
-                  tabIndex={0}
-                  className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 mt-3 bg-wef-gradient"
-                >
-                  <li>
-                    <p className="hover:cursor-default">
-                      Signed in
-                      {user.displayName
-                        ? ` as ${user.displayName}`
-                        : ` with ${user.email}`}
-                    </p>
-                  </li>
-                  <hr className="my-2" />
-                  <li>
-                    <Link href="/hub/dashboard">Dashboard</Link>
-                  </li>
-                  <li>
-                    <button
-                      onClick={handleSignOut}
-                      className="text-red-400 font-bold"
+    return (
+        <>
+            <AnimatePresence>
+                {user && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="bg-yellow-500 text-black"
                     >
-                      Sign Out
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            ) : (
-              <Link href="/signin">
-                <button className="btn btn-outline btn-sm border-white text-white hover:opacity-80">
-                  Sign In
-                </button>
-              </Link>
-            )}
-          </div>
-        </div>
-        {/* Mobile Navigation */}
-        {menuOpen && (
-          <div className="md:hidden bg-wef-gradient text-white">
-            <nav className="flex flex-col space-y-2 px-6 py-4">
-              <Link href="/" className="hover:text-wef-light-blue">
-                Home
-              </Link>
-              <Link href="/shapers" className="hover:text-wef-light-blue">
-                Shapers
-              </Link>
-              <Link href="/impact" className="hover:text-wef-light-blue">
-                Our Impact
-              </Link>
-              <Link href="/#join-us" className="hover:text-wef-light-blue">
-                Join Us
-              </Link>
-              <Link href="/faqs" className="hover:text-wef-light-blue">
-                FAQs
-              </Link>
-              {user ? (
-                <div className="z-20">
-                  <p>
-                    Signed in
-                    {user.displayName
-                      ? ` as ${user.displayName}`
-                      : ` with ${user.email}`}
-                  </p>
-                  <hr className="border-white" />
-                  <Link
-                    href="/hub/dashboard"
-                    className="hover:text-wef-light-blue"
-                  >
-                    Dashboard
-                  </Link>
-                  <button
-                    onClick={handleSignOut}
-                    className="btn btn-outline btn-sm border-white text-white hover:bg-wef-light-blue hover:text-wef-dark-blue mt-4"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              ) : (
-                <Link
-                  href="/signin"
-                  className="btn btn-outline btn-sm border-white text-white hover:bg-wef-light-blue hover:text-wef-dark-blue mt-4 z-20"
-                >
-                  Sign In
-                </Link>
-              )}
-            </nav>
-          </div>
-        )}
-      </header>
+                        <div className="container mx-auto px-4 py-2 flex justify-between items-center">
+                            <p className="text-sm">
+                                ð§ This website is currently under development.
+                                Some features may not be fully functional. ð§
+                            </p>
+                            <button
+                                className="bg-blue-500 text-white px-4 py-1 rounded text-sm hover:bg-blue-600 transition-colors duration-200"
+                                onClick={() => setFeedbackOpen(true)}
+                            >
+                                Provide Feedback
+                            </button>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-      {/* Feedback Modal */}
-      {feedbackOpen && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-            <h2 className="text-xl font-bold mb-4">Submit Feedback</h2>
-            <textarea
-              className="w-full h-32 p-2 border border-gray-300 rounded"
-              value={feedbackText}
-              onChange={(e) => setFeedbackText(e.target.value)}
-              placeholder="Enter your feedback here..."
-            />
-            <div className="mt-4 flex justify-end space-x-4">
-              <button
-                className="bg-red-500 text-white px-4 py-2 rounded"
-                onClick={() => setFeedbackOpen(false)} // Close modal
-              >
-                Cancel
-              </button>
-              <button
-                className="bg-green-500 text-white px-4 py-2 rounded"
-                onClick={handleFeedbackSubmit} // Submit feedback
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
+            <motion.header
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+                    isScrolled ? "bg-wef-gradient shadow-lg" : "bg-transparent"
+                }`}
+                initial={{ y: -100 }}
+                animate={{ y: 0 }}
+                transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            >
+                <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+                    <div className="flex items-center space-x-4">
+                        <Link href="/">
+                            <Image
+                                src="/assets/images/gs_white_logo.png"
+                                alt="Global Shapers Logo"
+                                width={60}
+                                height={40}
+                                className="w-16 h-auto"
+                            />
+                        </Link>
+                        <div className="text-xl md:text-2xl lg:text-3xl font-bold text-white">
+                            London Hub III
+                        </div>
+                    </div>
+
+                    <nav className="hidden md:flex space-x-6">
+                        {[
+                            "Home",
+                            "Shapers",
+                            "Our Impact",
+                            "Join Us",
+                            "FAQs",
+                        ].map((item) => (
+                            <Link
+                                key={item}
+                                href={
+                                    item === "Home"
+                                        ? "/"
+                                        : `/${item
+                                              .toLowerCase()
+                                              .replace(" ", "-")}`
+                                }
+                                className="text-white hover:text-wef-light-blue transition-colors duration-200"
+                            >
+                                {item}
+                            </Link>
+                        ))}
+                    </nav>
+
+                    <div className="flex items-center space-x-4">
+                        {user ? (
+                            <div className="relative group">
+                                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center cursor-pointer">
+                                    {user.photoURL ? (
+                                        <Image
+                                            src={user.photoURL}
+                                            alt="Profile"
+                                            width={40}
+                                            height={40}
+                                            className="rounded-full"
+                                        />
+                                    ) : (
+                                        <div className="text-white text-lg font-semibold">
+                                            {user.displayName
+                                                ? user.displayName
+                                                      .charAt(0)
+                                                      .toUpperCase()
+                                                : user.email
+                                                      .charAt(0)
+                                                      .toUpperCase()}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden group-hover:block">
+                                    <Link
+                                        href="/hub/dashboard"
+                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    >
+                                        Dashboard
+                                    </Link>
+                                    <button
+                                        onClick={handleSignOut}
+                                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                    >
+                                        Sign Out
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <Link href="/signin">
+                                <button className="bg-white text-wef-dark-blue px-4 py-2 rounded-full hover:bg-wef-light-blue transition-colors duration-200">
+                                    Sign In
+                                </button>
+                            </Link>
+                        )}
+                        <button
+                            className="md:hidden text-white"
+                            onClick={() => setMenuOpen(!menuOpen)}
+                        >
+                            {menuOpen ? (
+                                <FaTimes size={24} />
+                            ) : (
+                                <FaBars size={24} />
+                            )}
+                        </button>
+                    </div>
+                </div>
+
+                <AnimatePresence>
+                    {menuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="md:hidden bg-wef-gradient"
+                        >
+                            <nav className="flex flex-col space-y-2 px-6 py-4">
+                                {[
+                                    "Home",
+                                    "Shapers",
+                                    "Our Impact",
+                                    "Join Us",
+                                    "FAQs",
+                                ].map((item) => (
+                                    <Link
+                                        key={item}
+                                        href={
+                                            item === "Home"
+                                                ? "/"
+                                                : `/${item
+                                                      .toLowerCase()
+                                                      .replace(" ", "-")}`
+                                        }
+                                        className="text-white hover:text-wef-light-blue transition-colors duration-200"
+                                        onClick={() => setMenuOpen(false)}
+                                    >
+                                        {item}
+                                    </Link>
+                                ))}
+                                {user && (
+                                    <Link
+                                        href="/hub/dashboard"
+                                        className="text-white hover:text-wef-light-blue transition-colors duration-200"
+                                        onClick={() => setMenuOpen(false)}
+                                    >
+                                        Dashboard
+                                    </Link>
+                                )}
+                            </nav>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </motion.header>
+
+            <AnimatePresence>
+                {feedbackOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
+                        >
+                            <h2 className="text-xl font-bold mb-4">
+                                Submit Feedback
+                            </h2>
+                            <textarea
+                                className="w-full h-32 p-2 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={feedbackText}
+                                onChange={(e) =>
+                                    setFeedbackText(e.target.value)
+                                }
+                                placeholder="Enter your feedback here..."
+                            />
+                            <div className="mt-4 flex justify-end space-x-4">
+                                <button
+                                    className="px-4 py-2 rounded text-gray-600 hover:bg-gray-100 transition-colors duration-200"
+                                    onClick={() => setFeedbackOpen(false)}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200"
+                                    onClick={handleFeedbackSubmit}
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
+    );
 }
