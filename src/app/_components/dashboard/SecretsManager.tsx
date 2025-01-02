@@ -123,22 +123,15 @@ const SecretsManager = () => {
       setVisibleSecrets((prev) => ({ ...prev, [id]: null }));
     } else {
       try {
-        const response = await fetch(`/api/decrypt-password?secretId=${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error("Failed to decrypt password:", errorText);
-          toast.error("Failed to decrypt password.");
-          return;
+        const decryptedValue = await secretsHelpers.getById(id);
+        if (decryptedValue) {
+          setVisibleSecrets((prev) => ({
+            ...prev,
+            [id]: decryptedValue.value,
+          }));
+        } else {
+          toast.error("Failed to fetch decrypted password.");
         }
-
-        const data = await response.json();
-        setVisibleSecrets((prev) => ({ ...prev, [id]: data.decryptedValue }));
       } catch (error) {
         console.error("Error fetching decrypted password:", error);
         toast.error("Failed to fetch decrypted password.");
