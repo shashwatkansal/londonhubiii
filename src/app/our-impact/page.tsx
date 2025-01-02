@@ -32,7 +32,7 @@ export default async function ImpactPage() {
           <HeroPost
             title={heroPost.title}
             coverImage={heroPost.coverImage}
-            date={new Date(heroPost.date)}
+            date={heroPost.date.toDate()}
             authors={heroPost.authors}
             slug={heroPost.slug}
             excerpt={heroPost.excerpt}

@@ -45,7 +45,7 @@ const CreatePostSection = () => {
       },
     ],
     authorsIndex: [],
-    date: Timestamp.now().toDate().toISOString(),
+    date: Timestamp.now(),
     status: "draft",
   });
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
@@ -200,7 +200,7 @@ const CreatePostSection = () => {
         coverImage: uploadedImageUrl,
         slug,
         status,
-        date: new Date().toISOString(),
+        date: Timestamp.now(),
       };
 
       const existingPost = await postsHelpers.getBySlug(slug);
@@ -237,7 +237,7 @@ const CreatePostSection = () => {
           },
         ],
         authorsIndex: [],
-        date: new Date().toISOString(),
+        date: Timestamp.now(),
         status: "draft",
       });
       setCoverImageFile(null);
