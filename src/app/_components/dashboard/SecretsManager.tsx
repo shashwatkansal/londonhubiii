@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import toast, { Toaster } from "react-hot-toast";
+import { useAuth } from "@/lib/auth";
 import {
   Directory,
   directoryHelpers,
   Secret,
   secretsHelpers,
 } from "@/app/database/models";
-import toast, { Toaster } from "react-hot-toast";
-import { useAuth } from "@/lib/auth";
 
 interface User {
   email: string;
@@ -21,9 +22,15 @@ const SecretsManager = () => {
   const [newSecret, setNewSecret] = useState({
     key: "",
     value: "",
-    visibleTo: [] as string[], // Array of user emails
+    visibleTo: [] as string[],
   });
   const [loading, setLoading] = useState(false);
+  const [visibleSecrets, setVisibleSecrets] = useState<
+    Record<string, string | null>
+  >({});
+  const [loadingSecrets, setLoadingSecrets] = useState<Record<string, boolean>>(
+    {}
+  );
 
   useEffect(() => {
     const fetchSecrets = async () => {
@@ -40,17 +47,18 @@ const SecretsManager = () => {
     };
 
     const fetchUsers = async () => {
-      const allUsers = await directoryHelpers.getAll().catch((error) => {
+      try {
+        const allUsers = await directoryHelpers.getAll();
+        setUsers(
+          allUsers.map((u) => ({
+            email: u.email,
+            name: u.name,
+          }))
+        );
+      } catch (error) {
         console.error("Error fetching users:", error);
         toast.error("Failed to load users.");
-        return [];
-      });
-      setUsers(
-        allUsers.map((u) => ({
-          email: u.email,
-          name: u.name,
-        }))
-      );
+      }
     };
 
     fetchSecrets();
@@ -108,6 +116,38 @@ const SecretsManager = () => {
     }));
   };
 
+  const togglePasswordVisibility = async (id: string) => {
+    setLoadingSecrets((prev) => ({ ...prev, [id]: true }));
+
+    if (visibleSecrets[id]) {
+      setVisibleSecrets((prev) => ({ ...prev, [id]: null }));
+    } else {
+      try {
+        const response = await fetch(`/api/decrypt-password?secretId=${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Failed to decrypt password:", errorText);
+          toast.error("Failed to decrypt password.");
+          return;
+        }
+
+        const data = await response.json();
+        setVisibleSecrets((prev) => ({ ...prev, [id]: data.decryptedValue }));
+      } catch (error) {
+        console.error("Error fetching decrypted password:", error);
+        toast.error("Failed to fetch decrypted password.");
+      }
+    }
+
+    setLoadingSecrets((prev) => ({ ...prev, [id]: false }));
+  };
+
   const userOptions = users.map((u) => ({
     value: u.email,
     label: `${u.name} (${u.email})`,
@@ -118,6 +158,7 @@ const SecretsManager = () => {
       <Toaster />
       <h1 className="text-2xl font-bold mb-4">Secrets Manager</h1>
 
+      {/* Add New Secret */}
       <div className="bg-white shadow rounded p-6 mb-8">
         <h2 className="text-lg font-semibold mb-4">Add New Secret</h2>
         <div className="flex flex-col gap-4">
@@ -161,6 +202,7 @@ const SecretsManager = () => {
         </div>
       </div>
 
+      {/* Existing Secrets */}
       <div className="bg-white shadow rounded p-6">
         <h2 className="text-lg font-semibold mb-4">Existing Secrets</h2>
         <ul className="divide-y divide-gray-200">
@@ -171,7 +213,8 @@ const SecretsManager = () => {
             >
               <div>
                 <p>
-                  <strong>{secret.key}</strong>: {secret.value}
+                  <strong>{secret.key}</strong>:{" "}
+                  {visibleSecrets[secret.id] ?? "••••••••"}
                 </p>
                 <p className="text-sm text-gray-500">
                   Visible to:{" "}
@@ -181,13 +224,22 @@ const SecretsManager = () => {
                     .join(", ") || "No users"}
                 </p>
               </div>
-              <button
-                onClick={() => handleDeleteSecret(secret.id)}
-                disabled={loading}
-                className="text-red-600 hover:text-red-800"
-              >
-                Delete
-              </button>
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={() => togglePasswordVisibility(secret.id)}
+                  disabled={loadingSecrets[secret.id]}
+                  className="text-gray-600 hover:text-gray-800"
+                >
+                  {visibleSecrets[secret.id] ? <FaEyeSlash /> : <FaEye />}
+                </button>
+                <button
+                  onClick={() => handleDeleteSecret(secret.id)}
+                  disabled={loading}
+                  className="text-red-600 hover:text-red-800"
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
         </ul>
