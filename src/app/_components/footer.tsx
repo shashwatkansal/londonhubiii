@@ -159,6 +159,8 @@ export function Footer() {
                                     id="newsletter"
                                     placeholder="Enter your email"
                                     className="px-4 py-2 w-full rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                                    required
+                                    autoComplete="email"
                                 />
                                 <button
                                     type="submit"

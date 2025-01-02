@@ -737,6 +737,8 @@ export default function Index() {
                                         }
                                         placeholder="Enter your email"
                                         className="w-full px-6 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300"
+                                        required
+                                        autoComplete="email"
                                     />
                                 </div>
                                 <button
