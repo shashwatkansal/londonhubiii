@@ -20,7 +20,24 @@ import { db, storage } from "@lib/firebaseConfig";
 import toast, { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
 
-const generateInitials = (name) => {
+interface Profile {
+  displayName: string;
+  bio: string;
+  linkedin: string;
+  instagram: string;
+  toplink: string;
+  profileImageUrl: string;
+  externalViewEnabled: boolean;
+}
+
+interface User {
+    displayName: string | null;
+    email: string;
+    photoURL: string | null;
+    uid: string;
+}
+
+const generateInitials = (name: string): string => {
     const initials = name
         .split(" ")
         .map((n) => n[0])
