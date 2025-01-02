@@ -78,12 +78,6 @@ export default function Header() {
     }
   };
 
-  interface User {
-    displayName?: string | null;
-    email: string | null;
-    photoURL?: string | null;
-  }
-
   const getUserInitials = (user: User): string => {
     if (user.displayName) {
       return user.displayName

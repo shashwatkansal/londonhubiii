@@ -20,30 +20,13 @@ import { db, storage } from "@lib/firebaseConfig";
 import toast, { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
 
-interface Profile {
-  displayName: string;
-  bio: string;
-  linkedin: string;
-  instagram: string;
-  toplink: string;
-  profileImageUrl: string;
-  externalViewEnabled: boolean;
-}
-
-interface User {
-  displayName: string | null;
-  email: string;
-  photoURL: string | null;
-  uid: string;
-}
-
 const generateInitials = (name: string): string => {
-  const initials = name
+  return name
     .split(" ")
     .map((n) => n[0])
     .join("")
-    .toUpperCase();
-  return initials.length > 2 ? initials.slice(0, 2) : initials;
+    .toUpperCase()
+    .slice(0, 2);
 };
 
 const ProfileSection = () => {
@@ -54,14 +37,14 @@ const ProfileSection = () => {
     linkedin: "",
     instagram: "",
     toplink: "",
-    profileImageUrl: user.photoURL || "",
     externalViewEnabled: false,
+    profilepic: user.photoURL || "",
   });
-  const [profileImage, setProfileImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loadUserDetails = async () => {
+      if (!user.email) return;
       try {
         const docRef = doc(db, "directory", user.email);
         const docSnap = await getDoc(docRef);
@@ -74,20 +57,13 @@ const ProfileSection = () => {
       }
     };
 
-    if (user.email) loadUserDetails();
+    loadUserDetails();
   }, [user.email]);
 
-  interface HandleChangeEvent {
-    target: {
-      name: string;
-      value: string;
-      type: string;
-      checked?: boolean;
-    };
-  }
-
-  const handleChange = (e: HandleChangeEvent) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type, checked } = e.target as HTMLInputElement;
     setProfile((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
@@ -95,41 +71,38 @@ const ProfileSection = () => {
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setLoading(true);
-      const file = e.target.files[0];
-      try {
-        const storageRef = ref(storage, `profileImages/${user.uid}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
-        setProfile((prev) => ({ ...prev, profileImageUrl: url }));
-        await updateDoc(doc(db, "directory", user.email), {
-          profilepic: url,
-        });
-        toast.success("Profile image updated!");
-      } catch (error) {
-        console.error("Error uploading profile image: ", error);
-        toast.error("Failed to upload profile image");
-      } finally {
-        setLoading(false);
-      }
+    if (!e.target.files?.[0]) return;
+    setLoading(true);
+    const file = e.target.files[0];
+
+    try {
+      const storageRef = ref(storage, `profileImages/${user.uid}`);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      setProfile((prev) => ({ ...prev, profilepic: url }));
+      await updateDoc(doc(db, "directory", user.email), {
+        profilepic: url,
+      });
+      toast.success("Profile image updated!");
+    } catch (error) {
+      console.error("Error uploading profile image: ", error);
+      toast.error("Failed to upload profile image");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleRemoveImage = async () => {
     setLoading(true);
     try {
-      if (
-        profile.profileImageUrl &&
-        profile.profileImageUrl.includes("firebasestorage")
-      ) {
+      if (profile.profilepic?.includes("firebasestorage")) {
         const storageRef = ref(storage, `profileImages/${user.uid}`);
         await deleteObject(storageRef);
       }
       await updateDoc(doc(db, "directory", user.email), {
-        profilepic: null,
+        profilepic: "",
       });
-      setProfile((prev) => ({ ...prev, profileImageUrl: "" }));
+      setProfile((prev) => ({ ...prev, profilepic: "" }));
       toast.success("Profile image removed!");
     } catch (error) {
       console.error("Error removing profile image: ", error);
@@ -142,7 +115,7 @@ const ProfileSection = () => {
   const handleSaveProfile = async () => {
     setLoading(true);
     try {
-      await updateDoc(doc(db, "directory", user.email), { ...profile });
+      await updateDoc(doc(db, "directory", user.email), profile);
       toast.success("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile: ", error);
@@ -167,11 +140,12 @@ const ProfileSection = () => {
           <div className="flex items-center space-x-4">
             <div className="relative">
               <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                {profile.profileImageUrl ? (
+                {profile.profilepic ? (
                   <Image
-                    src={profile.profileImageUrl}
+                    src={profile.profilepic}
                     alt="Profile"
-                    layout="fill"
+                    width={96}
+                    height={96}
                     objectFit="cover"
                   />
                 ) : (
