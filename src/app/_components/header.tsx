@@ -8,6 +8,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -18,6 +19,7 @@ export default function Header() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [imageError, setImageError] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -89,7 +91,11 @@ export default function Header() {
         <>
             <motion.header
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-                    isScrolled ? "bg-wef-gradient shadow-lg" : "bg-transparent"
+                    pathname === "/"
+                        ? isScrolled
+                            ? "bg-wef-gradient shadow-lg"
+                            : "bg-transparent"
+                        : "bg-wef-gradient shadow-lg"
                 }`}
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
