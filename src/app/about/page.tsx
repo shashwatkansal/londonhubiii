@@ -138,7 +138,7 @@ export default function AboutPage() {
             Ready to help shape the future of London? Become part of the Global
             Shapers London Hub and make an impact today.
           </p>
-          <Link href="/join">
+          <Link href="/join-us">
             <button className="px-8 py-4 bg-yellow-400 text-blue-900 font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl">
               Become a Shaper
             </button>

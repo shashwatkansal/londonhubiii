@@ -118,25 +118,19 @@ export default function Header() {
                     </div>
 
                     <nav className="hidden md:flex space-x-6">
-                        {[
-                            "Home",
-                            "Shapers",
-                            "Our Impact",
-                            "Join Us",
-                            "FAQs",
-                        ].map((item) => (
+                        {Object.entries({
+                            Home: "/",
+                            Shapers: "/shapers",
+                            "Our Impact": "/our-impact",
+                            "Join Us": "#join-us",
+                            FAQs: "/faqs",
+                        }).map(([key, value]) => (
                             <Link
-                                key={item}
-                                href={
-                                    item === "Home"
-                                        ? "/"
-                                        : `/${item
-                                              .toLowerCase()
-                                              .replace(" ", "-")}`
-                                }
+                                key={key}
+                                href={value}
                                 className="text-white hover:text-wef-light-blue transition-colors duration-200"
                             >
-                                {item}
+                                {key}
                             </Link>
                         ))}
                     </nav>
