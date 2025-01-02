@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { useState, useEffect, useRef } from "react";
+import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import { auth, db } from "@lib/firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
@@ -11,10 +11,18 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
-    const [user, setUser] = useState(null);
+    interface User {
+        displayName?: string | null;
+        email: string;
+        photoURL?: string;
+    }
+
+    const [user, setUser] = useState<User | null>(null);
     const [feedbackOpen, setFeedbackOpen] = useState(false);
     const [feedbackText, setFeedbackText] = useState("");
     const [isScrolled, setIsScrolled] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -22,20 +30,32 @@ export default function Header() {
         });
 
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
+            setIsScrolled(window.scrollY > 10);
+        };
+
+        const handleClickOutside = (event) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setDropdownOpen(false);
+            }
         };
 
         window.addEventListener("scroll", handleScroll);
+        document.addEventListener("mousedown", handleClickOutside);
 
         return () => {
             unsubscribe();
             window.removeEventListener("scroll", handleScroll);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
 
     const handleSignOut = async () => {
         await signOut(auth);
         setUser(null);
+        setDropdownOpen(false);
     };
 
     const handleFeedbackSubmit = async () => {
@@ -59,33 +79,22 @@ export default function Header() {
         }
     };
 
+    const getUserInitials = (user: {
+        displayName: string;
+        email: string[];
+    }) => {
+        if (user.displayName) {
+            return user.displayName
+                .split(" ")
+                .map((name) => name[0])
+                .join("")
+                .toUpperCase();
+        }
+        return user.email[0].toUpperCase();
+    };
+
     return (
         <>
-            <AnimatePresence>
-                {user && (
-                    <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="bg-yellow-500 text-black"
-                    >
-                        <div className="container mx-auto px-4 py-2 flex justify-between items-center">
-                            <p className="text-sm">
-                                ð§ This website is currently under development.
-                                Some features may not be fully functional. ð§
-                            </p>
-                            <button
-                                className="bg-blue-500 text-white px-4 py-1 rounded text-sm hover:bg-blue-600 transition-colors duration-200"
-                                onClick={() => setFeedbackOpen(true)}
-                            >
-                                Provide Feedback
-                            </button>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
             <motion.header
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
                     isScrolled ? "bg-wef-gradient shadow-lg" : "bg-transparent"
@@ -135,9 +144,22 @@ export default function Header() {
                     </nav>
 
                     <div className="flex items-center space-x-4">
+                        {user && (
+                            <button
+                                onClick={() => setFeedbackOpen(true)}
+                                className="bg-yellow-500 text-black px-4 py-2 rounded-full text-sm hover:bg-yellow-400 transition-colors duration-200"
+                            >
+                                Provide Feedback
+                            </button>
+                        )}
                         {user ? (
-                            <div className="relative group">
-                                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center cursor-pointer">
+                            <div className="relative" ref={dropdownRef}>
+                                <button
+                                    onClick={() =>
+                                        setDropdownOpen(!dropdownOpen)
+                                    }
+                                    className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center cursor-pointer overflow-hidden"
+                                >
                                     {user.photoURL ? (
                                         <Image
                                             src={user.photoURL}
@@ -147,31 +169,40 @@ export default function Header() {
                                             className="rounded-full"
                                         />
                                     ) : (
-                                        <div className="text-white text-lg font-semibold">
-                                            {user.displayName
-                                                ? user.displayName
-                                                      .charAt(0)
-                                                      .toUpperCase()
-                                                : user.email
-                                                      .charAt(0)
-                                                      .toUpperCase()}
+                                        <div className="w-full h-full bg-blue-500 flex items-center justify-center text-white font-semibold">
+                                            {getUserInitials(user)}
                                         </div>
                                     )}
-                                </div>
-                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden group-hover:block">
-                                    <Link
-                                        href="/hub/dashboard"
-                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    >
-                                        Dashboard
-                                    </Link>
-                                    <button
-                                        onClick={handleSignOut}
-                                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                                    >
-                                        Sign Out
-                                    </button>
-                                </div>
+                                </button>
+                                <AnimatePresence>
+                                    {dropdownOpen && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1"
+                                        >
+                                            <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-200">
+                                                Signed in as
+                                                <br />
+                                                <strong>{user.email}</strong>
+                                            </div>
+                                            <Link
+                                                href="/hub/dashboard"
+                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            >
+                                                Dashboard
+                                            </Link>
+                                            <button
+                                                onClick={handleSignOut}
+                                                className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                            >
+                                                Sign Out
+                                            </button>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </div>
                         ) : (
                             <Link href="/signin">
@@ -226,13 +257,21 @@ export default function Header() {
                                     </Link>
                                 ))}
                                 {user && (
-                                    <Link
-                                        href="/hub/dashboard"
-                                        className="text-white hover:text-wef-light-blue transition-colors duration-200"
-                                        onClick={() => setMenuOpen(false)}
-                                    >
-                                        Dashboard
-                                    </Link>
+                                    <>
+                                        <Link
+                                            href="/hub/dashboard"
+                                            className="text-white hover:text-wef-light-blue transition-colors duration-200"
+                                            onClick={() => setMenuOpen(false)}
+                                        >
+                                            Dashboard
+                                        </Link>
+                                        <button
+                                            onClick={handleSignOut}
+                                            className="text-white hover:text-wef-light-blue transition-colors duration-200 text-left"
+                                        >
+                                            Sign Out
+                                        </button>
+                                    </>
                                 )}
                             </nav>
                         </motion.div>
