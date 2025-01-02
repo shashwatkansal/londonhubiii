@@ -1,3 +1,4 @@
+import { decryptValue, encryptValue } from "@/lib/secrets";
 import { db } from "../../lib/firebaseConfig";
 import {
   collection,
@@ -72,6 +73,14 @@ export interface Subscribers {
   name: string;
 }
 
+export interface Secret {
+  id: string; // Unique identifier for the secret
+  key: string; // Secret key name (e.g., "API_KEY")
+  value: string; // Encrypted value of the secret
+  createdAt: Timestamp; // Creation timestamp
+  updatedAt: Timestamp; // Last updated timestamp
+}
+
 // Collection references
 const directoryRef = collection(
   db,
@@ -83,6 +92,7 @@ const subscribersRef = collection(
   db,
   "subscribers"
 ) as CollectionReference<Subscribers>;
+const secretsRef = collection(db, "secrets") as CollectionReference<Secret>;
 
 // Directory helpers
 export const directoryHelpers = {
@@ -209,6 +219,49 @@ export const subscribersHelpers = {
     if (snapshot.empty) return null;
     const doc = snapshot.docs[0];
     return { ...doc.data() };
+  },
+};
+
+export const secretsHelpers = {
+  async getAll(): Promise<Secret[]> {
+    const snapshot = await getDocs(secretsRef);
+    return snapshot.docs.map((doc) => ({ ...doc.data() }));
+  },
+
+  async update(id: string, data: Partial<Secret>): Promise<void> {
+    const docRef = doc(secretsRef, id);
+    await updateDoc(docRef, { ...data, updatedAt: Timestamp.now() });
+  },
+
+  async delete(id: string): Promise<void> {
+    const docRef = doc(secretsRef, id);
+    await deleteDoc(docRef);
+  },
+
+  async create(
+    data: Omit<Secret, "id" | "createdAt" | "updatedAt">
+  ): Promise<void> {
+    const docRef = doc(secretsRef);
+    const encryptedValue = encryptValue(data.value);
+    const secretData: Secret = {
+      id: docRef.id,
+      key: data.key,
+      value: encryptedValue,
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+    };
+    await setDoc(docRef, secretData);
+  },
+
+  async getById(id: string): Promise<Secret | null> {
+    const docRef = doc(secretsRef, id);
+    const snapshot = await getDoc(docRef);
+    if (!snapshot.exists()) return null;
+    const data = snapshot.data();
+    return {
+      ...data,
+      value: decryptValue(data.value),
+    } as Secret;
   },
 };
 
