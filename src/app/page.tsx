@@ -334,43 +334,165 @@ export default function Index() {
             </section>
 
             {/* Enhanced Team Section */}
-            <section className="py-32 bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900 relative overflow-hidden">
+            {/* Enhanced Team Section */}
+            <section className="py-32 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 relative overflow-hidden">
+                {/* Decorative backgrounds */}
                 <div className="absolute inset-0 bg-[url('/assets/patterns/circuit.svg')] opacity-5"></div>
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-400 rounded-full filter blur-3xl opacity-10 -mr-48 -mt-48"></div>
+                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-400 rounded-full filter blur-3xl opacity-10 -ml-48 -mb-48"></div>
+
                 <motion.div
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
-                    variants={fadeInUpVariants}
-                    className="max-w-6xl mx-auto px-4 relative z-10"
+                    variants={{
+                        hidden: { opacity: 0 },
+                        visible: { opacity: 1 },
+                    }}
+                    className="max-w-7xl mx-auto px-4 relative z-10"
                 >
-                    <h2 className="text-5xl font-extrabold text-white mb-8 text-center">
-                        Meet the Team
-                    </h2>
-                    <p className="text-xl text-gray-300 mb-16 text-center max-w-4xl mx-auto">
-                        Our London Hub is led by a group of passionate
-                        individuals. Meet the leaders driving change.
-                    </p>
-
-                    <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-transparent to-blue-900/20 z-10"></div>
-                        <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                            <Image
-                                src="/assets/images/christmas.jpg"
-                                alt="Christmas Celebration"
-                                width={1200}
-                                height={800}
-                                className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
-                        </div>
+                    <div className="text-center mb-16">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <h2 className="text-6xl font-extrabold text-white mb-8">
+                                Meet Our{" "}
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">
+                                    Change Makers
+                                </span>
+                            </h2>
+                            <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto">
+                                Our London Hub is powered by passionate
+                                individuals committed to creating positive
+                                impact. Together, we're building a better future
+                                for our city.
+                            </p>
+                        </motion.div>
                     </div>
 
-                    <div className="mt-12 text-center">
-                        <Link href="/shapers">
-                            <button className="px-10 py-5 bg-white text-blue-900 font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-                                See All Members
-                            </button>
-                        </Link>
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        {/* Left side - Team Showcase */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="space-y-8"
+                        >
+                            {/* Team Stats */}
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                                    <div className="text-4xl font-bold text-white mb-2">
+                                        25+
+                                    </div>
+                                    <div className="text-gray-300">
+                                        Active Shapers
+                                    </div>
+                                </div>
+                                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                                    <div className="text-4xl font-bold text-white mb-2">
+                                        12+
+                                    </div>
+                                    <div className="text-gray-300">
+                                        Nationalities
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Team Features */}
+                            {[
+                                {
+                                    title: "Diverse Backgrounds",
+                                    description:
+                                        "From tech entrepreneurs to social activists, our members bring unique perspectives to drive change.",
+                                },
+                                {
+                                    title: "United Vision",
+                                    description:
+                                        "Working together to create lasting positive impact in London's communities.",
+                                },
+                                {
+                                    title: "Continuous Growth",
+                                    description:
+                                        "Regular learning sessions and leadership development opportunities for all members.",
+                                },
+                            ].map((feature, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{
+                                        duration: 0.5,
+                                        delay: index * 0.1 + 0.5,
+                                    }}
+                                    className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300"
+                                >
+                                    <h3 className="text-xl font-bold text-white mb-2">
+                                        {feature.title}
+                                    </h3>
+                                    <p className="text-gray-300">
+                                        {feature.description}
+                                    </p>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+
+                        {/* Right side - Image Gallery */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="relative group"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-3xl transform rotate-2 group-hover:rotate-3 transition-transform duration-300"></div>
+
+                            <div className="relative rounded-3xl overflow-hidden transform -rotate-2 group-hover:-rotate-3 transition-transform duration-300">
+                                <div className="aspect-w-16 aspect-h-12">
+                                    <Image
+                                        src="/assets/images/christmas.jpg"
+                                        alt="Team Celebration"
+                                        layout="fill"
+                                        objectFit="cover"
+                                        className="transform group-hover:scale-105 transition-transform duration-700"
+                                    />
+                                </div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-900/50 to-transparent">
+                                    <div className="absolute bottom-0 left-0 right-0 p-8">
+                                        <p className="text-white/90 text-lg mb-4">
+                                            Our team celebrates diversity,
+                                            innovation, and commitment to
+                                            positive change.
+                                        </p>
+                                        <Link href="/shapers">
+                                            <button className="px-8 py-4 bg-white text-blue-900 font-bold rounded-xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2">
+                                                <span>Meet All Members</span>
+                                                <svg
+                                                    className="w-5 h-5"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Floating badges */}
+                            <div className="absolute -top-6 -right-6 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full p-4 shadow-xl transform rotate-12">
+                                <span className="text-white font-bold">
+                                    2024
+                                </span>
+                            </div>
+                        </motion.div>
                     </div>
                 </motion.div>
             </section>
