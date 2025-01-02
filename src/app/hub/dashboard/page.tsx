@@ -13,7 +13,7 @@ import AnalyticsSection from "@components/dashboard/AnalyticsSection";
 import CalendarSection from "@components/dashboard/CalendarSection";
 import LinksSection from "@components/dashboard/LinksSection";
 import CreatePostSection from "@/app/_components/dashboard/CreatePostSection";
-import ManageUsers from "@/app/_components/dashboard/Users";
+import SecretsManager from "@/app/_components/dashboard/SecretsManager";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
 import { requireAuth } from "@/lib/requireAuth";
 
@@ -23,7 +23,7 @@ enum Tab {
   Calendar = "calendar",
   Links = "links",
   CreatePost = "create-post",
-  Users = "users",
+  PasswordManager = "password-manager",
 }
 
 function DashboardPage() {
@@ -77,7 +77,7 @@ function DashboardPage() {
           {activeTab === Tab.Calendar && <CalendarSection />}
           {activeTab === Tab.Links && <LinksSection />}
           {activeTab === Tab.CreatePost && <CreatePostSection />}
-          {activeTab === Tab.Users && isAdmin && <ManageUsers />}
+          {activeTab === Tab.PasswordManager && <SecretsManager />}
         </motion.div>
       </div>
     </div>
@@ -130,6 +130,14 @@ const TabNavigation: React.FC<TabNavigationProps> = ({
           active={activeTab === Tab.CreatePost}
           onClick={() => onTabChange(Tab.CreatePost)}
         />
+        {
+          <TabItem
+            label="Password Manager"
+            icon={<FaPen />}
+            active={activeTab === Tab.PasswordManager}
+            onClick={() => onTabChange(Tab.PasswordManager)}
+          />
+        }
       </div>
     </nav>
   );

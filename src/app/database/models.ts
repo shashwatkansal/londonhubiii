@@ -10,9 +10,6 @@ import {
   deleteDoc,
   query,
   where,
-  DocumentData,
-  QueryDocumentSnapshot,
-  DocumentReference,
   CollectionReference,
   Timestamp,
 } from "firebase/firestore";
@@ -28,7 +25,7 @@ export enum Role {
 export interface Admins {}
 
 export interface Directory {
-  displayName: string;
+  name: string;
   bio: string;
   linkedin: string;
   instagram: string;
@@ -36,6 +33,10 @@ export interface Directory {
   profilepic: string;
   externalViewEnabled: boolean;
   role: Role;
+}
+
+export interface User extends Directory {
+  email: string;
 }
 
 export interface FAQ {
@@ -77,6 +78,7 @@ export interface Secret {
   id: string; // Unique identifier for the secret
   key: string; // Secret key name (e.g., "API_KEY")
   value: string; // Encrypted value of the secret
+  visibleTo: string[]; // Array of user emails or IDs that can view the secret
   createdAt: Timestamp; // Creation timestamp
   updatedAt: Timestamp; // Last updated timestamp
 }
@@ -96,9 +98,9 @@ const secretsRef = collection(db, "secrets") as CollectionReference<Secret>;
 
 // Directory helpers
 export const directoryHelpers = {
-  async getAll(): Promise<Directory[]> {
+  async getAll(): Promise<User[]> {
     const snapshot = await getDocs(directoryRef);
-    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    return snapshot.docs.map((doc) => ({ email: doc.id, ...doc.data() }));
   },
 
   async getById(id: string): Promise<Directory | null> {
@@ -223,8 +225,13 @@ export const subscribersHelpers = {
 };
 
 export const secretsHelpers = {
-  async getAll(): Promise<Secret[]> {
-    const snapshot = await getDocs(secretsRef);
+  async getVisibleToUser(email: string, isAdmin: boolean): Promise<Secret[]> {
+    if (isAdmin) {
+      const snapshot = await getDocs(secretsRef);
+      return snapshot.docs.map((doc) => ({ ...doc.data() }));
+    }
+    const q = query(secretsRef, where("visibleTo", "array-contains", email));
+    const snapshot = await getDocs(q);
     return snapshot.docs.map((doc) => ({ ...doc.data() }));
   },
 
@@ -247,6 +254,7 @@ export const secretsHelpers = {
       id: docRef.id,
       key: data.key,
       value: encryptedValue,
+      visibleTo: data.visibleTo || [],
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now(),
     };

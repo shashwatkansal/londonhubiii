@@ -16,7 +16,7 @@ import { Directory, Role, directoryHelpers } from "@/app/database/models";
 const ProfileSection = () => {
   const { user, isAdmin } = useAuth();
   const [profile, setProfile] = useState<Directory>({
-    displayName: user?.displayName || "",
+    name: user?.displayName || "",
     bio: "",
     linkedin: "",
     instagram: "",
@@ -153,7 +153,7 @@ const ProfileSection = () => {
             </div>
             <div>
               <h2 className="text-2xl font-semibold">
-                {profile.displayName || user?.email}
+                {profile.name || user?.email}
               </h2>
               <p className="text-sm opacity-75">{user?.email}</p>
               <span
