@@ -5,7 +5,7 @@ import { getDocs, collection } from "firebase/firestore";
 import { Disclosure, Transition } from "@headlessui/react";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import { FAQ } from "../database/models";
+import { FAQ, faqHelpers } from "../database/models";
 
 export default function FAQPage() {
   const [faqs, setFaqs] = useState<FAQ[]>([]);
@@ -16,12 +16,14 @@ export default function FAQPage() {
   useEffect(() => {
     const fetchFAQs = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "faqs"));
-        const faqsData: FAQ[] = querySnapshot.docs.map((doc) => ({
-          ...(doc.data() as FAQ),
-          id: doc.id,
-        }));
-        setFaqs(faqsData);
+        faqHelpers
+          .getAll()
+          .then((faqs) => {
+            setFaqs(faqs);
+          })
+          .catch((error) => {
+            console.error("Error fetching FAQs:", error);
+          });
       } catch (error) {
         console.error("Error fetching FAQs:", error);
       } finally {
@@ -34,8 +36,11 @@ export default function FAQPage() {
 
   const categories = [
     "All",
-    ...Array.from(new Set(faqs.map((faq) => faq.category))),
-  ];
+    ...(Array.from(new Set(faqs.map((faq) => faq.category))) as string[]),
+  ].reduce<string[]>((acc, category) => {
+    if (category) acc.push(category);
+    return acc;
+  }, []);
 
   const filteredFAQs = faqs.filter(
     (faq) =>
