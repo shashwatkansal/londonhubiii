@@ -90,6 +90,13 @@ export const directoryHelpers = {
     return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   },
 
+  async getById(id: string): Promise<Directory | null> {
+    const docRef = doc(directoryRef, id);
+    const snapshot = await getDoc(docRef);
+    if (!snapshot.exists()) return null;
+    return { ...snapshot.data() };
+  },
+
   async getByRole(role: Role): Promise<Directory[]> {
     const q = query(directoryRef, where("role", "==", role));
     const snapshot = await getDocs(q);

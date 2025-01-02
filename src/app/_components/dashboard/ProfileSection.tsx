@@ -8,7 +8,6 @@ import {
   FaCamera,
   FaTrash,
 } from "react-icons/fa";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import {
   ref,
   uploadBytes,
@@ -16,9 +15,10 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { useAuth } from "@lib/auth";
-import { db, storage } from "@lib/firebaseConfig";
+import { storage } from "@lib/firebaseConfig";
 import toast, { Toaster } from "react-hot-toast";
 import { motion } from "framer-motion";
+import { Directory, Role, directoryHelpers } from "@/app/database/models";
 
 const generateInitials = (name: string): string => {
   return name
@@ -31,25 +31,26 @@ const generateInitials = (name: string): string => {
 
 const ProfileSection = () => {
   const { user, isAdmin } = useAuth();
-  const [profile, setProfile] = useState<Profile>({
+  const [profile, setProfile] = useState<Directory>({
     displayName: user.displayName || "",
     bio: "",
     linkedin: "",
     instagram: "",
     toplink: "",
-    externalViewEnabled: false,
     profilepic: user.photoURL || "",
+    externalViewEnabled: false,
+    role: Role.Shaper,
   });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loadUserDetails = async () => {
-      if (!user.email) return;
+      if (!user?.email) return;
       try {
-        const docRef = doc(db, "directory", user.email);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setProfile((prev) => ({ ...prev, ...docSnap.data() }));
+        // Using the new directoryHelpers to get user profile
+        const userProfile = await directoryHelpers.getById(user.email);
+        if (userProfile) {
+          setProfile((prev) => ({ ...prev, ...userProfile }));
         }
       } catch (error) {
         console.error("Error loading user details: ", error);
@@ -58,7 +59,7 @@ const ProfileSection = () => {
     };
 
     loadUserDetails();
-  }, [user.email]);
+  }, [user?.email]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -71,7 +72,7 @@ const ProfileSection = () => {
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.[0]) return;
+    if (!user?.email || !e.target.files?.[0]) return;
     setLoading(true);
     const file = e.target.files[0];
 
@@ -79,10 +80,13 @@ const ProfileSection = () => {
       const storageRef = ref(storage, `profileImages/${user.uid}`);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
+
+      // Update both local state and Firebase using directoryHelpers
       setProfile((prev) => ({ ...prev, profilepic: url }));
-      await updateDoc(doc(db, "directory", user.email), {
+      await directoryHelpers.update(user.email, {
         profilepic: url,
       });
+
       toast.success("Profile image updated!");
     } catch (error) {
       console.error("Error uploading profile image: ", error);
@@ -93,16 +97,20 @@ const ProfileSection = () => {
   };
 
   const handleRemoveImage = async () => {
+    if (!user?.email) return;
     setLoading(true);
     try {
       if (profile.profilepic?.includes("firebasestorage")) {
         const storageRef = ref(storage, `profileImages/${user.uid}`);
         await deleteObject(storageRef);
       }
-      await updateDoc(doc(db, "directory", user.email), {
+
+      // Update both local state and Firebase using directoryHelpers
+      await directoryHelpers.update(user.email, {
         profilepic: "",
       });
       setProfile((prev) => ({ ...prev, profilepic: "" }));
+
       toast.success("Profile image removed!");
     } catch (error) {
       console.error("Error removing profile image: ", error);
@@ -113,9 +121,11 @@ const ProfileSection = () => {
   };
 
   const handleSaveProfile = async () => {
+    if (!user?.email) return;
     setLoading(true);
     try {
-      await updateDoc(doc(db, "directory", user.email), profile);
+      // Using directoryHelpers to update the profile
+      await directoryHelpers.update(user.email, profile);
       toast.success("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile: ", error);
@@ -150,7 +160,7 @@ const ProfileSection = () => {
                   />
                 ) : (
                   <span className="text-4xl font-bold text-gray-400">
-                    {generateInitials(profile.displayName || user.email)}
+                    {generateInitials(profile.displayName || user?.email || "")}
                   </span>
                 )}
               </div>
@@ -166,9 +176,9 @@ const ProfileSection = () => {
             </div>
             <div>
               <h2 className="text-2xl font-semibold">
-                {profile.displayName || user.email}
+                {profile.displayName || user?.email}
               </h2>
-              <p className="text-sm opacity-75">{user.email}</p>
+              <p className="text-sm opacity-75">{user?.email}</p>
               {isAdmin && (
                 <span className="bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full mt-1 inline-block">
                   Admin
@@ -223,7 +233,7 @@ const ProfileSection = () => {
                 <input
                   type="url"
                   name={field}
-                  value={String(profile[field as keyof Profile])}
+                  value={String(profile[field as keyof Directory])}
                   onChange={handleChange}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder={`https://${field}.com/your-profile`}
