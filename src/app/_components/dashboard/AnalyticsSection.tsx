@@ -134,9 +134,9 @@ const FAQManagement = () => {
               className="w-full p-2 mb-2 border border-gray-300 rounded-md"
             >
               <option value="general">General</option>
-              <option value="technical">WEF</option>
-              <option value="billing">Recruitment</option>
-              <option value="support">Projects</option>
+              <option value="wef">WEF</option>
+              <option value="recruitment">Recruitment</option>
+              <option value="projects">Projects</option>
             </select>
             <div className="flex justify-end space-x-2">
               <button
