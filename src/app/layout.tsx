@@ -8,6 +8,9 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "react-hot-toast";
+import { HubProvider } from '../features/hub/HubProvider';
+import { ThemeProvider } from '../features/theme/ThemeProvider';
+import { londonHubConfig } from '../config/hubs/london';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -54,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Basic Meta Tags */}
         <meta charSet="UTF-8" />
@@ -142,9 +145,13 @@ export default function RootLayout({
 
         {/* Main Content */}
         <AuthProvider>
-          <main className="min-h-screen" role="main">
-            {children}
-          </main>
+          <HubProvider config={londonHubConfig}>
+            <ThemeProvider>
+              <main className="min-h-screen" role="main">
+                {children}
+              </main>
+            </ThemeProvider>
+          </HubProvider>
         </AuthProvider>
 
         {/* Footer */}
