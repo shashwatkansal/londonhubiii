@@ -183,7 +183,7 @@ export function Footer() {
                     <p className="text-sm mt-2 text-gray-400">
                         Built by{" "}
                         <a
-                            href={SETTINGS.LINKEDIN_URL}
+                            href={"https://www.linkedin.com/in/shashwatkansal/"}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-300 hover:text-blue-200 transition-colors duration-300"
