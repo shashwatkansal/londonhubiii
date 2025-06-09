@@ -14,6 +14,7 @@ import CreatePostSection from "@/app/_components/dashboard/CreatePostSection";
 import SecretsManager from "@/app/_components/dashboard/SecretsManager";
 import { useAdminAccess } from "@/hooks/useAdminAccess";
 import { requireAuth } from "@/lib/requireAuth";
+import UserManagementSection from "@/app/_components/dashboard/UserManagementSection";
 
 enum Tab {
   Profile = "profile",
@@ -22,6 +23,7 @@ enum Tab {
   Links = "links",
   CreatePost = "create-post",
   PasswordManager = "password-manager",
+  UserManagement = "user-management",
 }
 
 function DashboardPage() {
@@ -76,6 +78,7 @@ function DashboardPage() {
           {activeTab === Tab.Links && <LinksSection />}
           {activeTab === Tab.CreatePost && <CreatePostSection />}
           {activeTab === Tab.PasswordManager && <SecretsManager />}
+          {activeTab === Tab.UserManagement && isAdmin && <UserManagementSection />}
         </motion.div>
       </div>
     </div>
@@ -128,14 +131,20 @@ const TabNavigation: React.FC<TabNavigationProps> = ({
           active={activeTab === Tab.CreatePost}
           onClick={() => onTabChange(Tab.CreatePost)}
         />
-        {
+        <TabItem
+          label="Password Manager"
+          icon={<FaPen />}
+          active={activeTab === Tab.PasswordManager}
+          onClick={() => onTabChange(Tab.PasswordManager)}
+        />
+        {isAdmin && (
           <TabItem
-            label="Password Manager"
-            icon={<FaPen />}
-            active={activeTab === Tab.PasswordManager}
-            onClick={() => onTabChange(Tab.PasswordManager)}
+            label="User Management"
+            icon={<FaUser />}
+            active={activeTab === Tab.UserManagement}
+            onClick={() => onTabChange(Tab.UserManagement)}
           />
-        }
+        )}
       </div>
     </nav>
   );

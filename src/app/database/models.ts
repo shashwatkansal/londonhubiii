@@ -118,7 +118,15 @@ export const directoryHelpers = {
 
   async update(id: string, data: Partial<Directory>): Promise<void> {
     const docRef = doc(directoryRef, id);
-    await updateDoc(docRef, data);
+    console.log('[directoryHelpers.update] Updating user:', id, data);
+    try {
+      await updateDoc(docRef, data);
+    } catch (error: any) {
+      console.error('[directoryHelpers.update] updateDoc failed:', error);
+      // Always try setDoc as a fallback
+      console.warn('[directoryHelpers.update] updateDoc failed, using setDoc instead:', id);
+      await setDoc(docRef, data, { merge: true });
+    }
   },
 
   async create(id: string, data: Directory): Promise<void> {
