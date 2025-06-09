@@ -8,6 +8,7 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "react-hot-toast";
+import { LinksProvider } from "@/app/_components/dashboard/LinksContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -130,9 +131,11 @@ export default function RootLayout({
         <Header />
 
         <AuthProvider>
-          <main className="min-h-screen" role="main">
-            {children}
-          </main>
+          <LinksProvider>
+            <main className="min-h-screen" role="main">
+              {children}
+            </main>
+          </LinksProvider>
         </AuthProvider>
           
         <Footer />
