@@ -8,7 +8,6 @@ import { PostHeader } from "@/app/_components/post-header";
 import * as SETTINGS from "@/lib/settings";
 
 export default async function Post({ params }: Params) {
-  // Fetch the post data asynchronously
   const post = await getPostBySlug(params.slug);
 
   if (!post) {
@@ -18,9 +17,7 @@ export default async function Post({ params }: Params) {
 
   return (
     <main className="py-4 md:py-8">
-      {/* <Alert preview={post.preview} /> */}
       <Container>
-        {/* Back to Our Impact Button */}
         <div className="mb-8">
           <Link href="/our-impact">
             <button className="text-blue-600 hover:text-blue-800 font-bold underline">
@@ -49,7 +46,6 @@ type Params = {
   };
 };
 
-// Async function to generate metadata, as we fetch post data asynchronously
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const post = await getPostBySlug(params.slug);
 
@@ -57,20 +53,19 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     return notFound();
   }
 
-  const title = `${post.title} | ${SETTINGS.PROJECT_NAME} Article`;
+  const title = `${post.title} | ${SETTINGS.HUB_NAME} Article`;
 
   return {
     title,
     openGraph: {
       title,
-      images: [post.ogImage?.url || ""], // Ensure the ogImage URL is present
+      images: [post.ogImage?.url || ""],
     },
   };
 }
 
-// Async function to generate static params for dynamic routes
 export async function generateStaticParams() {
-  const posts = await getAllPosts(); // Ensure we await the posts fetching
+  const posts = await getAllPosts();
 
   return posts.map((post) => ({
     slug: post.slug,

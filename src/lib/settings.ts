@@ -1,23 +1,22 @@
-// User-tunable settings for your project. Update these to customize your app.
 
-export const PROJECT_NAME = "ProjectName";
-export const HUB_NAME = "Your Hub Name";
-export const CITY_NAME = "Your City";
+export const HUB_NAME = "London Hub III";
+export const CITY_NAME = "London";
 export const CMS_NAME = `${HUB_NAME} - Official Website`;
-export const EXAMPLE_PATH = "your-project-name";
-export const HOME_OG_IMAGE_URL = "https://yourprojecturl.com/assets/images/og-image.png";
+export const EXAMPLE_PATH = "your-hub-name";
+export const HOME_OG_IMAGE_URL = "https://yourhuburl.com/assets/images/og-image.png";
 
 // Social links
-export const TWITTER_HANDLE = "@yourproject";
-export const FACEBOOK_URL = "https://www.facebook.com/yourproject";
-export const INSTAGRAM_URL = "https://www.instagram.com/yourproject";
-export const LINKEDIN_URL = "https://www.linkedin.com/company/yourproject";
+export const TWITTER_HANDLE = "@londonshapersiii";
+export const FACEBOOK_URL = "https://www.facebook.com/londonshapersIII";
+export const INSTAGRAM_URL = "https://www.instagram.com/londonshapersiii/";
+export const LINKEDIN_URL = "https://www.linkedin.com/company/86249324";
+export const EMAIL_ADDRESS = "londonshapersiii@gmail.com";
 
 // Website URLs
-export const PROJECT_URL = "https://yourprojecturl.com";
+export const HUB_URL = "https://londonshapersiii.com";
 
 // SEO/Meta
-export const META_DESCRIPTION = `Welcome to the official website of ${PROJECT_NAME}. Discover our initiatives, explore our impact, and join us in driving positive change across the world.`;
+export const META_DESCRIPTION = `Welcome to the official website of ${HUB_NAME}. Discover our initiatives, explore our impact, and join us in driving positive change across the world.`;
 export const META_KEYWORDS = "community, social impact, young leaders, global initiatives, change-makers, youth leadership, impact projects";
 
 // Logo paths (relative to /public or external URLs)

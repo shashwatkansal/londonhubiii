@@ -1,7 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { db } from "@lib/firebaseConfig";
-import { getDocs, collection } from "firebase/firestore";
 import { Disclosure, Transition } from "@headlessui/react";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";

@@ -108,8 +108,8 @@ export default function Header() {
           <div className="flex items-center space-x-4">
             <Link href="/">
               <Image
-                src="/assets/images/gs_white_logo.png"
-                alt="Global Shapers Logo"
+                src={SETTINGS.LOGO_MAIN}
+                alt={`${SETTINGS.HUB_NAME} Logo`}
                 width={60}
                 height={40}
                 className="w-16 h-auto"

@@ -101,7 +101,6 @@ export default function SignIn() {
     };
     return (
         <div className="relative flex flex-col items-center justify-center min-h-screen text-white overflow-hidden">
-            {/* Background Video */}
             <div className="absolute inset-0 z-0">
                 <video
                     src="/assets/videos/shapers_stock.mp4"
@@ -111,11 +110,9 @@ export default function SignIn() {
                     className="w-full h-full object-cover opacity-70"
                 />
             </div>
-
-            {/* Overlay */}
+        
             <div className="absolute inset-0 z-10"></div>
 
-            {/* Sign-In Box */}
             <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}

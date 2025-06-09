@@ -4,14 +4,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { FaUser, FaChartBar, FaCalendar, FaLink, FaPen } from "react-icons/fa";
 
-// Hooks
 import { useAuth } from "@/lib/auth";
 
-// Dashboard sections
-import ProfileSection from "@components/dashboard/ProfileSection";
-import AnalyticsSection from "@components/dashboard/AnalyticsSection";
-import CalendarSection from "@components/dashboard/CalendarSection";
-import LinksSection from "@components/dashboard/LinksSection";
+import ProfileSection from "@/app/_components/dashboard/ProfileSection";
+import AnalyticsSection from "@/app/_components/dashboard/AnalyticsSection";
+import CalendarSection from "@/app/_components/dashboard/CalendarSection";
+import LinksSection from "@/app/_components/dashboard/LinksSection";
 import CreatePostSection from "@/app/_components/dashboard/CreatePostSection";
 import SecretsManager from "@/app/_components/dashboard/SecretsManager";
 import { useAdminAccess } from "@/hooks/useAdminAccess";

@@ -2,18 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { PiHandshakeFill, PiProjectorScreenChartLight } from "react-icons/pi";
-import {
-  RiEarthFill,
-  RiGovernmentFill,
-  RiHandHeartFill,
-  RiMentalHealthFill,
-  RiLightbulbFlashFill,
-  RiGroupFill,
-  RiTeamFill,
-  RiRocketFill,
-  RiEyeFill,
-  RiTeamLine,
-} from "react-icons/ri";
+import { RiEarthFill, RiHandHeartFill, RiMentalHealthFill, RiLightbulbFlashFill, RiGroupFill, RiTeamFill, RiGovernmentFill } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import toast, { Toaster } from "react-hot-toast";
 import { FormEvent, useEffect, useRef, useState } from "react";
@@ -178,19 +167,15 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Enhanced Mission Section */}
       <section
         id="mission"
         className="relative py-32 bg-gray-900 text-white overflow-hidden"
       >
-        {/* Overlay Gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-blue-900/80 via-transparent to-blue-900/80"></div>
 
-        {/* Decorative Elements */}
         <div className="absolute -top-10 -left-10 w-80 h-80 bg-blue-500 rounded-full opacity-20 filter blur-3xl animate-pulse"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-700 rounded-full opacity-20 filter blur-3xl animate-pulse delay-2000"></div>
 
-        {/* Content */}
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -209,11 +194,12 @@ export default function Index() {
             </span>
           </h2>
           <p className="text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto mb-12">
-            The {SETTINGS.PROJECT_NAME} Hub is a dynamic network of young,
-            visionary leaders committed to tackling the city's most urgent
+            The {SETTINGS.HUB_NAME} Hub is a dynamic network of young,
+            visionary leaders committed to tackling the city&apos;s most urgent
             challenges. United by a passion for positive change, we drive
             innovative projects and collaborations to create a more inclusive,
-            sustainable, and resilient future for all of {SETTINGS.CITY_NAME}'s diverse
+            sustainable, and resilient future for all of {SETTINGS.CITY_NAME}
+            &apos;s diverse
             communities.
           </p>
           <div className="flex justify-center">
@@ -238,9 +224,7 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Enhanced Impact in London Section */}
       <section className="relative py-32 bg-gradient-to-b from-blue-900 via-indigo-900 to-blue-900 overflow-hidden">
-        {/* Background Decorations */}
         <div className="absolute inset-0">
           <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full opacity-10 -mt-48 -ml-48 filter blur-3xl"></div>
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500 rounded-full opacity-10 -mb-48 -mr-48 filter blur-3xl"></div>
@@ -264,7 +248,7 @@ export default function Index() {
             </span>
           </h2>
           <p className="text-xl text-blue-100 mb-16 text-center max-w-4xl mx-auto">
-            Driving transformative change across London's diverse communities
+            Driving transformative change across London&apos;s diverse communities
             through innovation, collaboration, and dedication.
           </p>
 
@@ -281,7 +265,7 @@ export default function Index() {
                 title: "Local Projects Ongoing",
                 value: "6",
                 description:
-                  "Innovative solutions addressing London's key challenges.",
+                  "Innovative solutions addressing London&apos;s key challenges.",
                 icon: (
                   <PiProjectorScreenChartLight className="w-16 h-16 text-green-400" />
                 ),
@@ -329,9 +313,7 @@ export default function Index() {
         </motion.div>
       </section>
 
-      {/* Enhanced Impact Areas Section with Dark Theme */}
       <section className="relative py-32 bg-gradient-to-b from-blue-900 via-indigo-900 to-blue-800 overflow-hidden">
-        {/* Background Decorations */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-blue-800 opacity-50"></div>
           <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full opacity-10 -mt-48 -ml-48 filter blur-3xl"></div>
@@ -440,9 +422,7 @@ export default function Index() {
         </motion.div>
       </section>
 
-      {/* Simplified Meet Our Change Makers Section */}
       <section className="relative py-32 bg-gradient-to-b from-white via-blue-50 to-white overflow-hidden">
-        {/* Background Decorations */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-white to-purple-100 opacity-50"></div>
           <div className="absolute top-0 left-0 w-96 h-96 bg-blue-300 rounded-full opacity-20 -mt-48 -ml-48 filter blur-3xl"></div>
@@ -460,7 +440,6 @@ export default function Index() {
           className="relative max-w-7xl mx-auto px-4 z-10"
         >
           <div className="flex flex-col lg:flex-row items-center gap-12">
-            {/* Text Content */}
             <div className="lg:w-1/2">
               <h2 className="text-5xl font-extrabold text-blue-900 mb-8">
                 Meet Our{" "}
@@ -470,10 +449,10 @@ export default function Index() {
               </h2>
               <p className="text-xl text-gray-700 mb-8">
                 Our London Hub is powered by passionate individuals committed to
-                creating positive impact. Together, we're building a better
+                creating positive impact. Together, we&apos;re building a better
                 future for our city. From diverse backgrounds and expertise, our
-                team brings innovative solutions to London's most pressing
-                challenges.
+                team brings innovative solutions to London&apos;s most pressing
+                challenges.{" "}
               </p>
               <Link href="/shapers">
                 <motion.button
@@ -486,7 +465,6 @@ export default function Index() {
               </Link>
             </div>
 
-            {/* Image */}
             <motion.div
               className="lg:w-1/2"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -509,9 +487,7 @@ export default function Index() {
         </motion.div>
       </section>
 
-      {/* Enhanced Newsletter Section */}
       <section className="py-32 bg-gradient-to-br from-white via-blue-50 to-white relative overflow-hidden">
-        {/* Background decoration */}
         <div className="absolute inset-0 bg-[url('/assets/patterns/grid.svg')] opacity-5"></div>
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-200 rounded-full filter blur-3xl opacity-20 -mr-48 -mt-48"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-200 rounded-full filter blur-3xl opacity-20 -ml-48 -mb-48"></div>
@@ -542,13 +518,12 @@ export default function Index() {
               className="text-xl text-gray-600 max-w-3xl mx-auto"
             >
               Stay updated with our latest initiatives, impact stories, and
-              events. Discover how we're making a difference in London, one
+              events. Discover how we&apos;re making a difference in London, one
               story at a time.
             </motion.p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left side - Newsletter Preview */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -568,7 +543,6 @@ export default function Index() {
               </div>
             </motion.div>
 
-            {/* Right side - Features */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -580,7 +554,7 @@ export default function Index() {
                   icon: "📈",
                   title: "Impact Updates",
                   description:
-                    "Quarterly insights into our projects and their real-world impact on London's communities.",
+                    "Quarterly insights into our projects and their real-world impact on London&apos;s communities.",
                 },
                 {
                   icon: "🎯",
@@ -595,7 +569,7 @@ export default function Index() {
                     "Information about upcoming events and ways to connect with fellow change-makers.",
                 },
               ].map((feature, index) => (
-                <motion.div
+                <motion.div 
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -662,7 +636,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Enhanced Stay Connected Section */}
       <section className="py-32 bg-gradient-to-b from-blue-600 via-blue-700 to-blue-800 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/assets/patterns/circuit.svg')] opacity-5"></div>
         <motion.div
@@ -713,7 +686,6 @@ export default function Index() {
         </motion.div>
       </section>
 
-      {/* Enhanced Call to Action Section */}
       <section
         id="join-us"
         ref={callToActionRef}
@@ -749,7 +721,7 @@ export default function Index() {
                 )
               }
               className="px-10 py-5 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-              aria-label="Become a Shaper"
+              aria-label={`Become a Shaper in ${SETTINGS.CITY_NAME}`}
             >
               Become a Shaper
             </button>
@@ -759,9 +731,9 @@ export default function Index() {
             >
               <button
                 className="px-10 py-5 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-                aria-label="Transfer to London"
+                aria-label={`Transfer to ${SETTINGS.CITY_NAME}`}
               >
-                Transfer to London
+                Transfer to {SETTINGS.CITY_NAME}
               </button>
             </Link>
           </div>

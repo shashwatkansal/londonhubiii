@@ -12,15 +12,15 @@ const config: Config = {
       {
         light: {
           ...require("daisyui/src/theming/themes")["light"],
-          primary: "#003C71", // Deep blue for strong brand presence
-          secondary: "#89CFF0", // Softer light blue for highlights
-          accent: "#3A3A3A", // Dark gray for accents
-          neutral: "#2C2C2C", // Dark neutral for backgrounds
-          "base-100": "#FFFFFF", // White for base backgrounds
-          info: "#1E90FF", // Bright blue for info highlights
-          success: "#28A745", // Green for success messages
-          warning: "#FFC107", // Yellow for warnings
-          error: "#DC3545", // Red for errors
+          primary: "#003C71",
+          secondary: "#89CFF0",
+          accent: "#3A3A3A",
+          neutral: "#2C2C2C",
+          "base-100": "#FFFFFF",
+          info: "#1E90FF",
+          success: "#28A745",
+          warning: "#FFC107",
+          error: "#DC3545",
         },
       }
     ]

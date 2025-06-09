@@ -97,15 +97,15 @@ export function Footer() {
                             <li className="flex items-center">
                                 <FaEnvelope className="mr-2" />
                                 <a
-                                    href="mailto:londonshapersiii@gmail.com"
+                                    href={`mailto:${SETTINGS.EMAIL_ADDRESS}`}
                                     className="hover:text-blue-300 transition-colors duration-300"
                                 >
-                                    londonshapersiii@gmail.com
+                                    {SETTINGS.EMAIL_ADDRESS}
                                 </a>
                             </li>
                             <li className="flex items-center">
                                 <FaMapMarkerAlt className="mr-2" />
-                                <span>London, United Kingdom</span>
+                                <span>{SETTINGS.CITY_NAME}, United Kingdom</span>
                             </li>
                         </ul>
                     </motion.div>
@@ -124,19 +124,19 @@ export function Footer() {
                             {[
                                 {
                                     icon: FaFacebookF,
-                                    href: "https://www.facebook.com/londonshapersIII",
+                                    href: SETTINGS.FACEBOOK_URL,
                                 },
                                 {
                                     icon: FaTwitter,
-                                    href: "https://twitter.com/globalshapers",
+                                    href: SETTINGS.TWITTER_HANDLE,
                                 },
                                 {
                                     icon: FaLinkedinIn,
-                                    href: "https://www.linkedin.com/company/86249324",
+                                    href: SETTINGS.LINKEDIN_URL,
                                 },
                                 {
                                     icon: FaInstagram,
-                                    href: "https://www.instagram.com/londonshapersiii/",
+                                    href: SETTINGS.INSTAGRAM_URL,
                                 },
                             ].map((social, index) => (
                                 <a
@@ -183,7 +183,7 @@ export function Footer() {
                     <p className="text-sm mt-2 text-gray-400">
                         Built by{" "}
                         <a
-                            href="https://www.linkedin.com/in/shashwatkansal/"
+                            href={SETTINGS.LINKEDIN_URL}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-300 hover:text-blue-200 transition-colors duration-300"
