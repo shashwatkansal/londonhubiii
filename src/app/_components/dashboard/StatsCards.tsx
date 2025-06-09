@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from 'react';
 import { directoryHelpers, postsHelpers, User, Post } from '@/app/database/models';
 

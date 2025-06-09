@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from 'react';
 import { directoryHelpers, User, Role } from '@/app/database/models';
 import Tabs from './Tabs';

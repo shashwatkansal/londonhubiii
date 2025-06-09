@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from 'react';
 import { postsHelpers, Post as FirebasePost } from '@/app/database/models';
 import Tabs from './Tabs';

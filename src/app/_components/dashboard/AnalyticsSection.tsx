@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import { FaTrashAlt, FaEdit, FaPlus, FaSave, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";

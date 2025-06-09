@@ -11,6 +11,7 @@ import { db } from "@/lib/firebaseConfig";
 import { ReactTyped } from "react-typed";
 import { motion, useScroll, useTransform } from "framer-motion";
 import * as SETTINGS from "@/lib/settings";
+import { getAllSiteSettings } from "@/lib/siteSettings";
 
 export default function Index() {
   const callToActionRef = useRef<null | HTMLElement>(null);
@@ -18,6 +19,8 @@ export default function Index() {
   const [isVisible, setIsVisible] = useState(false);
   const { scrollY } = useScroll();
   const opacity = useTransform(scrollY, [0, 300], [1, 0.5]);
+  const [siteSettings, setSiteSettings] = useState<Record<string, string>>({});
+  const [settingsLoading, setSettingsLoading] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +33,13 @@ export default function Index() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    getAllSiteSettings().then((data) => {
+      setSiteSettings(data);
+      setSettingsLoading(false);
+    });
   }, []);
 
   const handleSubscribe = async (event: FormEvent<HTMLFormElement>) => {
@@ -598,7 +608,7 @@ export default function Index() {
                 className="mt-8"
               >
                 <Link
-                  href="https://www.canva.com/design/DAGLfOjusxQ/5upjRZAU6-L_vDVfJV686A/view"
+                  href={siteSettings.newsletter_url || "https://www.canva.com/design/DAGLfOjusxQ/5upjRZAU6-L_vDVfJV686A/view"}
                   target="_blank"
                 >
                   <button className="w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2">
@@ -710,7 +720,7 @@ export default function Index() {
             <button
               onClick={() =>
                 toast.error(
-                  "Unfortunately, the applications have closed for this year. Do stay tuned for our next recruitment round!",
+                  siteSettings.error_404_text || "Unfortunately, the applications have closed for this year. Do stay tuned for our next recruitment round!",
                   {
                     duration: 5000,
                     style: {
@@ -726,7 +736,7 @@ export default function Index() {
               Become a Shaper
             </button>
             <Link
-              href="https://docs.google.com/forms/d/e/1FAIpQLScdWAWxr--Z4_c9piHxW8wZSitKUcRquNp4VKVtb3HUFcbSGw/viewform"
+              href={siteSettings.join_form_url || "https://docs.google.com/forms/d/e/1FAIpQLScdWAWxr--Z4_c9piHxW8wZSitKUcRquNp4VKVtb3HUFcbSGw/viewform"}
               target="_blank"
             >
               <button

@@ -1,3 +1,4 @@
+"use client";
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { FaUsers, FaFileAlt, FaChartBar, FaQuestionCircle, FaCog, FaBars, FaChevronLeft } from 'react-icons/fa';

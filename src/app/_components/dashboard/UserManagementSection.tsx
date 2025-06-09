@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { directoryHelpers, Role, User } from "@/app/database/models";
 import toast from "react-hot-toast";
@@ -9,7 +10,7 @@ import EmptyState from './EmptyState';
 const roleOptions = Object.values(Role);
 
 const UserManagementSection = ({ users: propUsers }: { users?: User[] }) => {
-  const [users, setUsers] = useState<User[]>(propUsers || []);
+  const [users, setUsers] = useState<User[]>(propUsers || []  );
   const [loading, setLoading] = useState(false);
   const [curatorEmail, setCuratorEmail] = useState<string | null>(null);
   const [editIndex, setEditIndex] = useState<number | null>(null);

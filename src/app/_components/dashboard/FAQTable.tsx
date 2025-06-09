@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from 'react';
 import { FAQ, faqHelpers } from '@/app/database/models';
 import { FaEdit, FaTrash, FaSave, FaTimes } from 'react-icons/fa';

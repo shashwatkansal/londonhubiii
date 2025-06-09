@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from 'react';
 import DashboardLayout from '../../_components/dashboard/DashboardLayout';
 import { auth } from '@/lib/firebaseConfig';

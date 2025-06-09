@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from 'react';
 import { User } from '@/app/database/models';
 import { FaLinkedin, FaInstagram, FaLink, FaTimes } from 'react-icons/fa';

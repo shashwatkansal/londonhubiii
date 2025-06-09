@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from 'react';
 import Tabs from './Tabs';
 import StatsCards from './StatsCards';

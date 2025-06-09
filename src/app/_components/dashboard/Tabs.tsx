@@ -1,4 +1,6 @@
+"use client";
 import { useState, useRef } from 'react';
+import SiteSettingsSection from "@/app/_components/dashboard/SiteSettingsSection";
 
 interface Tab {
   label: string;
@@ -59,7 +61,7 @@ const Tabs = ({ tabs, initialTab = 0 }: TabsProps) => {
         className="focus:outline-none"
         tabIndex={0}
       >
-        {tabs[selected].content}
+        {selected === tabs.length - 1 ? <SiteSettingsSection /> : tabs[selected].content}
       </div>
     </div>
   );
