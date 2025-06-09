@@ -71,3 +71,35 @@ body {
   background-color: #ff7f50;
   color: #ffffff;
 }
+
+:focus {
+  outline: 2px solid #2563eb !important; /* Tailwind blue-600 */
+  outline-offset: 2px;
+}
+
+/* Improve color contrast for accessibility */
+.bg-blue-500, .bg-blue-600, .bg-blue-700 {
+  color: #fff !important;
+}
+
+/* Visually hide skip link except when focused */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.focus\:not-sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}

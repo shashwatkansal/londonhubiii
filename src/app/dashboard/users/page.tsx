@@ -1,9 +1,9 @@
 import DashboardLayout from '../../_components/dashboard/DashboardLayout';
-import UserManagementSection from '../../_components/dashboard/UserManagementSection';
+import UserManagementTabs from '../../_components/dashboard/UserManagementTabs';
 
 const UsersPage = () => (
   <DashboardLayout>
-    <UserManagementSection />
+    <UserManagementTabs />
   </DashboardLayout>
 );
 

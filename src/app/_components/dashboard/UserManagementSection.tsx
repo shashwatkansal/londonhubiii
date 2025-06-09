@@ -8,8 +8,8 @@ import EmptyState from './EmptyState';
 
 const roleOptions = Object.values(Role);
 
-const UserManagementSection = () => {
-  const [users, setUsers] = useState<User[]>([]);
+const UserManagementSection = ({ users: propUsers }: { users?: User[] }) => {
+  const [users, setUsers] = useState<User[]>(propUsers || []);
   const [loading, setLoading] = useState(false);
   const [curatorEmail, setCuratorEmail] = useState<string | null>(null);
   const [editIndex, setEditIndex] = useState<number | null>(null);
@@ -23,8 +23,13 @@ const UserManagementSection = () => {
   const [selected, setSelected] = useState<string[]>([]);
 
   useEffect(() => {
+    if (propUsers) {
+      setUsers(propUsers);
+      setLoading(false);
+      return;
+    }
     fetchUsers();
-  }, []);
+  }, [propUsers]);
 
   const fetchUsers = async () => {
     setLoading(true);
