@@ -70,8 +70,8 @@ def save_users_to_firestore(users):
 
 
 def main():
-    # Paths to your service account key and data file
-    service_account_key_path = './london-hub-iii-firebase-adminsdk-n91zy-096c9e6f03.json'
+    # Path to your Firebase service account key (replace with your own)
+    service_account_key_path = './your-firebase-adminsdk.json'
 
     # Initialize Firebase
     initialize_firebase(service_account_key_path)

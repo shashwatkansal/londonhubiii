@@ -3,6 +3,7 @@ import { db } from "@lib/firebaseConfig"; // Firebase Firestore configuration
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { FaExternalLinkAlt, FaInstagram, FaLinkedin } from "react-icons/fa";
+import * as SETTINGS from "@/lib/settings";
 
 // Modal Component
 const Modal = ({
@@ -193,7 +194,7 @@ export default function ShapersPage() {
             instagram: data.instagram || "",
             toplink: data.toplink || "",
             profilepic: data.profilepic || "/default-profile.png", // Default image
-            role: data.role || "Shaper", // Default to "Shaper" if no role is defined
+            role: data.role || SETTINGS.SHAPER_DEFAULT_ROLE, // Default to settings
             externalViewEnabled: data.externalViewEnabled || false,
           });
         });
@@ -212,7 +213,7 @@ export default function ShapersPage() {
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-gray-100 py-10 px-4">
       <div className="container mx-auto">
         <h1 className="text-5xl font-bold text-center mb-12 text-blue-900 animate-fade-in-down transition-transform duration-200">
-          Meet Our Shapers
+          {SETTINGS.SHAPERS_PAGE_HEADING}
         </h1>
 
         {/* Loading state */}

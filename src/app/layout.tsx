@@ -1,6 +1,6 @@
 import Footer from "@/app/_components/footer";
 import Header from "@/app/_components/header";
-import { CMS_NAME, HOME_OG_IMAGE_URL } from "@/lib/constants";
+import * as SETTINGS from "@/lib/settings";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import cn from "classnames";
@@ -12,39 +12,36 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: `Global Shapers London Hub III`,
-  description: `Welcome to the official website of Global Shapers London Hub III. Discover our initiatives, explore our impact, and join us in driving positive change across the world.`,
-  keywords:
-    "Global Shapers, London Hub, World Economic Forum, community, social impact, young leaders, global initiatives, change-makers, youth leadership, impact projects",
-  authors: [{ name: "Global Shapers London Hub III" }],
+  title: SETTINGS.PROJECT_NAME,
+  description: SETTINGS.META_DESCRIPTION,
+  keywords: SETTINGS.META_KEYWORDS,
+  authors: [{ name: SETTINGS.PROJECT_NAME }],
   openGraph: {
-    title: "Global Shapers London Hub III",
-    description:
-      "Discover the initiatives and impact of Global Shapers London Hub III, a community of young leaders driving global change.",
-    url: "https://londoniiishapers.com",
+    title: SETTINGS.PROJECT_NAME,
+    description: SETTINGS.META_DESCRIPTION,
+    url: SETTINGS.PROJECT_URL,
     type: "website",
     images: [
       {
-        url: HOME_OG_IMAGE_URL,
+        url: SETTINGS.HOME_OG_IMAGE_URL,
         width: 1200,
         height: 630,
-        alt: "Global Shapers London Hub III",
+        alt: SETTINGS.PROJECT_NAME,
       },
     ],
     locale: "en_US",
-    siteName: "Global Shapers London Hub III",
+    siteName: SETTINGS.PROJECT_NAME,
   },
   twitter: {
     card: "summary_large_image",
-    site: "@londonshapers3",
-    title: "Global Shapers London Hub III",
-    description:
-      "Join Global Shapers London Hub III in making a global impact.",
-    images: HOME_OG_IMAGE_URL,
+    site: SETTINGS.TWITTER_HANDLE,
+    title: SETTINGS.PROJECT_NAME,
+    description: SETTINGS.META_DESCRIPTION,
+    images: SETTINGS.HOME_OG_IMAGE_URL,
   },
   robots: "index, follow",
   alternates: {
-    canonical: "https://londoniiishapers.com",
+    canonical: SETTINGS.PROJECT_URL,
   },
 };
 
@@ -99,7 +96,7 @@ export default function RootLayout({
         <link
           rel="alternate"
           hrefLang="en"
-          href="https://londoniiishapers.com"
+          href="https://yourprojecturl.com"
         />
 
         {/* Performance Optimization */}
@@ -114,16 +111,16 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "Global Shapers London Hub III",
-              url: "https://londoniiishapers.com",
-              logo: HOME_OG_IMAGE_URL,
+              name: SETTINGS.PROJECT_NAME,
+              url: SETTINGS.PROJECT_URL,
+              logo: SETTINGS.HOME_OG_IMAGE_URL,
               sameAs: [
-                "https://twitter.com/londonshapers3",
-                "https://www.facebook.com/londonshapers",
-                "https://www.instagram.com/londonshapers3",
+                SETTINGS.TWITTER_HANDLE.startsWith("@") ? `https://twitter.com/${SETTINGS.TWITTER_HANDLE.slice(1)}` : SETTINGS.TWITTER_HANDLE,
+                SETTINGS.FACEBOOK_URL,
+                SETTINGS.INSTAGRAM_URL,
+                SETTINGS.LINKEDIN_URL,
               ],
-              description:
-                "Discover the initiatives and impact of Global Shapers London Hub III, a community of young leaders driving global change.",
+              description: SETTINGS.META_DESCRIPTION,
             }),
           }}
         />

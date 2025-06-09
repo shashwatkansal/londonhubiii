@@ -1,4 +1,4 @@
-import { CMS_NAME } from "@/lib/constants";
+import { CMS_NAME } from "@/lib/settings";
 
 export function Intro() {
   return (

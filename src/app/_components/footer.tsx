@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import * as SETTINGS from "@/lib/settings";
 
 export function Footer() {
     const currentYear = new Date().getFullYear();
@@ -28,21 +29,21 @@ export function Footer() {
                     >
                         <div className="flex space-x-4">
                             <Image
-                                src="/assets/images/gs_white_logo.png"
-                                alt="Global Shapers Logo"
+                                src={SETTINGS.LOGO_MAIN}
+                                alt="Main Logo"
                                 width={80}
                                 height={80}
                                 className="w-20 h-auto"
                             />
                             <Image
-                                src="/assets/images/wef_logo.png"
-                                alt="World Economic Forum Logo"
+                                src={SETTINGS.LOGO_SECONDARY}
+                                alt="Secondary Logo"
                                 width={80}
                                 height={80}
                                 className="w-20 h-auto"
                             />
                         </div>
-                        <h3 className="text-2xl font-bold">London Hub III</h3>
+                        <h3 className="text-2xl font-bold">{SETTINGS.HUB_NAME}</h3>
                         <p className="text-sm text-gray-300">
                             An initiative of the World Economic Forum, the
                             Global Shapers Community is a network of young

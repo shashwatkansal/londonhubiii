@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { User } from "firebase/auth";
+import * as SETTINGS from "@/lib/settings";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -115,7 +116,7 @@ export default function Header() {
               />
             </Link>
             <div className="text-xl md:text-2xl lg:text-3xl font-bold text-white">
-              London Hub III
+              {SETTINGS.HUB_NAME}
             </div>
           </div>
 

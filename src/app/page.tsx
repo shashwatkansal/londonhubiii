@@ -21,6 +21,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import { ReactTyped } from "react-typed";
 import { motion, useScroll, useTransform } from "framer-motion";
+import * as SETTINGS from "@/lib/settings";
 
 export default function Index() {
   const callToActionRef = useRef<null | HTMLElement>(null);
@@ -204,15 +205,15 @@ export default function Index() {
           <h2 className="text-5xl md:text-7xl font-extrabold mb-8">
             Our Mission in{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-              London
+              {SETTINGS.CITY_NAME}
             </span>
           </h2>
           <p className="text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto mb-12">
-            The Global Shapers London III Hub is a dynamic network of young,
+            The {SETTINGS.PROJECT_NAME} Hub is a dynamic network of young,
             visionary leaders committed to tackling the city's most urgent
             challenges. United by a passion for positive change, we drive
             innovative projects and collaborations to create a more inclusive,
-            sustainable, and resilient future for all of London's diverse
+            sustainable, and resilient future for all of {SETTINGS.CITY_NAME}'s diverse
             communities.
           </p>
           <div className="flex justify-center">

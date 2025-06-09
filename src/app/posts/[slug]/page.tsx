@@ -5,6 +5,7 @@ import { getAllPosts, getPostBySlug } from "@/lib/api";
 import Container from "@/app/_components/container";
 import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
+import * as SETTINGS from "@/lib/settings";
 
 export default async function Post({ params }: Params) {
   // Fetch the post data asynchronously
@@ -56,7 +57,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     return notFound();
   }
 
-  const title = `${post.title} | Global Shapers London Hub III Article`;
+  const title = `${post.title} | ${SETTINGS.PROJECT_NAME} Article`;
 
   return {
     title,

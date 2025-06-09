@@ -3,6 +3,7 @@ import { MoreStories } from "@/app/_components/more-stories";
 import { SectionSeparator } from "@/app/_components/section-separator";
 import { getAllPosts } from "@/lib/api";
 import { Post } from "../database/models";
+import * as SETTINGS from "@/lib/settings";
 
 // This component fetches posts on the server and renders them dynamically
 export default async function ImpactPage() {
@@ -24,7 +25,7 @@ export default async function ImpactPage() {
     <main>
       <section className="container mx-auto py-10 px-4">
         <h1 className="text-7xl font-extrabold mb-8 text-center text-wef-blue py-10">
-          Our Impact & Projects
+          {SETTINGS.IMPACT_PAGE_HEADING}
         </h1>
 
         {/* Render Hero Post if available */}
