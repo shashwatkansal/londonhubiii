@@ -1,12 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { FaUser, FaChartBar, FaCalendar, FaLink, FaPen, FaKey, FaUsers, FaBars, FaTimes } from "react-icons/fa";
 
 import { useAuth } from "@/lib/auth";
 import ProfileSection from "@/app/_components/dashboard/ProfileSection";
-import AnalyticsSection from "@/app/_components/dashboard/AnalyticsSection";
+import FAQsSection from "@/app/_components/dashboard/FAQsSection";
 import CalendarSection from "@/app/_components/dashboard/CalendarSection";
 import LinksSection from "@/app/_components/dashboard/LinksSection";
 import CreatePostSection from "@/app/_components/dashboard/CreatePostSection";
@@ -15,15 +15,20 @@ import { useAdminAccess } from "@/hooks/useAdminAccess";
 import { requireAuth } from "@/lib/requireAuth";
 import UserManagementSection from "@/app/_components/dashboard/UserManagementSection";
 import Topbar from "@/app/_components/dashboard/Topbar";
+import AdvancedCollectionManager from "@/app/_components/dashboard/AdvancedCollectionManager";
+import { adminConverter, userConverter, faqConverter, postConverter, secretConverter, siteSettingConverter, subscribersConverter } from "@/app/database/models";
+import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebaseConfig";
 
 const TABS = [
   { key: "profile", label: "Profile", icon: <FaUser />, admin: false },
-  { key: "analytics", label: "Analytics", icon: <FaChartBar />, admin: true },
+  { key: "faqs", label: "FAQs", icon: <FaChartBar />, admin: true },
   { key: "calendar", label: "Calendar", icon: <FaCalendar />, admin: false },
   { key: "links", label: "Links", icon: <FaLink />, admin: false },
   { key: "create-post", label: "Create Post", icon: <FaPen />, admin: false },
   { key: "password-manager", label: "Password Manager", icon: <FaKey />, admin: false },
   { key: "user-management", label: "User Management", icon: <FaUsers />, admin: true },
+  { key: "collections", label: "Settings", icon: <FaKey />, admin: true },
 ];
 
 function DashboardPage() {
@@ -32,9 +37,22 @@ function DashboardPage() {
   const initialTab = searchParams.get("tab") || "profile";
   const [activeTab, setActiveTab] = useState(initialTab);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [adminEmails, setAdminEmails] = useState<string[]>([]);
 
   const { isAdmin, loading: adminLoading } = useAdminAccess();
   const { user, loading: authLoading } = useAuth();
+
+  useEffect(() => {
+    // Fetch admin emails for badges/context actions
+    const fetchAdmins = async () => {
+      const adminsRef = collection(db, "admins").withConverter(adminConverter);
+      const snapshot = await getDocs(adminsRef);
+      setAdminEmails(snapshot.docs.map(doc => doc.id));
+    };
+    fetchAdmins();
+  }, []);
+
+  const isAdminUser = (email: string) => adminEmails.includes(email);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -162,12 +180,88 @@ function DashboardPage() {
             aria-live="polite"
           >
             {activeTab === "profile" && <ProfileSection />}
-            {activeTab === "analytics" && isAdmin && <AnalyticsSection />}
+            {activeTab === "faqs" && isAdmin && <FAQsSection />}
             {activeTab === "calendar" && <CalendarSection />}
             {activeTab === "links" && <LinksSection />}
             {activeTab === "create-post" && <CreatePostSection />}
             {activeTab === "password-manager" && <SecretsManager />}
             {activeTab === "user-management" && isAdmin && <UserManagementSection />}
+            {activeTab === "collections" && isAdmin && (
+              <>
+                {/* Directory (Users) */}
+                <AdvancedCollectionManager
+                  collectionName="directory"
+                  fields={[
+                    { key: "name", label: "Name", type: "text" },
+                    { key: "email", label: "Email", type: "email" },
+                    { key: "role", label: "Role", type: "text" }
+                  ]}
+                  converter={userConverter}
+                  idField="email"
+                  specialBadges={adminEmails.length > 0 ? [
+                    { key: "email", value: true, label: "Admin", color: "green" }
+                  ] : []}
+                  contextActions={[
+                    {
+                      label: (row) => isAdminUser(row.email) ? "Remove Admin" : "Make Admin",
+                      show: () => true,
+                      color: "blue",
+                      onClick: async (row) => {
+                        const adminsRef = collection(db, "admins").withConverter(adminConverter);
+                        const adminDocRef = doc(adminsRef, row.email);
+                        if (isAdminUser(row.email)) {
+                          await deleteDoc(adminDocRef);
+                        } else {
+                          await setDoc(adminDocRef, { email: row.email });
+                        }
+                        // Refresh admin list
+                        const snapshot = await getDocs(adminsRef);
+                        setAdminEmails(snapshot.docs.map(doc => doc.id));
+                      },
+                      dynamicColor: (row) => isAdminUser(row.email) ? "red" : "blue"
+                    }
+                  ]}
+                />
+                {/* Admins */}
+                <AdvancedCollectionManager
+                  collectionName="admins"
+                  fields={[{ key: "email", label: "Email", type: "email" }]}
+                  converter={adminConverter}
+                  idField="email"
+                />
+                {/* FAQs */}
+                <AdvancedCollectionManager
+                  collectionName="secrets"
+                  fields={[
+                    { key: "key", label: "Key", type: "text" },
+                    { key: "value", label: "Value", type: "text" }
+                  ]}
+                  converter={secretConverter}
+                  idField="key"
+                />
+                {/* Site Settings */}
+                <AdvancedCollectionManager
+                  collectionName="site_settings"
+                  fields={[
+                    { key: "key", label: "Key", type: "text" },
+                    { key: "value", label: "Value", type: "text" }
+                  ]}
+                  converter={siteSettingConverter}
+                  idField="key"
+                />
+                {/* Subscribers */}
+                <AdvancedCollectionManager
+                  collectionName="subscribers"
+                  fields={[
+                    { key: "email", label: "Email", type: "email" },
+                    { key: "name", label: "Name", type: "text" }
+                  ]}
+                  converter={subscribersConverter}
+                  idField="email"
+                  exportToCSV={true}
+                />
+              </>
+            )}
           </motion.div>
         </main>
       </div>

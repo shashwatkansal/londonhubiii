@@ -42,7 +42,7 @@ const DEFAULT_LINKS: DashboardLink[] = [
     description: "Stay updated with all Hub events and important dates.",
   },
   {
-    href: "https://www.notion.so/londonshapers/Global-Shapers-London-III-628c14e4650745aaa5c0f29f6e25100a",
+    href: "https://www.notion.so/your-hub/Your-Hub-Notion-Link",
     title: "Hub's Notion",
     icon: { lib: "ri", name: "RiNotionFill" },
     description: "Access our Hub's knowledge base and collaborative workspace.",

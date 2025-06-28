@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     return notFound();
   }
 
-  const title = `${post.title} | ${SETTINGS.HUB_NAME} Article`;
+  const title = `${post.title} | ${SETTINGS.HUB_CONFIG.HUB_NAME} Article`;
 
   return {
     title,

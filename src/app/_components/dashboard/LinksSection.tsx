@@ -16,8 +16,10 @@ import { RiNotionFill } from "react-icons/ri";
 import { SiGooglecalendar } from "react-icons/si";
 import LinkCard, { LinkCardProps } from "./LinkCard";
 import { motion } from "framer-motion";
-import { useLinks, ICON_MAP, DashboardLink, LinkIconName, getDynamicIcon } from "./LinksContext";
+import { useLinks, DashboardLink, getDynamicIcon } from "./LinksContext";
 import { useAuth } from "@/lib/auth";
+import * as SETTINGS from "@/lib/settings";
+import { TEXTS } from "@/lib/texts";
 import * as faIcons from "react-icons/fa";
 import * as mdIcons from "react-icons/md";
 import * as riIcons from "react-icons/ri";
@@ -37,44 +39,40 @@ const ICON_INDEX: IconIndexEntry[] = ICON_SOURCES.flatMap(({ lib, icons }) =>
 
 const linksData: LinkCardProps[] = [
     {
-        href: "https://my.weforum.org/home",
-        title: "TopLink",
+        href: SETTINGS.HUB_CONFIG.TOPLINK_URL,
+        title: TEXTS.dashboard.links.toplink.title,
         icon: <FaLink />,
-        description:
-            "Access the World Economic Forum's digital collaboration platform.",
+        description: TEXTS.dashboard.links.toplink.description,
     },
     {
-        href: "https://new.express.adobe.com/webpage/vnOKwPijAc0by?",
-        title: "Official Shaper Guide",
+        href: SETTINGS.HUB_CONFIG.SHAPER_GUIDE_URL,
+        title: TEXTS.dashboard.links.shaperGuide.title,
         icon: <FaBook />,
-        description: "Your comprehensive guide to being a Global Shaper.",
+        description: TEXTS.dashboard.links.shaperGuide.description,
     },
     {
-        href: "https://intelligence.weforum.org/",
-        title: "WEF Intelligence",
+        href: SETTINGS.HUB_CONFIG.WEF_INTELLIGENCE_URL,
+        title: TEXTS.dashboard.links.intelligence.title,
         icon: <FaBrain />,
-        description:
-            "Explore insights and analysis from the World Economic Forum.",
+        description: TEXTS.dashboard.links.intelligence.description,
     },
     {
         href: "https://calendar.google.com",
-        title: "Google Calendar",
+        title: TEXTS.dashboard.links.calendar.title,
         icon: <SiGooglecalendar />,
-        description: "Stay updated with all Hub events and important dates.",
+        description: TEXTS.dashboard.links.calendar.description,
     },
     {
-        href: "https://www.notion.so/londonshapers/Global-Shapers-London-III-628c14e4650745aaa5c0f29f6e25100a",
-        title: "Hub's Notion",
+        href: SETTINGS.HUB_CONFIG.NOTION_URL,
+        title: TEXTS.dashboard.links.notion.title(SETTINGS.HUB_CONFIG.HUB_NAME),
         icon: <RiNotionFill />,
-        description:
-            "Access our Hub's knowledge base and collaborative workspace.",
+        description: TEXTS.dashboard.links.notion.description,
     },
     {
-        href: "https://docs.google.com/document/d/1OFlopDRLcM2CoAdZpn0abeaAXlcKm5Be0YpM7PDrQII",
-        title: "Team Allocations 2024-25",
+        href: SETTINGS.HUB_CONFIG.TEAM_ALLOCATIONS_URL,
+        title: TEXTS.dashboard.links.teamAllocations.title,
         icon: <FaGoogleDrive />,
-        description:
-            "View the current team allocations for the 2024-25 period.",
+        description: TEXTS.dashboard.links.teamAllocations.description,
     },
 ];
 

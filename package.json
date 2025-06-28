@@ -12,7 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@vercel/analytics": "^1.5.0",
-    "chart.js": "^4.4.9",
+    "chart.js": "^4.5.0",
     "classnames": "^2.5.1",
     "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
@@ -32,20 +32,20 @@
     "react-quill": "^2.0.0",
     "react-select": "^5.10.1",
     "react-typed": "^2.0.12",
-    "recharts": "^2.15.3",
+    "recharts": "^2.15.4",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
     "swiper": "^11.2.8"
   },
   "devDependencies": {
-    "@types/node": "^20.19.0",
+    "@types/node": "^20.19.1",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
     "autoprefixer": "^10.4.21",
     "daisyui": "^4.12.24",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.9",
-    "postcss": "^8.5.4",
+    "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3"
   }

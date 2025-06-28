@@ -12,6 +12,7 @@ import { ReactTyped } from "react-typed";
 import { motion, useScroll, useTransform } from "framer-motion";
 import * as SETTINGS from "@/lib/settings";
 import { getAllSiteSettings } from "@/lib/siteSettings";
+import { TEXTS } from "@/lib/texts";
 
 export default function Index() {
   const callToActionRef = useRef<null | HTMLElement>(null);
@@ -100,13 +101,13 @@ export default function Index() {
           className="relative z-10 text-center px-4 max-w-5xl mx-auto"
         >
           <h1 className="text-6xl md:text-8xl font-bold text-white mb-8 leading-tight">
-            <span className="block">Change Begins</span>
+            <span className="block">{TEXTS.hero.title}</span>
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-              With You
+              {TEXTS.hero.subtitle}
             </span>
           </h1>
           <ReactTyped
-            strings={["Local Ideas.", "Global Support.", "Real-World Impact."]}
+            strings={TEXTS.hero.typed}
             typeSpeed={50}
             backSpeed={30}
             loop
@@ -124,7 +125,7 @@ export default function Index() {
                 className="px-8 py-4 bg-white text-blue-900 font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-lg"
                 aria-label="Explore Our Mission"
               >
-                Explore Our Mission
+                {TEXTS.mission.heading} {SETTINGS.HUB_CONFIG.CITY_NAME}
               </button>
             </Link>
             <Link href="#join-us">
@@ -132,7 +133,7 @@ export default function Index() {
                 className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-blue-900 transition-all duration-300 text-lg"
                 aria-label="Join Us"
               >
-                Join Us
+                {TEXTS.quickLinks.find(l => l.label === "Join Us")?.label || "Join Us"}
               </button>
             </Link>
           </motion.div>
@@ -198,19 +199,10 @@ export default function Index() {
           className="relative z-10 max-w-6xl mx-auto px-6 text-center"
         >
           <h2 className="text-5xl md:text-7xl font-extrabold mb-8">
-            Our Mission in{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-              {SETTINGS.CITY_NAME}
-            </span>
+            {TEXTS.mission.heading} {SETTINGS.HUB_CONFIG.CITY_NAME}
           </h2>
           <p className="text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto mb-12">
-            The {SETTINGS.HUB_NAME} Hub is a dynamic network of young,
-            visionary leaders committed to tackling the city&apos;s most urgent
-            challenges. United by a passion for positive change, we drive
-            innovative projects and collaborations to create a more inclusive,
-            sustainable, and resilient future for all of {SETTINGS.CITY_NAME}
-            &apos;s diverse
-            communities.
+            {TEXTS.mission.description(SETTINGS.HUB_CONFIG.CITY_NAME, SETTINGS.HUB_CONFIG.HUB_NAME)}
           </p>
           <div className="flex justify-center">
             <Link href="/our-impact">
@@ -252,39 +244,32 @@ export default function Index() {
           className="relative max-w-7xl mx-auto px-4 z-10"
         >
           <h2 className="text-5xl font-extrabold text-white mb-12 text-center">
-            Our Impact in{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-              London
-            </span>
+            {TEXTS.impact.heading} {SETTINGS.HUB_CONFIG.CITY_NAME}
           </h2>
           <p className="text-xl text-blue-100 mb-16 text-center max-w-4xl mx-auto">
-            Driving transformative change across London&apos;s diverse communities
-            through innovation, collaboration, and dedication.
+            {TEXTS.impact.description(SETTINGS.HUB_CONFIG.CITY_NAME)}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
               {
-                title: "Shapers in Action",
-                value: "25+",
-                description:
-                  "Passionate individuals committed to positive change.",
+                title: TEXTS.stats.shapers.title,
+                value: TEXTS.stats.shapers.value,
+                description: TEXTS.stats.shapers.description,
                 icon: <RiTeamFill className="w-16 h-16 text-blue-400" />,
               },
               {
-                title: "Local Projects Ongoing",
-                value: "6",
-                description:
-                  "Innovative solutions addressing London&apos;s key challenges.",
+                title: TEXTS.stats.projects.title,
+                value: TEXTS.stats.projects.value,
+                description: TEXTS.stats.projects.description(SETTINGS.HUB_CONFIG.CITY_NAME),
                 icon: (
                   <PiProjectorScreenChartLight className="w-16 h-16 text-green-400" />
                 ),
               },
               {
-                title: "Local Partnerships",
-                value: "15+",
-                description:
-                  "Collaborating with organizations to amplify impact.",
+                title: TEXTS.stats.partnerships.title,
+                value: TEXTS.stats.partnerships.value,
+                description: TEXTS.stats.partnerships.description,
                 icon: <PiHandshakeFill className="w-16 h-16 text-purple-400" />,
               },
             ].map((stat, index) => (
@@ -347,60 +332,14 @@ export default function Index() {
           className="relative max-w-7xl mx-auto px-4 z-10"
         >
           <h2 className="text-5xl font-extrabold text-white mb-12 text-center">
-            Our Six Impact Areas
+            {TEXTS.impact.heading}
           </h2>
           <p className="text-xl text-blue-100 mb-16 text-center max-w-4xl mx-auto">
-            Global Shapers are dedicated to creating positive change across the
-            world through six key impact areas.
+            {TEXTS.impact.globalDescription}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Protecting the Planet",
-                description:
-                  "Projects that reduce emissions, protect biodiversity and nature, and promote recycling and reusing materials.",
-                icon: <RiEarthFill className="w-12 h-12 text-green-400" />,
-                color: "from-green-400 to-green-600",
-              },
-              {
-                title: "Strengthening Civic Engagement",
-                description:
-                  "Projects that strengthen democracy, encourage people to vote and inspire young people to become election candidates.",
-                icon: <RiGovernmentFill className="w-12 h-12 text-blue-400" />,
-                color: "from-blue-400 to-blue-600",
-              },
-              {
-                title: "Delivering Basic Needs",
-                description:
-                  "Projects that organize humanitarian responses, respond to natural disasters and fight extreme poverty.",
-                icon: <RiHandHeartFill className="w-12 h-12 text-orange-400" />,
-                color: "from-orange-400 to-orange-600",
-              },
-              {
-                title: "Improving Health and Wellbeing",
-                description:
-                  "Projects that aim to improve health and well-being for young people and vulnerable groups.",
-                icon: <RiMentalHealthFill className="w-12 h-12 text-red-400" />,
-                color: "from-red-400 to-red-600",
-              },
-              {
-                title: "Reskilling for the Future",
-                description:
-                  "Projects that increase access to education, skills, and jobs and promote entrepreneurship.",
-                icon: (
-                  <RiLightbulbFlashFill className="w-12 h-12 text-yellow-400" />
-                ),
-                color: "from-yellow-400 to-yellow-600",
-              },
-              {
-                title: "Creating Inclusive Communities",
-                description:
-                  "Projects that help improve human rights and social justice while promoting diversity, equity, and inclusion.",
-                icon: <RiGroupFill className="w-12 h-12 text-purple-400" />,
-                color: "from-purple-400 to-purple-600",
-              },
-            ].map((area, index) => (
+            {TEXTS.impact.areas.map((area, index) => (
               <motion.div
                 key={index}
                 variants={{
@@ -416,11 +355,6 @@ export default function Index() {
               >
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-br opacity-10"></div>
                 <div className="relative z-10 flex flex-col items-center text-center">
-                  <div
-                    className={`w-20 h-20 flex items-center justify-center rounded-full bg-gradient-to-br ${area.color} mb-6`}
-                  >
-                    {area.icon}
-                  </div>
                   <h3 className="text-2xl font-bold text-white mb-4">
                     {area.title}
                   </h3>
@@ -452,17 +386,13 @@ export default function Index() {
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2">
               <h2 className="text-5xl font-extrabold text-blue-900 mb-8">
-                Meet Our{" "}
+                {TEXTS.changeMakers.heading}{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                  Change Makers
+                  {TEXTS.changeMakers.headingHighlight}
                 </span>
               </h2>
               <p className="text-xl text-gray-700 mb-8">
-                Our London Hub is powered by passionate individuals committed to
-                creating positive impact. Together, we&apos;re building a better
-                future for our city. From diverse backgrounds and expertise, our
-                team brings innovative solutions to London&apos;s most pressing
-                challenges.{" "}
+                {TEXTS.changeMakers.description(SETTINGS.HUB_CONFIG.CITY_NAME, SETTINGS.HUB_CONFIG.HUB_NAME)}
               </p>
               <Link href="/shapers">
                 <motion.button
@@ -470,7 +400,7 @@ export default function Index() {
                   whileTap={{ scale: 0.95 }}
                   className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  See Our Hub Members
+                  {TEXTS.changeMakers.buttonText}
                 </motion.button>
               </Link>
             </div>
@@ -519,7 +449,7 @@ export default function Index() {
               transition={{ duration: 0.6 }}
               className="text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 mb-8"
             >
-              Read Our Newsletter
+              {TEXTS.newsletter.heading}
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -527,9 +457,7 @@ export default function Index() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-xl text-gray-600 max-w-3xl mx-auto"
             >
-              Stay updated with our latest initiatives, impact stories, and
-              events. Discover how we&apos;re making a difference in London, one
-              story at a time.
+              {TEXTS.newsletter.description(SETTINGS.HUB_CONFIG.CITY_NAME)}
             </motion.p>
           </div>
 
@@ -559,26 +487,7 @@ export default function Index() {
               transition={{ duration: 0.8 }}
               className="space-y-8"
             >
-              {[
-                {
-                  icon: "📈",
-                  title: "Impact Updates",
-                  description:
-                    "Quarterly insights into our projects and their real-world impact on London&apos;s communities.",
-                },
-                {
-                  icon: "🎯",
-                  title: "Exclusive Content",
-                  description:
-                    "Behind-the-scenes looks at our initiatives and special features on our Shapers.",
-                },
-                {
-                  icon: "🤝",
-                  title: "Networking Opportunities",
-                  description:
-                    "Information about upcoming events and ways to connect with fellow change-makers.",
-                },
-              ].map((feature, index) => (
+              {TEXTS.features.map((feature, index) => (
                 <motion.div 
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -611,8 +520,8 @@ export default function Index() {
                   href={siteSettings.newsletter_url || "https://www.canva.com/design/DAGLfOjusxQ/5upjRZAU6-L_vDVfJV686A/view"}
                   target="_blank"
                 >
-                  <button className="w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2">
-                    <span>Read Latest Newsletter</span>
+                                  <button className="w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2">
+                  <span>{TEXTS.newsletter.readButton}</span>
                     <svg
                       className="w-5 h-5"
                       fill="none"
@@ -657,10 +566,9 @@ export default function Index() {
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="text-white">
-              <h2 className="text-5xl font-bold mb-8">Stay Connected</h2>
+              <h2 className="text-5xl font-bold mb-8">{TEXTS.newsletter.subscribeHeading}</h2>
               <p className="text-xl text-gray-200 mb-8">
-                Subscribe to our newsletter to receive the latest updates about
-                our projects, events, and opportunities to get involved.
+                {TEXTS.newsletter.subscribeDescription}
               </p>
               <form onSubmit={handleSubscribe} className="space-y-4">
                 <div className="relative">
@@ -668,7 +576,7 @@ export default function Index() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
+                    placeholder={TEXTS.newsletter.emailPlaceholder}
                     className="w-full px-6 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300"
                     required
                     autoComplete="email"
@@ -678,7 +586,7 @@ export default function Index() {
                   type="submit"
                   className="w-full px-8 py-4 bg-white text-blue-900 font-bold rounded-full hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                 >
-                  Subscribe to Newsletter
+                  {TEXTS.newsletter.subscribeButton}
                 </button>
               </form>
             </div>
@@ -710,17 +618,16 @@ export default function Index() {
           className="max-w-6xl mx-auto px-4 text-center relative z-10"
         >
           <h2 className="text-6xl md:text-7xl font-extrabold text-white mb-8">
-            Ready to Make an Impact?
+            {TEXTS.join.readyHeading}
           </h2>
           <p className="text-2xl text-gray-200 mb-12 max-w-4xl mx-auto">
-            Join the Global Shapers community today and help us build a better
-            future.
+            {TEXTS.join.readyDesc}
           </p>
           <div className="flex flex-wrap justify-center gap-6">
             <button
               onClick={() =>
                 toast.error(
-                  siteSettings.error_404_text || "Unfortunately, the applications have closed for this year. Do stay tuned for our next recruitment round!",
+                  siteSettings.error_404_text || TEXTS.join.closed,
                   {
                     duration: 5000,
                     style: {
@@ -731,9 +638,9 @@ export default function Index() {
                 )
               }
               className="px-10 py-5 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-              aria-label={`Become a Shaper in ${SETTINGS.CITY_NAME}`}
+              aria-label={`Become a Shaper in ${SETTINGS.HUB_CONFIG.CITY_NAME}`}
             >
-              Become a Shaper
+              {TEXTS.join.becomeShaper}
             </button>
             <Link
               href={siteSettings.join_form_url || "https://docs.google.com/forms/d/e/1FAIpQLScdWAWxr--Z4_c9piHxW8wZSitKUcRquNp4VKVtb3HUFcbSGw/viewform"}
@@ -741,9 +648,9 @@ export default function Index() {
             >
               <button
                 className="px-10 py-5 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-                aria-label={`Transfer to ${SETTINGS.CITY_NAME}`}
+                aria-label={TEXTS.join.transfer(SETTINGS.HUB_CONFIG.CITY_NAME)}
               >
-                Transfer to {SETTINGS.CITY_NAME}
+                {TEXTS.join.transfer(SETTINGS.HUB_CONFIG.CITY_NAME)}
               </button>
             </Link>
           </div>

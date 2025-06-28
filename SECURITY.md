@@ -58,6 +58,6 @@ To ensure the best security while using our website, we recommend the following 
 
 ## Contact
 
-For any questions or concerns regarding the security of our website, please contact us at [security@londonshapersiii.org](mailto:security@londonshapersiii.org).
+For any questions or concerns regarding the security of our website, please contact us at your-hub-security-email@domain.com.
 
-Thank you for helping to keep our Global Shapers London Hub III community safe and secure!
+Thank you for helping to keep our Global Shapers Hub community safe and secure!

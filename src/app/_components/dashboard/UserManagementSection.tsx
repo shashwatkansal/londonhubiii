@@ -6,6 +6,9 @@ import { FaLinkedin, FaInstagram, FaLink, FaEye } from "react-icons/fa";
 import UserDetailsDrawer from "./UserDetailsDrawer";
 import TableSkeleton from './TableSkeleton';
 import EmptyState from './EmptyState';
+import { collection, getDocs, setDoc, deleteDoc, CollectionReference, doc } from "firebase/firestore";
+import { db } from "@/lib/firebaseConfig";
+import { adminConverter, Admin } from "@/app/database/models";
 
 const roleOptions = Object.values(Role);
 
@@ -22,6 +25,7 @@ const UserManagementSection = ({ users: propUsers }: { users?: User[] }) => {
   const [detailsUser, setDetailsUser] = useState<User | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
+  const [admins, setAdmins] = useState<string[]>([]);
 
   useEffect(() => {
     if (propUsers) {
@@ -30,6 +34,7 @@ const UserManagementSection = ({ users: propUsers }: { users?: User[] }) => {
       return;
     }
     fetchUsers();
+    fetchAdmins();
   }, [propUsers]);
 
   const fetchUsers = async () => {
@@ -56,6 +61,29 @@ const UserManagementSection = ({ users: propUsers }: { users?: User[] }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchAdmins = async () => {
+    const adminsRef = collection(db, "admins").withConverter(adminConverter) as CollectionReference<Admin>;
+    const snapshot = await getDocs(adminsRef);
+    setAdmins(snapshot.docs.map((doc) => doc.data().email));
+  };
+
+  const isAdmin = (email: string) => admins.includes(email);
+
+  const toggleAdmin = async (email: string) => {
+    const adminsRef = collection(db, "admins").withConverter(adminConverter) as CollectionReference<Admin>;
+    const adminDocRef = doc(adminsRef, email);
+    if (isAdmin(email)) {
+      // Remove admin
+      await deleteDoc(adminDocRef);
+      toast.success("Admin rights removed");
+    } else {
+      // Add admin
+      await setDoc(adminDocRef, { email });
+      toast.success("Admin rights granted");
+    }
+    fetchAdmins();
   };
 
   const handleRoleChange = async (email: string, newRole: Role) => {
@@ -237,7 +265,7 @@ const UserManagementSection = ({ users: propUsers }: { users?: User[] }) => {
                   aria-label="Select all users on this page"
                 />
               </th>
-              {["Name","Email","Role","Bio","LinkedIn","Instagram","Toplink","Profile Pic","External View","Actions"].map((header) => (
+              {["Name","Email","Role","Admin","Bio","LinkedIn","Instagram","Toplink","Profile Pic","External View","Actions"].map((header) => (
                 <th
                   key={header}
                   className="px-4 py-3 bg-gray-50 text-left text-xs font-semibold text-gray-700 border-b"
@@ -311,6 +339,17 @@ const UserManagementSection = ({ users: propUsers }: { users?: User[] }) => {
                       ) : (
                         <span className="capitalize">{user.role || Role.Shaper}</span>
                       )}
+                    </td>
+                    {/* Admin */}
+                    <td className="px-4 py-2 align-middle border-b text-center">
+                      <button
+                        className={`px-2 py-1 rounded ${isAdmin(user.email) ? "bg-green-500 text-white" : "bg-gray-200 text-gray-700"}`}
+                        onClick={() => toggleAdmin(user.email)}
+                        title={isAdmin(user.email) ? "Remove admin rights" : "Grant admin rights"}
+                        disabled={loading}
+                      >
+                        {isAdmin(user.email) ? "Admin" : "Make Admin"}
+                      </button>
                     </td>
                     {/* Bio */}
                     <td className="px-4 py-2 align-middle border-b">

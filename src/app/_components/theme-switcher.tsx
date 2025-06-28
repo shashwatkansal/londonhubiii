@@ -9,7 +9,10 @@ declare global {
 
 type ColorSchemePreference = "system" | "dark" | "light";
 
-const STORAGE_KEY = "londonshapersiii-theme";
+import * as SETTINGS from "@/lib/settings";
+import { TEXTS } from "@/lib/texts";
+
+const STORAGE_KEY = TEXTS.theme.storageKey(SETTINGS.HUB_CONFIG.HUB_NAME);
 const modes: ColorSchemePreference[] = ["system", "dark", "light"];
 
 /** to reuse updateDOM function defined inside injected script */

@@ -5,12 +5,14 @@ import { useState, useEffect, useRef } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { auth, db } from "@lib/firebaseConfig";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, CollectionReference } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { User } from "firebase/auth";
 import * as SETTINGS from "@/lib/settings";
+import type { UserFeedback } from "@/app/database/models";
+import { userFeedbackConverter } from "@/app/database/models";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -65,7 +67,7 @@ export default function Header() {
     }
 
     try {
-      await addDoc(collection(db, "user_feedback"), {
+      await addDoc(collection(db, "user_feedback").withConverter(userFeedbackConverter) as CollectionReference<UserFeedback>, {
         feedback: feedbackText,
         user: user ? user.email : "Unknown",
         createdAt: new Date(),
@@ -108,15 +110,15 @@ export default function Header() {
           <div className="flex items-center space-x-4">
             <Link href="/">
               <Image
-                src={SETTINGS.LOGO_MAIN}
-                alt={`${SETTINGS.HUB_NAME} Logo`}
+                src={SETTINGS.HUB_CONFIG.LOGO_MAIN}
+                alt={`${SETTINGS.HUB_CONFIG.HUB_NAME} Logo`}
                 width={60}
                 height={40}
                 className="w-16 h-auto"
               />
             </Link>
             <div className="text-xl md:text-2xl lg:text-3xl font-bold text-white">
-              {SETTINGS.HUB_NAME}
+              {SETTINGS.HUB_CONFIG.HUB_NAME}
             </div>
           </div>
 

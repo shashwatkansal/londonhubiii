@@ -1,15 +1,18 @@
 "use client";
 import { db } from "@lib/firebaseConfig";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, CollectionReference } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { FaExternalLinkAlt, FaInstagram, FaLinkedin } from "react-icons/fa";
 import * as SETTINGS from "@/lib/settings";
+import { TEXTS } from "@/lib/texts";
+import type { User } from "@/app/database/models";
+import { userConverter } from "@/app/database/models";
 
 const Modal = ({
   shaper,
   onClose,
 }: {
-  shaper: Shaper;
+  shaper: User;
   onClose: () => void;
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -124,7 +127,7 @@ const ShaperCard = ({
   shaper,
   onClick,
 }: {
-  shaper: Shaper;
+  shaper: User;
   onClick: () => void;
 }) => {
   return (
@@ -160,30 +163,30 @@ const ShaperCard = ({
 };
 
 export default function ShapersPage() {
-  const [shapers, setShapers] = useState<Shaper[]>([]);
+  const [shapers, setShapers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedShaper, setSelectedShaper] = useState<Shaper | null>(null);
+  const [selectedShaper, setSelectedShaper] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchShapers = async () => {
       try {
         const shapersQuery = query(
-          collection(db, "directory"),
+          collection(db, "directory").withConverter(userConverter) as CollectionReference<User>,
           where("externalViewEnabled", "==", true)
         );
         const querySnapshot = await getDocs(shapersQuery);
-        const shapersData: Shaper[] = [];
+        const shapersData: User[] = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           shapersData.push({
+            email: doc.id,
             name: data.name || "Unknown",
             bio: data.bio || "No bio available",
-            email: data.email,
             linkedin: data.linkedin || "",
             instagram: data.instagram || "",
             toplink: data.toplink || "",
             profilepic: data.profilepic || "/default-profile.png",
-            role: data.role || SETTINGS.SHAPER_DEFAULT_ROLE,
+            role: data.role || SETTINGS.HUB_CONFIG.SHAPER_DEFAULT_ROLE,
             externalViewEnabled: data.externalViewEnabled || false,
           });
         });
@@ -202,19 +205,23 @@ export default function ShapersPage() {
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-gray-100 py-10 px-4">
       <div className="container mx-auto">
         <h1 className="text-5xl font-bold text-center mb-12 text-blue-900 animate-fade-in-down transition-transform duration-200">
-          {SETTINGS.SHAPERS_PAGE_HEADING}
+          {SETTINGS.HUB_CONFIG.SHAPERS_PAGE_HEADING}
         </h1>
 
         {loading ? (
           <div className="flex justify-center items-center">
-            <p className="text-xl text-gray-600">Loading Shapers...</p>
+            <p className="text-xl text-gray-600">{TEXTS.shapers.loading}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
             {shapers.map((shaper, index) => (
               <ShaperCard
                 key={index}
-                shaper={shaper}
+                shaper={{
+                  ...shaper,
+                  name: shaper.name || TEXTS.shapers.unknown,
+                  bio: shaper.bio || TEXTS.shapers.noBio,
+                }}
                 onClick={() => setSelectedShaper(shaper)}
               />
             ))}

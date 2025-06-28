@@ -13,36 +13,36 @@ import { LinksProvider } from "@/app/_components/dashboard/LinksContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: SETTINGS.HUB_NAME,
-  description: SETTINGS.META_DESCRIPTION,
-  keywords: SETTINGS.META_KEYWORDS,
-  authors: [{ name: SETTINGS.HUB_NAME }],
+  title: SETTINGS.HUB_CONFIG.HUB_NAME,
+  description: SETTINGS.HUB_CONFIG.META_DESCRIPTION,
+  keywords: SETTINGS.HUB_CONFIG.META_KEYWORDS,
+  authors: [{ name: SETTINGS.HUB_CONFIG.HUB_NAME }],
   openGraph: {
-    title: SETTINGS.HUB_NAME,
-    description: SETTINGS.META_DESCRIPTION,
-    url: SETTINGS.HUB_URL,
+    title: SETTINGS.HUB_CONFIG.HUB_NAME,
+    description: SETTINGS.HUB_CONFIG.META_DESCRIPTION,
+    url: SETTINGS.HUB_CONFIG.HUB_URL,
     type: "website",
     images: [
       {
-        url: SETTINGS.HOME_OG_IMAGE_URL,
+        url: SETTINGS.HUB_CONFIG.HOME_OG_IMAGE_URL,
         width: 1200,
         height: 630,
-        alt: SETTINGS.HUB_NAME,
+        alt: SETTINGS.HUB_CONFIG.HUB_NAME,
       },
     ],
     locale: "en_US",
-    siteName: SETTINGS.HUB_NAME,
+    siteName: SETTINGS.HUB_CONFIG.HUB_NAME,
   },
   twitter: {
     card: "summary_large_image",
-    site: SETTINGS.TWITTER_HANDLE,
-    title: SETTINGS.HUB_NAME,
-    description: SETTINGS.META_DESCRIPTION,
-    images: SETTINGS.HOME_OG_IMAGE_URL,
+    site: SETTINGS.HUB_CONFIG.TWITTER_HANDLE,
+    title: SETTINGS.HUB_CONFIG.HUB_NAME,
+    description: SETTINGS.HUB_CONFIG.META_DESCRIPTION,
+    images: SETTINGS.HUB_CONFIG.HOME_OG_IMAGE_URL,
   },
   robots: "index, follow",
   alternates: {
-    canonical: SETTINGS.HUB_URL,
+    canonical: SETTINGS.HUB_CONFIG.HUB_URL,
   },
 };
 
@@ -107,16 +107,16 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: SETTINGS.HUB_NAME,
-              url: SETTINGS.HUB_URL,
-              logo: SETTINGS.HOME_OG_IMAGE_URL,
+              name: SETTINGS.HUB_CONFIG.HUB_NAME,
+              url: SETTINGS.HUB_CONFIG.HUB_URL,
+              logo: SETTINGS.HUB_CONFIG.HOME_OG_IMAGE_URL,
               sameAs: [
-                SETTINGS.TWITTER_HANDLE.startsWith("@") ? `https://twitter.com/${SETTINGS.TWITTER_HANDLE.slice(1)}` : SETTINGS.TWITTER_HANDLE,
-                SETTINGS.FACEBOOK_URL,
-                SETTINGS.INSTAGRAM_URL,
-                SETTINGS.LINKEDIN_URL,
+                SETTINGS.HUB_CONFIG.TWITTER_HANDLE.startsWith("@") ? `https://twitter.com/${SETTINGS.HUB_CONFIG.TWITTER_HANDLE.slice(1)}` : SETTINGS.HUB_CONFIG.TWITTER_HANDLE,
+                SETTINGS.HUB_CONFIG.FACEBOOK_URL,
+                SETTINGS.HUB_CONFIG.INSTAGRAM_URL,
+                SETTINGS.HUB_CONFIG.LINKEDIN_URL,
               ],
-              description: SETTINGS.META_DESCRIPTION,
+              description: SETTINGS.HUB_CONFIG.META_DESCRIPTION,
             }),
           }}
         />

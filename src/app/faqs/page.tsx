@@ -4,7 +4,7 @@ import { Disclosure, Transition } from "@headlessui/react";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { FAQ, faqHelpers } from "../database/models";
-import * as SETTINGS from "@/lib/settings";
+import { TEXTS } from "@/lib/texts";
 
 export default function FAQPage() {
   const [faqs, setFaqs] = useState<FAQ[]>([]);
@@ -57,7 +57,7 @@ export default function FAQPage() {
     >
       <div className="container mx-auto px-4">
         <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-8 text-blue-900">
-          {SETTINGS.FAQS_PAGE_HEADING}
+          {TEXTS.faqs.heading}
         </h1>
 
         <div className="max-w-4xl mx-auto mb-8">

@@ -1,5 +1,10 @@
-import { doc, getDoc, setDoc, getDocs, collection } from "firebase/firestore";
+import { doc, getDoc, setDoc, getDocs, collection, CollectionReference } from "firebase/firestore";
 import { db } from "./firebaseConfig";
+import { siteSettingConverter, SiteSetting } from "@/app/database/models";
+
+export interface SiteSetting {
+  value: string;
+}
 
 export async function getSiteSetting(key: string) {
   const docRef = doc(db, "site_settings", key);
@@ -13,7 +18,7 @@ export async function setSiteSetting(key: string, value: string) {
 }
 
 export async function getAllSiteSettings() {
-  const colRef = collection(db, "site_settings");
+  const colRef = collection(db, "site_settings").withConverter(siteSettingConverter) as CollectionReference<SiteSetting>;
   const snapshot = await getDocs(colRef);
   const settings: Record<string, string> = {};
   snapshot.forEach((doc) => {

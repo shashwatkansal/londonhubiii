@@ -12,6 +12,8 @@ import {
   where,
   CollectionReference,
   Timestamp,
+  FirestoreDataConverter,
+  DocumentData,
 } from "firebase/firestore";
 
 export enum Role {
@@ -83,18 +85,110 @@ export interface Secret {
   updatedAt: Timestamp; // Last updated timestamp
 }
 
+export interface UserFeedback {
+  feedback: string;
+  user: string;
+  createdAt: Date;
+}
+
+export interface Admin {
+  email: string;
+}
+
+export interface SiteSetting {
+  value: string;
+}
+
+// Firestore Data Converters (move these above collection references)
+export const userConverter: FirestoreDataConverter<User> = {
+  toFirestore(user: User): DocumentData {
+    return { ...user };
+  },
+  fromFirestore(snapshot, options) {
+    const data = snapshot.data(options)!;
+    const { email: _email, ...rest } = data;
+    return { ...rest, email: snapshot.id } as User;
+  },
+};
+
+export const directoryConverter: FirestoreDataConverter<Directory> = {
+  toFirestore(directory: Directory): DocumentData {
+    return { ...directory };
+  },
+  fromFirestore(snapshot, options) {
+    return snapshot.data(options) as Directory;
+  },
+};
+
+export const faqConverter: FirestoreDataConverter<FAQ> = {
+  toFirestore(faq: FAQ): DocumentData {
+    return { ...faq };
+  },
+  fromFirestore(snapshot, options) {
+    return snapshot.data(options) as FAQ;
+  },
+};
+
+export const postConverter: FirestoreDataConverter<Post> = {
+  toFirestore(post: Post): DocumentData {
+    return { ...post };
+  },
+  fromFirestore(snapshot, options) {
+    return snapshot.data(options) as Post;
+  },
+};
+
+export const subscribersConverter: FirestoreDataConverter<Subscribers> = {
+  toFirestore(sub: Subscribers): DocumentData {
+    return { ...sub };
+  },
+  fromFirestore(snapshot, options) {
+    return snapshot.data(options) as Subscribers;
+  },
+};
+
+export const secretConverter: FirestoreDataConverter<Secret> = {
+  toFirestore(secret: Secret): DocumentData {
+    return { ...secret };
+  },
+  fromFirestore(snapshot, options) {
+    return snapshot.data(options) as Secret;
+  },
+};
+
+export const userFeedbackConverter: FirestoreDataConverter<UserFeedback> = {
+  toFirestore(feedback: UserFeedback): DocumentData {
+    return { ...feedback };
+  },
+  fromFirestore(snapshot, options) {
+    return snapshot.data(options) as UserFeedback;
+  },
+};
+
+export const siteSettingConverter: FirestoreDataConverter<SiteSetting> = {
+  toFirestore(setting: SiteSetting): DocumentData {
+    return { ...setting };
+  },
+  fromFirestore(snapshot, options) {
+    return snapshot.data(options) as SiteSetting;
+  },
+};
+
+export const adminConverter: FirestoreDataConverter<Admin> = {
+  toFirestore(admin: Admin): DocumentData {
+    return { ...admin };
+  },
+  fromFirestore(snapshot, options) {
+    return snapshot.data(options) as Admin;
+  },
+};
+
 // Collection references
-const directoryRef = collection(
-  db,
-  "directory"
-) as CollectionReference<Directory>;
-const faqRef = collection(db, "faqs") as CollectionReference<FAQ>;
-const postsRef = collection(db, "posts") as CollectionReference<Post>;
-const subscribersRef = collection(
-  db,
-  "subscribers"
-) as CollectionReference<Subscribers>;
-const secretsRef = collection(db, "secrets") as CollectionReference<Secret>;
+const directoryRef = collection(db, "directory").withConverter(userConverter) as CollectionReference<User>;
+const faqRef = collection(db, "faqs").withConverter(faqConverter) as CollectionReference<FAQ>;
+const postsRef = collection(db, "posts").withConverter(postConverter) as CollectionReference<Post>;
+const subscribersRef = collection(db, "subscribers").withConverter(subscribersConverter) as CollectionReference<Subscribers>;
+const secretsRef = collection(db, "secrets").withConverter(secretConverter) as CollectionReference<Secret>;
 
 // Directory helpers
 export const directoryHelpers = {

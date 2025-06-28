@@ -4,6 +4,7 @@ import { SectionSeparator } from "@/app/_components/section-separator";
 import { getAllPosts } from "@/lib/api";
 import { Post } from "../database/models";
 import * as SETTINGS from "@/lib/settings";
+import { TEXTS } from "@/lib/texts";
 
 export default async function ImpactPage() {
   let allPosts: Post[] = [];
@@ -22,7 +23,7 @@ export default async function ImpactPage() {
     <main>
       <section className="container mx-auto py-10 px-4">
         <h1 className="text-7xl font-extrabold mb-8 text-center text-wef-blue py-10">
-          {SETTINGS.IMPACT_PAGE_HEADING}
+          {TEXTS.impactPage.heading}
         </h1>
 
         {heroPost ? (
@@ -36,7 +37,7 @@ export default async function ImpactPage() {
           />
         ) : (
           <p className="text-center text-xl text-gray-500">
-            No impact posts available at the moment. Please check back later.
+            {TEXTS.impactPage.noPosts}
           </p>
         )}
 
@@ -46,7 +47,7 @@ export default async function ImpactPage() {
           <MoreStories posts={morePosts} />
         ) : (
           <p className="text-center text-lg text-gray-400 mt-10">
-            No more stories to show.
+            {TEXTS.impactPage.noMoreStories}
           </p>
         )}
       </section>
