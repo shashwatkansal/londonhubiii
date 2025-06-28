@@ -11,8 +11,8 @@ export default function AboutPage() {
         <Image
           src={SETTINGS.HUB_CONFIG.ABOUT_PAGE_IMAGE_MAIN}
           alt={`${SETTINGS.HUB_CONFIG.CITY_NAME} Skyline`}
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{ objectFit: 'cover' }}
           className="opacity-40 transform scale-110 transition-transform duration-[6000ms] ease-in-out"
         />
         <div className="relative z-10 text-center">

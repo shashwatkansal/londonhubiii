@@ -20,7 +20,7 @@ const CoverImage = ({ title, src, slug }: Props) => {
       height={630}
       layout="responsive" // Ensures responsive images
       priority={slug ? true : false} // Prioritize images if it's linked
-      objectFit="cover" // Ensures image is properly scaled
+              style={{ objectFit: 'cover' }} // Ensures image is properly scaled
     />
   );
 

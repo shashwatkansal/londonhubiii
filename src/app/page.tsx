@@ -86,8 +86,8 @@ export default function Index() {
           <Image
             src="/assets/images/hub3photo.jpg"
             alt="Global Shapers Hero"
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: 'cover' }}
             className="opacity-60"
             priority
           />
@@ -417,7 +417,7 @@ export default function Index() {
                   alt="Our Change Makers"
                   width={600}
                   height={400}
-                  objectFit="cover"
+                  style={{ objectFit: 'cover' }}
                   className="w-full h-auto"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
@@ -594,8 +594,8 @@ export default function Index() {
               <Image
                 src="/assets/images/newsletter.png"
                 alt="Newsletter Preview"
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: 'cover' }}
                 className="transform hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent"></div>
