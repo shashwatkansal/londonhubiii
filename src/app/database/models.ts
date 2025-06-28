@@ -194,7 +194,7 @@ const secretsRef = collection(db, "secrets").withConverter(secretConverter) as C
 export const directoryHelpers = {
   async getAll(): Promise<User[]> {
     const snapshot = await getDocs(directoryRef);
-    return snapshot.docs.map((doc) => ({ email: doc.id, ...doc.data() }));
+    return snapshot.docs.map((doc) => ({ ...doc.data(), email: doc.id }));
   },
 
   async getById(id: string): Promise<Directory | null> {
