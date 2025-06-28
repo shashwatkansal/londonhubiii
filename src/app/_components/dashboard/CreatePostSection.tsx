@@ -284,8 +284,8 @@ const CreatePostSection = () => {
       <h2 className="text-3xl font-extrabold mb-6 text-center">
         {editingDraftId ? "Edit Post" : "Create a New Post"}
         <p className="text-sm text-gray-600 mt-2 text-center max-w-md mx-auto">
-          Ensure you save the draft once you're done editing, or publish the
-          post when you're ready. Otherwise, your changes will be lost.
+          Ensure you save the draft once you&apos;re done editing, or publish the
+          post when you&apos;re ready. Otherwise, your changes will be lost.
         </p>
       </h2>
       {isAdmin && (
