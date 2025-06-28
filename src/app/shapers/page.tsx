@@ -7,6 +7,7 @@ import * as SETTINGS from "@/lib/settings";
 import { TEXTS } from "@/lib/texts";
 import type { User } from "@/app/database/models";
 import { userConverter } from "@/app/database/models";
+import Image from "next/image";
 
 const Modal = ({
   shaper,
@@ -55,9 +56,11 @@ const Modal = ({
               className="w-full h-64 object-cover mb-4"
             />
           ) : (
-            <img
+            <Image
               src={shaper.profilepic!}
               alt={shaper.name}
+              width={128}
+              height={128}
               className="w-32 h-32 rounded-full object-cover mb-4"
             />
           )}
@@ -144,9 +147,11 @@ const ShaperCard = ({
             className="w-full h-full object-cover"
           />
         ) : (
-          <img
+          <Image
             src={shaper.profilepic!}
             alt={shaper.name}
+            width={400}
+            height={256}
             className="w-full h-full object-cover"
           />
         )}

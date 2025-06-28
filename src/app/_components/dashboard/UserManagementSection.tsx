@@ -9,6 +9,7 @@ import EmptyState from './EmptyState';
 import { collection, getDocs, setDoc, deleteDoc, CollectionReference, doc } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
 import { adminConverter, Admin } from "@/app/database/models";
+import Image from "next/image";
 
 const roleOptions = Object.values(Role);
 
@@ -448,9 +449,11 @@ const UserManagementSection = ({ users: propUsers }: { users?: User[] }) => {
                           className="border rounded px-2 py-1 w-full focus:ring-2 focus:ring-blue-400"
                         />
                       ) : user.profilepic ? (
-                        <img
+                        <Image
                           src={user.profilepic}
                           alt="Profile"
+                          width={32}
+                          height={32}
                           className="w-8 h-8 rounded-full object-cover border"
                         />
                       ) : (

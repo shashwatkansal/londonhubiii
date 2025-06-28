@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { User } from '@/app/database/models';
 import { FaLinkedin, FaInstagram, FaLink, FaTimes } from 'react-icons/fa';
+import Image from "next/image";
 
 interface UserDetailsDrawerProps {
   user: User | null;
@@ -70,7 +71,7 @@ const UserDetailsDrawer = ({ user, open, onClose }: UserDetailsDrawerProps) => {
         <div className="p-4 space-y-4">
           <div className="flex items-center gap-4">
             {user.profilepic ? (
-              <img src={user.profilepic} alt="Profile" className="w-16 h-16 rounded-full object-cover border" />
+              <Image src={user.profilepic} alt="Profile" width={64} height={64} className="w-16 h-16 rounded-full object-cover border" />
             ) : (
               <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-bold text-gray-500">
                 {user.name?.[0] || '?'}

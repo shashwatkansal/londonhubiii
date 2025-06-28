@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { RiImageAddFill } from "react-icons/ri";
+import Image from "next/image";
 
 const FileUpload = ({
   onFileChange,
@@ -63,9 +64,11 @@ const FileUpload = ({
         {selectedFile && (
           <div className="flex flex-col items-center justify-center space-y-2">
             {filePreview && (
-              <img
+              <Image
                 src={filePreview}
                 alt="Preview"
+                width={128}
+                height={128}
                 className="w-32 h-32 object-cover rounded-md shadow-lg"
               />
             )}

@@ -64,7 +64,7 @@ const SecretsManager = () => {
 
     fetchSecrets();
     fetchUsers();
-  }, []);
+  }, [isAdmin, user.email]);
 
   const handleCreateSecret = async () => {
     if (!newSecret.key || !newSecret.value) {

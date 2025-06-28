@@ -11,12 +11,11 @@ function AddFAQForm() {
   const [answer, setAnswer] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   // Check if the current user is an admin
   useEffect(() => {
-    const fetchAdminStatus = async () => {
-      const { user } = useAuth();
-
+    const fetchAdminStatus = async (user: any) => {
       if (user) {
         try {
           // Look up the user in the admins collection
@@ -36,8 +35,8 @@ function AddFAQForm() {
       }
     };
 
-    fetchAdminStatus();
-  }, []);
+    fetchAdminStatus(user);
+  }, [user]);
 
   // Function to submit the FAQ
   const handleSubmit = async (e: React.FormEvent) => {
