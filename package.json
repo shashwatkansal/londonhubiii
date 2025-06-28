@@ -1,13 +1,52 @@
 {
-  "name": "@shashwatkansal/london-shapers-iii",
+  "name": "londonhubiii",
   "version": "1.0.0",
+  "description": "A beautiful, customizable website template for Global Shapers Hubs worldwide",
   "author": "Shashwat Kansal",
-  "private": true,
+  "license": "CC-BY-NC-4.0",
+  "homepage": "https://github.com/shashwatkansal/londonhubiii",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shashwatkansal/londonhubiii.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shashwatkansal/londonhubiii/issues"
+  },
+  "keywords": [
+    "global-shapers",
+    "website-template",
+    "nextjs",
+    "react",
+    "tailwindcss",
+    "hub-website",
+    "community",
+    "nonprofit",
+    "londonhubiii",
+    "shapers",
+    "global-shapers",
+    "global-shapers-hub",
+    "firebase",
+    "firestore",
+    "firestore-admin",
+    "firestore-admin-nextjs",
+    "firestore-admin-nextjs-tailwindcss",
+    "firestore-admin-nextjs-tailwindcss-react",
+    "firestore-admin-nextjs-tailwindcss-react-firebase"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
-    "dev": "next",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "export": "next build && next export",
+    "clean": "rm -rf .next out node_modules/.cache",
+    "prepare": "npm run type-check"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",

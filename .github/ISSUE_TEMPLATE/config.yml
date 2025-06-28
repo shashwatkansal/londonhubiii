@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/shashwatkansal/londonhubiii/tree/main/docs
+    about: Check our comprehensive documentation before opening an issue
+  - name: 💬 Community Discussions
+    url: https://github.com/shashwatkansal/londonhubiii/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 🚀 Setup Guide
+    url: https://github.com/shashwatkansal/londonhubiii/blob/main/docs/SETUP.md
+    about: Step-by-step guide to set up your hub website
+  - name: 📧 Direct Support
+    url: mailto:skansal41@gmail.com
+    about: Contact the maintainers directly for urgent issues 
