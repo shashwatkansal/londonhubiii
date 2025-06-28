@@ -2,10 +2,6 @@ import { doc, getDoc, setDoc, getDocs, collection, CollectionReference } from "f
 import { db } from "./firebaseConfig";
 import { siteSettingConverter, SiteSetting } from "@/app/database/models";
 
-export interface SiteSetting {
-  value: string;
-}
-
 export async function getSiteSetting(key: string) {
   const docRef = doc(db, "site_settings", key);
   const docSnap = await getDoc(docRef);

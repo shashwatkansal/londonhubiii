@@ -33,15 +33,15 @@ const UserManagementTabs = () => {
       tabs={[
         {
           label: 'All Users',
-          content: <UserManagementSection initialUsers={allUsers} />,
+          content: <UserManagementSection users={allUsers} />,
         },
         {
           label: 'Active Users',
-          content: <UserManagementSection initialUsers={activeUsers} />,
+          content: <UserManagementSection users={activeUsers} />,
         },
         {
           label: 'Curators',
-          content: <UserManagementSection initialUsers={curators} />,
+          content: <UserManagementSection users={curators} />,
         },
       ]}
     />
