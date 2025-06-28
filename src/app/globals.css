@@ -56,10 +56,11 @@ html {
   src: url("/assets/fonts/Apercu-Regular.woff") format("woff");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 body {
-  font-family: "Apercu";
+  font-family: "Apercu", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 ::selection {
