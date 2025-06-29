@@ -1,41 +1,42 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { FaArrowLeft } from "react-icons/fa";
+import { ArrowLeft } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4">
-      <Image
-        src="/assets/404-illustration.svg"
-        alt="Page not found illustration"
-        width={400}
-        height={300}
-        className="mb-8"
-      />
+    <div className="relative flex items-center justify-center h-screen bg-gradient-to-br from-primary to-secondary overflow-hidden">
+      {/* Subtle animated gradient overlay */}
+      <div className="absolute inset-0 bg-base-100 opacity-10 animate-pulse"></div>
 
-      <h1 className="text-6xl font-extrabold mb-4 animate-pulse">
-        404 - Page Not Found
-      </h1>
+      {/* Floating blurred spheres */}
+      <div className="absolute -top-16 -left-16 w-48 h-48 bg-secondary opacity-20 rounded-full filter blur-3xl animate-spin-slow"></div>
+      <div className="absolute bottom-20 right-10 w-72 h-72 bg-accent opacity-20 rounded-full filter blur-2xl animate-ping"></div>
 
-      <p className="text-lg text-center max-w-lg mb-8">
-        Oops! It seems like the page you&apos;re looking for doesn&apos;t exist.
-        Don&apos;t worry, you can find plenty of exciting things on our
-        homepage!
-      </p>
-      <div className="relative">
-        <div className="absolute top-0 left-0 w-32 h-32 bg-yellow-400 opacity-50 rounded-full filter blur-xl animate-bounce" />
-        <div className="absolute bottom-0 right-0 w-32 h-32 bg-purple-400 opacity-50 rounded-full filter blur-xl animate-bounce" />
-        <div className="absolute top-0 left-0 w-32 h-32 bg-yellow-400 opacity-50 rounded-full filter blur-xl animate-bounce" />
-        <div className="absolute bottom-0 right-0 w-32 h-32 bg-purple-400 opacity-50 rounded-full filter blur-xl animate-bounce" />
-        <div className="absolute top-0 left-0 w-32 h-32 bg-yellow-400 opacity-50 rounded-full filter blur-xl animate-bounce" />
+      <div className="relative z-10 flex flex-col items-center justify-center p-8 bg-base-100 bg-opacity-30 backdrop-blur-lg rounded-2xl shadow-2xl max-w-md text-center">
+        <Image
+          src="/assets/404-illustration.svg"
+          alt="Page not found illustration"
+          width={300}
+          height={225}
+          className="mb-6"
+        />
+
+        <h1 className="text-5xl font-serif font-bold text-wef-dark-blue mb-2">
+          404
+        </h1>
+        <p className="text-2xl font-sans text-wef-gray mb-4">Page Not Found</p>
+        <p className="text-base text-wef-dark-gray mb-6 max-w-xs">
+          Oops! The page you’re looking for doesn’t exist. Let’s get you back
+          on track.
+        </p>
+        <Link href="/" passHref>
+          <a className="inline-flex items-center space-x-2 btn btn-primary px-6 py-3 text-lg font-medium transition-transform hover:scale-105">
+            <ArrowLeft className="w-5 h-5" />
+            <span>Return Home</span>
+          </a>
+        </Link>
       </div>
-      <Link href="/">
-        <button className="bg-white text-blue-600 px-6 py-3 rounded-full shadow-lg hover:bg-gray-100 hover:scale-105 transition-transform duration-300 flex items-center space-x-2">
-          <FaArrowLeft />
-          <span>Go back to Home</span>
-        </button>
-      </Link>
     </div>
   );
 }
