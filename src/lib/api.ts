@@ -17,28 +17,39 @@ export async function getPostSlugs(): Promise<string[]> {
   return snapshot.docs.map((doc) => doc.id);
 }
 
-export async function getPostBySlug(slug: string): Promise<Post> {
-  const postRef = doc(db, "posts", slug);
-  const docSnap = await getDoc(postRef);
+export async function getPostBySlug(slug: string): Promise<Post | null> {
+  try {
+    const postRef = doc(db, "posts", slug);
+    const docSnap = await getDoc(postRef);
 
-  if (docSnap.exists()) {
-    const postData = docSnap.data();
-    return { ...postData, slug } as Post;
-  } else {
-    throw new Error(`Post with slug ${slug} not found`);
+    if (docSnap.exists()) {
+      const postData = docSnap.data();
+      return { ...postData, slug } as Post;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    // If the collection does not exist or another error occurs, return null
+    return null;
   }
 }
 
 export async function getAllPosts(): Promise<Post[]> {
-  const postsCollection = collection(db, "posts").withConverter(postConverter) as CollectionReference<Post>;
+  try {
+    const postsCollection = collection(db, "posts").withConverter(postConverter) as CollectionReference<Post>;
+    const q = query(postsCollection, orderBy("date", "desc"));
+    const snapshot = await getDocs(q);
 
-  const q = query(postsCollection, orderBy("date", "desc"));
-  const snapshot = await getDocs(q);
-
-  const posts = snapshot.docs.map((doc) => ({
-    ...doc.data(),
-    slug: doc.id,
-  })) as Post[];
-
-  return posts;
+    if (!snapshot.empty) {
+      const posts = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        slug: doc.id,
+      })) as Post[];
+      return posts;
+    }
+    return [];
+  } catch (error) {
+    // If the collection does not exist or another error occurs, return an empty array
+    return [];
+  }
 }
