@@ -110,26 +110,6 @@ See how other hubs are using this template:
 
 ---
 
-## 🛠️ Tech Stack
-
-**Frontend:**
-- ⚛️ Next.js 14 (React 18)
-- 🎨 Tailwind CSS
-- 📝 TypeScript
-- 🎭 Framer Motion
-
-**Backend (Optional):**
-- 🔥 Firebase (Auth + Firestore)
-- 📧 Email integration
-- 📊 Analytics ready
-
-**Deployment:**
-- ▲ Vercel (recommended)
-- 🌐 Netlify
-- 🐳 Docker support
-
----
-
 ## 🔧 Configuration Overview
 
 ### Essential Files to Customize
