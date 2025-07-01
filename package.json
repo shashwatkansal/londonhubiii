@@ -76,10 +76,10 @@
     "recharts": "^2.15.4",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
-    "swiper": "^11.2.8"
+    "swiper": "^11.2.10"
   },
   "devDependencies": {
-    "@types/node": "^20.19.1",
+    "@types/node": "^20.19.2",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
     "autoprefixer": "^10.4.21",
