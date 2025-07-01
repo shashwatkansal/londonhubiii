@@ -51,6 +51,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@vercel/analytics": "^1.5.0",
+    "caniuse-lite": "^1.0.30001726",
     "chart.js": "^4.5.0",
     "classnames": "^2.5.1",
     "crypto": "^1.0.1",

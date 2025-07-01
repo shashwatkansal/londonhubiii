@@ -42,10 +42,6 @@ export const HUB_CONFIG = {
   APPLICATION_URL: process.env.NEXT_PUBLIC_APPLICATION_URL || "https://forms.gle/your-application-form",
   TRANSFER_APPLICATION_URL: process.env.NEXT_PUBLIC_TRANSFER_APPLICATION_URL || "https://forms.gle/your-transfer-form",
 
-  // Contact Info
-  PHYSICAL_ADDRESS: process.env.NEXT_PUBLIC_PHYSICAL_ADDRESS || "Your Hub Address",
-  PHONE_NUMBER: process.env.NEXT_PUBLIC_PHONE_NUMBER || "+44 XXX XXX XXXX",
-
   // Newsletter & External Links
   NEWSLETTER_URL: process.env.NEXT_PUBLIC_NEWSLETTER_URL || "https://www.canva.com/design/your-newsletter-link",
   WEF_INTELLIGENCE_URL: process.env.NEXT_PUBLIC_WEF_INTELLIGENCE_URL || "https://intelligence.weforum.org/",
