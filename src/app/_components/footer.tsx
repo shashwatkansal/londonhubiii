@@ -11,6 +11,8 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import * as SETTINGS from "@/lib/settings";
+import { TEXTS } from "@/lib/texts";
 
 export function Footer() {
     const currentYear = new Date().getFullYear();
@@ -28,25 +30,23 @@ export function Footer() {
                     >
                         <div className="flex space-x-4">
                             <Image
-                                src="/assets/images/gs_white_logo.png"
-                                alt="Global Shapers Logo"
+                                src={SETTINGS.HUB_CONFIG.LOGO_MAIN}
+                                alt="Main Logo"
                                 width={80}
                                 height={80}
                                 className="w-20 h-auto"
                             />
                             <Image
-                                src="/assets/images/wef_logo.png"
-                                alt="World Economic Forum Logo"
+                                src={SETTINGS.HUB_CONFIG.LOGO_SECONDARY}
+                                alt="Secondary Logo"
                                 width={80}
                                 height={80}
                                 className="w-20 h-auto"
                             />
                         </div>
-                        <h3 className="text-2xl font-bold">London Hub III</h3>
+                        <h3 className="text-2xl font-bold">{SETTINGS.HUB_CONFIG.HUB_NAME}</h3>
                         <p className="text-sm text-gray-300">
-                            An initiative of the World Economic Forum, the
-                            Global Shapers Community is a network of young
-                            people driving dialogue, action, and change.
+                            {TEXTS.footer.description}
                         </p>
                     </motion.div>
 
@@ -57,30 +57,21 @@ export function Footer() {
                         transition={{ duration: 0.5, delay: 0.1 }}
                         className="space-y-4"
                     >
-                        <h4 className="text-xl font-semibold">Quick Links</h4>
+                        <h4 className="text-xl font-semibold">{TEXTS.footer.contactHeading}</h4>
                         <ul className="space-y-2">
-                            {[
-                                "Home",
-                                "Shapers",
-                                "Our Impact",
-                                "FAQs",
-                                "Join Us",
-                            ].map((item) => (
-                                <li key={item}>
-                                    <Link
-                                        href={
-                                            item === "Home"
-                                                ? "/"
-                                                : `/${item
-                                                      .toLowerCase()
-                                                      .replace(" ", "-")}`
-                                        }
-                                        className="hover:text-blue-300 transition-colors duration-300"
-                                    >
-                                        {item}
-                                    </Link>
-                                </li>
-                            ))}
+                            <li className="flex items-center">
+                                <a
+                                    href={`mailto:${SETTINGS.HUB_CONFIG.EMAIL_ADDRESS}`}
+                                    className="hover:text-blue-300 transition-colors duration-300"
+                                >
+                                    <FaEnvelope className="inline-block mr-2" />
+                                    {SETTINGS.HUB_CONFIG.EMAIL_ADDRESS}
+                                </a>
+                            </li>
+                            <li className="flex items-center">
+                                <FaMapMarkerAlt className="mr-2" />
+                                <span>{SETTINGS.HUB_CONFIG.CITY_NAME}{TEXTS.footer.locationSuffix}</span>
+                            </li>
                         </ul>
                     </motion.div>
 
@@ -91,21 +82,18 @@ export function Footer() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="space-y-4"
                     >
-                        <h4 className="text-xl font-semibold">Contact Us</h4>
+                        <h4 className="text-xl font-semibold">Quick Links</h4>
                         <ul className="space-y-2">
-                            <li className="flex items-center">
-                                <FaEnvelope className="mr-2" />
-                                <a
-                                    href="mailto:londonshapersiii@gmail.com"
-                                    className="hover:text-blue-300 transition-colors duration-300"
-                                >
-                                    londonshapersiii@gmail.com
-                                </a>
-                            </li>
-                            <li className="flex items-center">
-                                <FaMapMarkerAlt className="mr-2" />
-                                <span>London, United Kingdom</span>
-                            </li>
+                            {TEXTS.quickLinks.map((item) => (
+                                <li key={item.label}>
+                                    <Link
+                                        href={item.href}
+                                        className="hover:text-blue-300 transition-colors duration-300"
+                                    >
+                                        {item.label}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </motion.div>
 
@@ -123,19 +111,19 @@ export function Footer() {
                             {[
                                 {
                                     icon: FaFacebookF,
-                                    href: "https://www.facebook.com/londonshapersIII",
+                                    href: SETTINGS.HUB_CONFIG.FACEBOOK_URL,
                                 },
                                 {
                                     icon: FaTwitter,
-                                    href: "https://twitter.com/globalshapers",
+                                    href: SETTINGS.HUB_CONFIG.TWITTER_HANDLE,
                                 },
                                 {
                                     icon: FaLinkedinIn,
-                                    href: "https://www.linkedin.com/company/86249324",
+                                    href: SETTINGS.HUB_CONFIG.LINKEDIN_URL,
                                 },
                                 {
                                     icon: FaInstagram,
-                                    href: "https://www.instagram.com/londonshapersiii/",
+                                    href: SETTINGS.HUB_CONFIG.INSTAGRAM_URL,
                                 },
                             ].map((social, index) => (
                                 <a
@@ -182,7 +170,7 @@ export function Footer() {
                     <p className="text-sm mt-2 text-gray-400">
                         Built by{" "}
                         <a
-                            href="https://www.linkedin.com/in/shashwatkansal/"
+                            href={"https://www.linkedin.com/in/shashwatkansal/"}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-300 hover:text-blue-200 transition-colors duration-300"

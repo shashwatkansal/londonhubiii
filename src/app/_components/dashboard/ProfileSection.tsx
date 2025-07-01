@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaCamera, FaTrash } from "react-icons/fa";
@@ -132,7 +133,7 @@ const ProfileSection = () => {
                     alt="Profile"
                     width={96}
                     height={96}
-                    objectFit="cover"
+                    style={{ objectFit: 'cover' }}
                   />
                 ) : (
                   <span className="text-4xl font-bold text-gray-400">

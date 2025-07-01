@@ -1,5 +1,5 @@
-import { Post } from "@/app/database/models";
-import { db } from "@/lib/firebaseConfig"; // Import Firebase Firestore config
+import { Post, postConverter } from "@/app/database/models";
+import { db } from "@/lib/firebaseConfig";
 import {
   collection,
   getDocs,
@@ -7,19 +7,18 @@ import {
   getDoc,
   query,
   orderBy,
+  CollectionReference,
 } from "firebase/firestore";
 
-// Get all slugs (IDs) from Firestore collection
 export async function getPostSlugs(): Promise<string[]> {
-  const postsCollection = collection(db, "posts");
+  const postsCollection = collection(db, "posts").withConverter(postConverter) as CollectionReference<Post>;
   const snapshot = await getDocs(postsCollection);
 
-  return snapshot.docs.map((doc) => doc.id); // Return the document IDs (which can serve as slugs)
+  return snapshot.docs.map((doc) => doc.id);
 }
 
-// Get a single post by its slug (document ID in Firestore)
 export async function getPostBySlug(slug: string): Promise<Post> {
-  const postRef = doc(db, "posts", slug); // Find the post document by slug (id)
+  const postRef = doc(db, "posts", slug);
   const docSnap = await getDoc(postRef);
 
   if (docSnap.exists()) {
@@ -30,18 +29,16 @@ export async function getPostBySlug(slug: string): Promise<Post> {
   }
 }
 
-// Get all posts from Firestore, sorted by date
 export async function getAllPosts(): Promise<Post[]> {
-  const postsCollection = collection(db, "posts");
+  const postsCollection = collection(db, "posts").withConverter(postConverter) as CollectionReference<Post>;
 
-  // Query posts and order them by 'date' field in descending order
   const q = query(postsCollection, orderBy("date", "desc"));
   const snapshot = await getDocs(q);
 
   const posts = snapshot.docs.map((doc) => ({
     ...doc.data(),
-    slug: doc.id, // Use the document ID as the slug
+    slug: doc.id,
   })) as Post[];
 
-  return posts; // Return all posts sorted by date
+  return posts;
 }

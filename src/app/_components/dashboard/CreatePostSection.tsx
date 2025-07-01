@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import FileUpload from "./file-upload";
 import { Author, Post, postsHelpers } from "@/app/database/models";
+import Image from "next/image";
 
 // Dynamically import ReactQuill to prevent server-side rendering issues
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
@@ -283,8 +284,8 @@ const CreatePostSection = () => {
       <h2 className="text-3xl font-extrabold mb-6 text-center">
         {editingDraftId ? "Edit Post" : "Create a New Post"}
         <p className="text-sm text-gray-600 mt-2 text-center max-w-md mx-auto">
-          Ensure you save the draft once you're done editing, or publish the
-          post when you're ready. Otherwise, your changes will be lost.
+          Ensure you save the draft once you&apos;re done editing, or publish the
+          post when you&apos;re ready. Otherwise, your changes will be lost.
         </p>
       </h2>
       {isAdmin && (
@@ -431,10 +432,12 @@ const CreatePostSection = () => {
           {post.coverImage && (
             <div className="mt-4">
               <p className="text-gray-600">Current Cover Image:</p>
-              <img
+              <Image
                 src={post.coverImage}
                 alt="Current cover"
                 className="mt-2 max-w-full h-auto rounded"
+                width={500}
+                height={300}
               />
             </div>
           )}

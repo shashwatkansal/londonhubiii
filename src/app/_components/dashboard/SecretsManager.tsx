@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -63,7 +64,7 @@ const SecretsManager = () => {
 
     fetchSecrets();
     fetchUsers();
-  }, []);
+  }, [isAdmin, user.email]);
 
   const handleCreateSecret = async () => {
     if (!newSecret.key || !newSecret.value) {

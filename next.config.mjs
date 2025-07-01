@@ -1,12 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "assets.weforum.org",
-      "lh3.googleusercontent.com",
-      "firebasestorage.googleapis.com",
-      "source.unsplash.com",
-      "drive.google.com",
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'assets.weforum.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'source.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'drive.google.com',
+      },
     ],
   },
 };

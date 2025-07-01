@@ -1,34 +1,37 @@
 "use client";
-import { db } from "@lib/firebaseConfig"; // Firebase Firestore configuration
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@lib/firebaseConfig";
+import { collection, getDocs, query, where, CollectionReference } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { FaExternalLinkAlt, FaInstagram, FaLinkedin } from "react-icons/fa";
+import * as SETTINGS from "@/lib/settings";
+import { TEXTS } from "@/lib/texts";
+import type { User } from "@/app/database/models";
+import { userConverter } from "@/app/database/models";
+import Image from "next/image";
 
-// Modal Component
 const Modal = ({
   shaper,
   onClose,
 }: {
-  shaper: Shaper;
+  shaper: User;
   onClose: () => void;
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null); // Ref to the modal content
+  const modalRef = useRef<HTMLDivElement>(null);
 
-  // Handle click outside modal content to close the modal
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         modalRef.current &&
         !modalRef.current.contains(event.target as Node)
       ) {
-        onClose(); // Close modal when clicked outside
+        onClose();
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside); // Attach event listener
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside); // Clean up event listener
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
 
@@ -36,7 +39,7 @@ const Modal = ({
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div
         className="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-6 relative"
-        ref={modalRef} // Attach the modal content to the ref
+        ref={modalRef}
       >
         <button
           className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
@@ -44,9 +47,7 @@ const Modal = ({
         >
           ✕
         </button>
-        {/* Modal Content */}
         <div className="flex flex-col items-center">
-          {/* Profile Image */}
           {isGoogleDriveUrl(shaper.profilepic!) ? (
             <iframe
               src={convertDriveUrlToDirect(shaper.profilepic!)}
@@ -55,9 +56,11 @@ const Modal = ({
               className="w-full h-64 object-cover mb-4"
             />
           ) : (
-            <img
+            <Image
               src={shaper.profilepic!}
               alt={shaper.name}
+              width={128}
+              height={128}
               className="w-32 h-32 rounded-full object-cover mb-4"
             />
           )}
@@ -65,7 +68,6 @@ const Modal = ({
           <p className="text-gray-600 mb-4">{shaper.role}</p>
           <p className="text-gray-700 mb-4 text-center">{shaper.bio}</p>
 
-          {/* Social Links */}
           <div className="flex space-x-4">
             {shaper.linkedin && (
               <a
@@ -104,11 +106,10 @@ const Modal = ({
   );
 };
 
-// Helper functions for handling Google Drive URLs
 const isGoogleDriveUrl = (url: string) => url.includes("drive.google.com");
 
 const convertDriveUrlToDirect = (url: string) => {
-  const fileIdMatch = url.match(/(?:\/file\/d\/|id=)([\w-]+)/); // Match the file ID from the URL
+  const fileIdMatch = url.match(/(?:\/file\/d\/|id=)([\w-]+)/);
   const id = fileIdMatch ? fileIdMatch[1] : null;
   return id ? `https://drive.google.com/file/d/${id}/preview?autoplay=1` : url;
 };
@@ -121,7 +122,7 @@ interface Shaper {
   instagram?: string;
   toplink?: string;
   profilepic?: string;
-  role?: string; // Role (if defined)
+  role?: string;
   externalViewEnabled: boolean;
 }
 
@@ -129,15 +130,14 @@ const ShaperCard = ({
   shaper,
   onClick,
 }: {
-  shaper: Shaper;
+  shaper: User;
   onClick: () => void;
 }) => {
   return (
     <div
       className={`relative bg-white shadow-xl rounded-lg overflow-hidden hover:shadow-2xl duration-500 transform transition-transform hover:scale-105 cursor-pointer`}
-      onClick={onClick} // Open the modal on click
+      onClick={onClick}
     >
-      {/* Profile Image or Google Drive iframe */}
       <div className="relative w-full h-64">
         {isGoogleDriveUrl(shaper.profilepic!) ? (
           <iframe
@@ -147,17 +147,17 @@ const ShaperCard = ({
             className="w-full h-full object-cover"
           />
         ) : (
-          <img
+          <Image
             src={shaper.profilepic!}
             alt={shaper.name}
+            width={400}
+            height={256}
             className="w-full h-full object-cover"
           />
         )}
-        {/* Role Tag */}
         <div className="absolute top-4 left-4 bg-wef-blue text-white text-sm px-4 py-1 rounded-full shadow-lg z-50 uppercase font-bold tracking-wide">
           {shaper.role}
         </div>
-        {/* Overlay for Text */}
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-4">
           <h2 className="text-white text-2xl font-bold mb-1">{shaper.name}</h2>
           <p className="text-white text-sm">{shaper.role}</p>
@@ -167,33 +167,31 @@ const ShaperCard = ({
   );
 };
 
-// Main ShapersPage Component
 export default function ShapersPage() {
-  const [shapers, setShapers] = useState<Shaper[]>([]);
+  const [shapers, setShapers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedShaper, setSelectedShaper] = useState<Shaper | null>(null); // Track selected shaper for the modal
+  const [selectedShaper, setSelectedShaper] = useState<User | null>(null);
 
-  // Fetch the shapers data from the "directory" collection where externalViewEnabled is true
   useEffect(() => {
     const fetchShapers = async () => {
       try {
         const shapersQuery = query(
-          collection(db, "directory"),
-          where("externalViewEnabled", "==", true) // Only fetch profiles with externalViewEnabled set to true
+          collection(db, "directory").withConverter(userConverter) as CollectionReference<User>,
+          where("externalViewEnabled", "==", true)
         );
         const querySnapshot = await getDocs(shapersQuery);
-        const shapersData: Shaper[] = [];
+        const shapersData: User[] = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           shapersData.push({
+            email: doc.id,
             name: data.name || "Unknown",
             bio: data.bio || "No bio available",
-            email: data.email,
             linkedin: data.linkedin || "",
             instagram: data.instagram || "",
             toplink: data.toplink || "",
-            profilepic: data.profilepic || "/default-profile.png", // Default image
-            role: data.role || "Shaper", // Default to "Shaper" if no role is defined
+            profilepic: data.profilepic || "/default-profile.png",
+            role: data.role || SETTINGS.HUB_CONFIG.SHAPER_DEFAULT_ROLE,
             externalViewEnabled: data.externalViewEnabled || false,
           });
         });
@@ -212,27 +210,29 @@ export default function ShapersPage() {
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-gray-100 py-10 px-4">
       <div className="container mx-auto">
         <h1 className="text-5xl font-bold text-center mb-12 text-blue-900 animate-fade-in-down transition-transform duration-200">
-          Meet Our Shapers
+          {SETTINGS.HUB_CONFIG.SHAPERS_PAGE_HEADING}
         </h1>
 
-        {/* Loading state */}
         {loading ? (
           <div className="flex justify-center items-center">
-            <p className="text-xl text-gray-600">Loading Shapers...</p>
+            <p className="text-xl text-gray-600">{TEXTS.shapers.loading}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
             {shapers.map((shaper, index) => (
               <ShaperCard
                 key={index}
-                shaper={shaper}
+                shaper={{
+                  ...shaper,
+                  name: shaper.name || TEXTS.shapers.unknown,
+                  bio: shaper.bio || TEXTS.shapers.noBio,
+                }}
                 onClick={() => setSelectedShaper(shaper)}
               />
             ))}
           </div>
         )}
 
-        {/* Modal for showing full profile */}
         {selectedShaper && (
           <Modal
             shaper={selectedShaper}

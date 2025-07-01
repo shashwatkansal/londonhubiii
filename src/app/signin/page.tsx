@@ -11,19 +11,16 @@ import {
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const GoogleIcon = () => <FcGoogle className="text-2xl" />;
-const FacebookIcon = () => <FaFacebook className="text-2xl text-blue-600" />;
-const TwitterIcon = () => <FaTwitter className="text-2xl text-blue-400" />;
-const LinkedInIcon = () => <FaLinkedin className="text-2xl text-blue-700" />;
 
 export default function SignIn() {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const [isSigningUp, setIsSigningUp] = useState(false);
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -68,15 +65,15 @@ export default function SignIn() {
     };
 
     const handleForgotPassword = async () => {
+        setError("");
+        setSuccess("");
+        if (!email) {
+            setError("Please enter your email address to reset your password.");
+            return;
+        }
         try {
-            const emailExists = await checkEmailInDirectory(email);
-            if (!emailExists) {
-                throw new Error(
-                    "This email is not authorized for password reset. Please contact support."
-                );
-            }
             await sendPasswordResetEmail(auth, email);
-            alert("Password reset email sent!");
+            setSuccess("If an account with that email exists, a password reset link has been sent.");
         } catch (err: any) {
             setError(err.message);
         }
@@ -101,7 +98,6 @@ export default function SignIn() {
     };
     return (
         <div className="relative flex flex-col items-center justify-center min-h-screen text-white overflow-hidden">
-            {/* Background Video */}
             <div className="absolute inset-0 z-0">
                 <video
                     src="/assets/videos/shapers_stock.mp4"
@@ -111,11 +107,9 @@ export default function SignIn() {
                     className="w-full h-full object-cover opacity-70"
                 />
             </div>
-
-            {/* Overlay */}
+        
             <div className="absolute inset-0 z-10"></div>
 
-            {/* Sign-In Box */}
             <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -128,6 +122,11 @@ export default function SignIn() {
                 {error && (
                     <p className="text-red-400 text-center mb-4 bg-red-900/20 py-2 rounded">
                         {error}
+                    </p>
+                )}
+                {success && (
+                    <p className="text-green-400 text-center mb-4 bg-green-900/20 py-2 rounded">
+                        {success}
                     </p>
                 )}
                 <input
@@ -158,29 +157,9 @@ export default function SignIn() {
                         whileTap={{ scale: 0.9 }}
                         onClick={handleGoogleSignIn}
                         className="btn btn-circle btn-ghost bg-white/30 hover:bg-white/40"
+                        aria-label="Sign in with Google"
                     >
                         <GoogleIcon />
-                    </motion.button>
-                    <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="btn btn-circle btn-ghost bg-white/30 hover:bg-white/40"
-                    >
-                        <FacebookIcon />
-                    </motion.button>
-                    <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="btn btn-circle btn-ghost bg-white/30 hover:bg-white/40"
-                    >
-                        <TwitterIcon />
-                    </motion.button>
-                    <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="btn btn-circle btn-ghost bg-white/30 hover:bg-white/40"
-                    >
-                        <LinkedInIcon />
                     </motion.button>
                 </div>
                 {!isSigningUp && (
