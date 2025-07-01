@@ -2,8 +2,8 @@
 
 **A beautiful, customizable, and feature-rich website template for any Global Shapers Hub worldwide.**
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-org/global-shapers-template)
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/your-org/global-shapers-template)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/shashwatkansal/londonhubiii)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/shashwatkansal/londonhubiii)
 
 ---
 
@@ -60,7 +60,7 @@ This template was created by **London Hub III** to help Global Shapers hubs worl
 # Click "Use this template" button above
 
 # Option 2: Clone directly
-git clone https://github.com/your-org/global-shapers-template.git your-hub-website
+git clone https://github.com/shashwatkansal/londonhubiii.git your-hub-website
 cd your-hub-website
 ```
 
@@ -109,7 +109,7 @@ See how other hubs are using this template:
 - **[Tokyo Hub](https://example-tokyo.vercel.app)** - Japanese localization
 - **[São Paulo Hub](https://example-saopaulo.vercel.app)** - Portuguese localization
 
-*Want to add your hub to this list? [Open a PR](../../pulls)!*
+*Want to add your hub to this list? [Open a PR](https://github.com/shashwatkansal/londonhubiii/pulls)!*
 
 ---
 
@@ -175,8 +175,8 @@ public/assets/
 ## 🤝 Community & Support
 
 ### 💬 **Get Help**
-- 📋 [GitHub Issues](../../issues) - Bug reports and feature requests
-- 💡 [GitHub Discussions](../../discussions) - Questions and ideas
+- 📋 [GitHub Issues](https://github.com/shashwatkansal/londonhubiii/issues) - Bug reports and feature requests
+- 💡 [GitHub Discussions](https://github.com/shashwatkansal/londonhubiii/discussions) - Questions and ideas
 - 📧 Email: [template-support@globalshapers.org](mailto:template-support@globalshapers.org)
 
 ### 🌟 **Contribute**
