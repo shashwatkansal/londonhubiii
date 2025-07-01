@@ -105,9 +105,6 @@ git push origin main
 See how other hubs are using this template:
 
 - **[London Hub III](https://londonshapersiii.com)** - Original template creator
-- **[Paris Hub](https://example-paris.vercel.app)** - French localization
-- **[Tokyo Hub](https://example-tokyo.vercel.app)** - Japanese localization
-- **[São Paulo Hub](https://example-saopaulo.vercel.app)** - Portuguese localization
 
 *Want to add your hub to this list? [Open a PR](https://github.com/shashwatkansal/londonhubiii/pulls)!*
 
