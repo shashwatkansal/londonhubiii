@@ -9,7 +9,7 @@
 
 ## ✨ Why This Template?
 
-This template was created by **London Hub III** to help Global Shapers hubs worldwide launch professional websites quickly and easily. Instead of building from scratch, focus on what matters most: **your content and community**.
+This template was created by **London Hub III (Shashwat Kansal)** to help Global Shapers hubs worldwide launch professional websites quickly and easily. Instead of building from scratch, focus on what matters most: **your content and community**.
 
 ### 🎯 Perfect For
 - **New hubs** launching their first website
@@ -84,6 +84,42 @@ git push origin main
 ```
 
 **🎉 Your website is live!**
+
+---
+
+## 📝 Setup Checklist (Required for First-Time Use)
+
+Follow these steps to ensure your hub website works out of the box:
+
+1. **Set Up Firebase**
+   - Go to [Firebase Console](https://console.firebase.google.com/) and create a new project.
+   - Add a new Web App to your project.
+   - Enable **Firestore Database** (start in test mode for development).
+   - Enable **Authentication** (Email/Password, Google sign-in) in the Auth section.
+
+2. **Configure Firebase Environment Variables**
+   - Copy your Firebase config values (apiKey, authDomain, etc.) from your Firebase project settings.
+   - Paste them into your `.env` file (or Vercel/Netlify project settings) using the variable names in `.env.example`.
+   - On Vercel: Go to Project > Settings > Environment Variables and add all `NEXT_PUBLIC_FIREBASE_...` and `ENCRYPTION_KEY` values.
+
+3. **Set Up Admin Access**
+   - In Firestore, create a collection called `admins`.
+   - Add a document with your email address as the document ID (e.g., `your.email@example.com`).
+   - This will grant you access to the admin dashboard when you sign in with that email.
+
+4. **Replace Images and Assets**
+   - Replace the images in `public/assets/images/` (e.g., `gs_white_logo.png`, `hub3photo.jpg`, `christmas.jpg`) with your hub's branding and team photos.
+   - Update blog cover images in `public/assets/blog/` as needed.
+
+5. **Edit Homepage and Content**
+   - Edit `src/lib/settings.ts` for your hub's name, city, links, and branding.
+   - Edit `src/lib/texts.ts` for all user-facing text and section headings.
+   - Optionally, customize the homepage layout and sections in `src/app/page.tsx`.
+
+6. **Vercel Deployment: Use Bun**
+   - When deploying to Vercel, go to Project > Settings > General > Build & Development Settings.
+   - Set the **Install Command** to `bun install` (instead of `npm install` or `yarn install`).
+   - Set the **Build Command** to `bun run build`.
 
 ---
 
