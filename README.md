@@ -205,7 +205,7 @@ See our [Contributing Guide](CONTRIBUTING.md) for details.
 ### 🏆 **Contributors**
 Thanks to all the Global Shapers who made this possible:
 
-- **[London Hub III](https://londonshapersiii.com)** - Original creators
+- **Shashwat Kansal** - Original creator
 - **Your Name Here** - [Contribute](CONTRIBUTING.md) and get listed!
 
 ---
