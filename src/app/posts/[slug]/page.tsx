@@ -8,11 +8,13 @@ import { PostHeader } from "@/app/_components/post-header";
 import * as SETTINGS from "@/lib/settings";
 
 export default async function Post({ params }: Params) {
-  const post = await getPostBySlug(params.slug);
+  const postResponse = await getPostBySlug(params.slug);
 
-  if (!post) {
+  if (!postResponse.data) {
     return notFound();
   }
+  
+  const post = postResponse.data;
   const content = post.content;
 
   return (
@@ -47,12 +49,13 @@ type Params = {
 };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const post = await getPostBySlug(params.slug);
+  const postResponse = await getPostBySlug(params.slug);
 
-  if (!post) {
+  if (!postResponse.data) {
     return notFound();
   }
 
+  const post = postResponse.data;
   const title = `${post.title} | ${SETTINGS.HUB_CONFIG.HUB_NAME} Article`;
 
   return {
@@ -65,7 +68,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllPosts();
+  const postsResponse = await getAllPosts();
+  const posts = postsResponse.data || [];
 
   return posts.map((post) => ({
     slug: post.slug,

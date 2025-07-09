@@ -10,7 +10,8 @@ export default async function ImpactPage() {
   let allPosts: Post[] = [];
 
   try {
-    allPosts = await getAllPosts();
+    const postsResponse = await getAllPosts();
+    allPosts = postsResponse.data || [];
   } catch (error) {
     console.error("Failed to fetch posts:", error);
     allPosts = [];

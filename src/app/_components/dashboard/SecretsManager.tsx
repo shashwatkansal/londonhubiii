@@ -35,6 +35,8 @@ const SecretsManager = () => {
 
   useEffect(() => {
     const fetchSecrets = async () => {
+      if (!user?.email) return;
+      
       try {
         const fetchedSecrets = await secretsHelpers.getVisibleToUser(
           user.email,
@@ -64,7 +66,7 @@ const SecretsManager = () => {
 
     fetchSecrets();
     fetchUsers();
-  }, [isAdmin, user.email]);
+  }, [isAdmin, user?.email]);
 
   const handleCreateSecret = async () => {
     if (!newSecret.key || !newSecret.value) {
@@ -77,7 +79,7 @@ const SecretsManager = () => {
       await secretsHelpers.create(newSecret);
       setNewSecret({ key: "", value: "", visibleTo: [] });
       const updatedSecrets = await secretsHelpers.getVisibleToUser(
-        user.email,
+        user?.email || '',
         isAdmin
       );
       setSecrets(updatedSecrets);
@@ -97,7 +99,7 @@ const SecretsManager = () => {
     try {
       await secretsHelpers.delete(id);
       const updatedSecrets = await secretsHelpers.getVisibleToUser(
-        user.email,
+        user?.email || '',
         isAdmin
       );
       setSecrets(updatedSecrets);

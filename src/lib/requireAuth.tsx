@@ -16,7 +16,7 @@ export function requireAuth<P>(
 ): ComponentType<P> {
   const AuthenticatedComponent = (props: P) => {
     const router = useRouter();
-    const { user, loading, userRoles } = useAuth();
+    const { user, loading, isAdmin } = useAuth();
     const { redirectUrl = "/signin", allowedRoles } = options;
 
     useEffect(() => {
@@ -24,15 +24,13 @@ export function requireAuth<P>(
         if (!user) {
           router.push(redirectUrl);
         } else if (allowedRoles && allowedRoles.length > 0) {
-          const hasAllowedRole = allowedRoles.some((role) =>
-            userRoles.includes(role)
-          );
-          if (!hasAllowedRole) {
+          const hasAdminRole = allowedRoles.includes('admin') && isAdmin;
+          if (!hasAdminRole) {
             router.push("/unauthorized");
           }
         }
       }
-    }, [user, loading, router, redirectUrl, allowedRoles, userRoles]);
+    }, [user, loading, router, redirectUrl, allowedRoles, isAdmin]);
 
     if (loading || !user) {
       return (
