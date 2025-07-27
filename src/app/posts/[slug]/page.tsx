@@ -21,10 +21,11 @@ export default async function Post({ params }: Params) {
     <main className="py-4 md:py-8">
       <Container>
         <div className="mb-8">
-          <Link href="/our-impact">
-            <button className="text-blue-600 hover:text-blue-800 font-bold underline">
-              ← Back to Our Impact
-            </button>
+          <Link 
+            href="/our-impact"
+            className="inline-block text-blue-600 hover:text-blue-800 font-bold underline"
+          >
+            ← Back to Our Impact
           </Link>
         </div>
 

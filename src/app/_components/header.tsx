@@ -201,10 +201,11 @@ export default function Header() {
                 </AnimatePresence>
               </div>
             ) : (
-              <Link href="/signin">
-                <button className="bg-white text-wef-dark-blue px-4 py-2 rounded-full hover:bg-wef-light-blue transition-colors duration-200">
-                  Sign In
-                </button>
+              <Link 
+                href="/signin"
+                className="bg-white text-wef-dark-blue px-4 py-2 rounded-full hover:bg-wef-light-blue transition-colors duration-200"
+              >
+                Sign In
               </Link>
             )}
             <button

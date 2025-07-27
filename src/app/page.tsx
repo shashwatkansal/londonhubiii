@@ -99,14 +99,11 @@ export default function Index() {
         pattern
       >
         <AnimatedSection animation="slideUp" className="mt-12">
-          <Link href="/our-impact">
-            <Button
-              variant="primary"
-              size="lg"
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 mx-auto block"
-            >
-              Learn More About Our Projects
-            </Button>
+          <Link 
+            href="/our-impact"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 px-6 py-3 text-base mx-auto block text-center w-fit"
+          >
+            Learn More About Our Projects
           </Link>
         </AnimatedSection>
       </Section>
@@ -195,14 +192,11 @@ export default function Index() {
                 SETTINGS.HUB_CONFIG.HUB_NAME
               )}
             </p>
-            <Link href="/shapers">
-              <Button
-                variant="primary"
-                size="lg"
-                className="bg-gradient-to-r from-blue-600 to-purple-600"
-              >
-                {TEXTS.changeMakers.buttonText}
-              </Button>
+            <Link 
+              href="/shapers"
+              className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 px-6 py-3 text-base hover:from-purple-600 hover:to-blue-600"
+            >
+              {TEXTS.changeMakers.buttonText}
             </Link>
           </AnimatedSection>
 
@@ -262,28 +256,22 @@ export default function Index() {
                   "https://www.canva.com/design/DAGLfOjusxQ/5upjRZAU6-L_vDVfJV686A/view"
                 }
                 target="_blank"
+                className="w-full inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 px-6 py-3 text-base mt-8 hover:from-purple-600 hover:to-blue-600"
               >
-                <Button
-                  variant="primary"
-                  size="lg"
-                  fullWidth
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 mt-8"
+                {TEXTS.newsletter.readButton}
+                <svg
+                  className="w-5 h-5 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  {TEXTS.newsletter.readButton}
-                  <svg
-                    className="w-5 h-5 ml-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
-                </Button>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
               </Link>
             </AnimatedSection>
           </div>
@@ -325,7 +313,6 @@ export default function Index() {
       {/* Call to Action */}
       <Section
         id="join-us"
-        ref={callToActionRef}
         variant="dark"
         title={TEXTS.join.readyHeading}
         description={TEXTS.join.readyDesc}
@@ -355,14 +342,9 @@ export default function Index() {
               "https://docs.google.com/forms/d/e/1FAIpQLScdWAWxr--Z4_c9piHxW8wZSitKUcRquNp4VKVtb3HUFcbSGw/viewform"
             }
             target="_blank"
+            className="inline-block bg-gradient-to-r from-purple-500 to-purple-600 text-white font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 px-6 py-3 text-base hover:from-purple-600 hover:to-purple-500"
           >
-            <Button
-              variant="primary"
-              size="lg"
-              className="bg-gradient-to-r from-purple-500 to-purple-600"
-            >
-              {TEXTS.join.transfer(SETTINGS.HUB_CONFIG.CITY_NAME)}
-            </Button>
+            {TEXTS.join.transfer(SETTINGS.HUB_CONFIG.CITY_NAME)}
           </Link>
         </div>
       </Section>

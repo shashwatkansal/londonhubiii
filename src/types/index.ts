@@ -6,6 +6,7 @@ export interface User {
   email: string;
   displayName?: string;
   photoURL?: string;
+  role?: 'super_admin' | 'admin' | 'editor' | 'viewer' | 'member';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,6 +16,7 @@ export interface AuthContextType {
   isAdmin: boolean;
   loading: boolean;
   error: string | null;
+  logout?: () => Promise<void>;
 }
 
 export interface ApiResponse<T> {

@@ -54,7 +54,7 @@ const Hero: React.FC<HeroProps> = ({
           alt="Hero Background"
           fill
           style={{ objectFit: "cover" }}
-          className="opacity-60"
+          className="opacity-80"
           priority
         />
       </motion.div>
@@ -99,26 +99,24 @@ const Hero: React.FC<HeroProps> = ({
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             {primaryButton && (
-              <Link href={primaryButton.href} passHref>
-                <button
-                  onClick={primaryButton.onClick}
-                  className="group relative px-8 py-4 bg-white text-blue-900 font-semibold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden"
-                  aria-label={primaryButton.text}
-                >
-                  <span className="relative z-10">{primaryButton.text}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-                </button>
+              <Link 
+                href={primaryButton.href}
+                onClick={primaryButton.onClick}
+                className="group relative inline-block px-8 py-4 bg-white text-blue-900 font-semibold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden"
+                aria-label={primaryButton.text}
+              >
+                <span className="relative z-10">{primaryButton.text}</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
               </Link>
             )}
             {secondaryButton && (
-              <Link href={secondaryButton.href}>
-                <button
-                  onClick={secondaryButton.onClick}
-                  className="group px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-blue-900 transition-all duration-300"
-                  aria-label={secondaryButton.text}
-                >
-                  {secondaryButton.text}
-                </button>
+              <Link 
+                href={secondaryButton.href}
+                onClick={secondaryButton.onClick}
+                className="group inline-block px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-blue-900 transition-all duration-300"
+                aria-label={secondaryButton.text}
+              >
+                {secondaryButton.text}
               </Link>
             )}
           </motion.div>

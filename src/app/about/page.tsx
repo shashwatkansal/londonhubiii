@@ -127,10 +127,11 @@ export default function AboutPage() {
           <p className="text-2xl mb-12">
             {TEXTS.about.joinDesc(SETTINGS.HUB_CONFIG.CITY_NAME, SETTINGS.HUB_CONFIG.HUB_NAME)}
           </p>
-          <Link href="/join-us">
-            <button className="px-8 py-4 bg-yellow-400 text-blue-900 font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl">
-              {TEXTS.about.joinButton}
-            </button>
+          <Link 
+            href="/join-us"
+            className="inline-block px-8 py-4 bg-yellow-400 text-blue-900 font-bold rounded-full transform hover:scale-110 transition-transform duration-300 shadow-lg hover:shadow-2xl"
+          >
+            {TEXTS.about.joinButton}
           </Link>
         </div>
       </section>

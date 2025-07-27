@@ -2,9 +2,21 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { FaUser, FaChartBar, FaCalendar, FaLink, FaPen, FaKey, FaUsers, FaBars, FaTimes } from "react-icons/fa";
+import { 
+  FaUser, FaChartBar, FaCalendar, FaLink, FaPen, FaKey, FaUsers, 
+  FaBars, FaTimes, FaHome, FaFileAlt, FaCog, FaHistory, FaChartLine 
+} from "react-icons/fa";
+import { 
+  FiGrid, FiFileText, FiSettings, FiClock, FiTrendingUp,
+  FiUsers, FiLock, FiCalendar, FiLink, FiEdit
+} from "react-icons/fi";
 
 import { useAuth } from "@/lib/auth";
+import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
+import { StatsCard } from "@/components/dashboard/StatsCard";
+import { Chart } from "@/components/dashboard/Chart";
+import { ContentManager } from "@/components/dashboard/ContentManager";
+import { DataTable } from "@/components/dashboard/DataTable";
 import ProfileSection from "@/app/_components/dashboard/ProfileSection";
 import FAQsSection from "@/app/_components/dashboard/FAQsSection";
 import CalendarSection from "@/app/_components/dashboard/CalendarSection";
@@ -17,8 +29,12 @@ import UserManagementSection from "@/app/_components/dashboard/UserManagementSec
 import Topbar from "@/app/_components/dashboard/Topbar";
 import AdvancedCollectionManager from "@/app/_components/dashboard/AdvancedCollectionManager";
 import { adminConverter, userConverter, faqConverter, postConverter, secretConverter, siteSettingConverter, subscribersConverter } from "@/app/database/models";
-import { collection, doc, setDoc, deleteDoc, getDocs } from "firebase/firestore";
+import { collection, doc, setDoc, deleteDoc, getDocs, where, query, orderBy, limit } from "firebase/firestore";
 import { db } from "@/lib/firebaseConfig";
+import { useRealtimeCollection, useRealtimeAggregation } from "@/hooks/useRealtimeData";
+import { hasPermission } from "@/lib/rbac";
+import { queryAuditLogs, getAuditStats } from "@/lib/audit";
+import toast from "react-hot-toast";
 
 const TABS = [
   { key: "profile", label: "Profile", icon: <FaUser />, admin: false },
