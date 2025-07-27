@@ -12,10 +12,14 @@ export const HUB_CONFIG = {
 
   // Social Links
   TWITTER_HANDLE: process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@londonshapersiii",
+  TWITTER_URL: process.env.NEXT_PUBLIC_TWITTER_URL || "https://twitter.com/londonshapersiii",
   FACEBOOK_URL: process.env.NEXT_PUBLIC_FACEBOOK_URL || "https://www.facebook.com/londonshapersIII",
   INSTAGRAM_URL: process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://www.instagram.com/londonshapersiii/",
   LINKEDIN_URL: process.env.NEXT_PUBLIC_LINKEDIN_URL || "https://www.linkedin.com/company/86249324",
   EMAIL_ADDRESS: process.env.NEXT_PUBLIC_EMAIL_ADDRESS || "londonshapersiii@gmail.com",
+  
+  // Location
+  COUNTRY: process.env.NEXT_PUBLIC_COUNTRY || "United Kingdom",
 
   // Website URLs
   HUB_URL: process.env.NEXT_PUBLIC_HUB_URL || "https://londonshapersiii.com",

@@ -9,42 +9,13 @@ import { AuthProvider } from "@/lib/auth";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "react-hot-toast";
 import { LinksProvider } from "@/app/_components/dashboard/LinksContext";
+import AdvancedErrorBoundary from "@/components/ui/AdvancedErrorBoundary";
+import { generateSEOMetadata } from "@/components/SEO";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: SETTINGS.HUB_CONFIG.HUB_NAME,
-  description: SETTINGS.HUB_CONFIG.META_DESCRIPTION,
-  keywords: SETTINGS.HUB_CONFIG.META_KEYWORDS,
-  authors: [{ name: SETTINGS.HUB_CONFIG.HUB_NAME }],
-  openGraph: {
-    title: SETTINGS.HUB_CONFIG.HUB_NAME,
-    description: SETTINGS.HUB_CONFIG.META_DESCRIPTION,
-    url: SETTINGS.HUB_CONFIG.HUB_URL,
-    type: "website",
-    images: [
-      {
-        url: SETTINGS.HUB_CONFIG.HOME_OG_IMAGE_URL,
-        width: 1200,
-        height: 630,
-        alt: SETTINGS.HUB_CONFIG.HUB_NAME,
-      },
-    ],
-    locale: "en_US",
-    siteName: SETTINGS.HUB_CONFIG.HUB_NAME,
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: SETTINGS.HUB_CONFIG.TWITTER_HANDLE,
-    title: SETTINGS.HUB_CONFIG.HUB_NAME,
-    description: SETTINGS.HUB_CONFIG.META_DESCRIPTION,
-    images: SETTINGS.HUB_CONFIG.HOME_OG_IMAGE_URL,
-  },
-  robots: "index, follow",
-  alternates: {
-    canonical: SETTINGS.HUB_CONFIG.HUB_URL,
-  },
-};
+export const metadata: Metadata = generateSEOMetadata();
 
 export default function RootLayout({
   children,
@@ -130,13 +101,35 @@ export default function RootLayout({
 
         <AuthProvider>
           <LinksProvider>
-            <main className="min-h-screen" role="main">
-              {children}
-            </main>
+            <AdvancedErrorBoundary>
+              <main className="min-h-screen" role="main">
+                {children}
+              </main>
+            </AdvancedErrorBoundary>
           </LinksProvider>
         </AuthProvider>
           
         <Footer />
+        
+        {/* Performance monitoring */}
+        <Script
+          id="performance-monitor"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('PerformanceObserver' in window) {
+                try {
+                  const observer = new PerformanceObserver((list) => {
+                    for (const entry of list.getEntries()) {
+                      console.log('[Performance]', entry.name, entry.startTime);
+                    }
+                  });
+                  observer.observe({ entryTypes: ['navigation', 'paint', 'largest-contentful-paint'] });
+                } catch (e) {}
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );

@@ -46,7 +46,8 @@
     "type-check": "tsc --noEmit",
     "export": "next build && next export",
     "clean": "rm -rf .next out node_modules/.cache",
-    "prepare": "npm run type-check"
+    "prepare": "npm run type-check",
+    "setup": "node scripts/setup.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",

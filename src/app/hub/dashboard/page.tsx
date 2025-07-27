@@ -6,10 +6,6 @@ import {
   FaUser, FaChartBar, FaCalendar, FaLink, FaPen, FaKey, FaUsers, 
   FaBars, FaTimes, FaHome, FaFileAlt, FaCog, FaHistory, FaChartLine 
 } from "react-icons/fa";
-import { 
-  FiGrid, FiFileText, FiSettings, FiClock, FiTrendingUp,
-  FiUsers, FiLock, FiCalendar, FiLink, FiEdit
-} from "react-icons/fi";
 
 import { useAuth } from "@/lib/auth";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
