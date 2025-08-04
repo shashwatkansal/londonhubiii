@@ -127,8 +127,6 @@ export default function RootLayout({
 
         <Toaster position="top-center" reverseOrder={false} />
 
-        <RecruitmentBanner />
-        
         <Header />
 
         <AuthProvider>

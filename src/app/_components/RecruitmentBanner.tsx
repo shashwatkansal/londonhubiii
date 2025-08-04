@@ -53,17 +53,19 @@ const RecruitmentBanner: React.FC = () => {
   const recruitmentUrl = siteSettings.recruitment_url || SETTINGS.HUB_CONFIG.APPLICATION_URL;
 
   return (
-    <AnimatePresence>
-      {isVisible && (
+    <AnimatePresence mode="wait">
+      {isVisible ? (
         <motion.div
+          key="banner"
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: 'auto', opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3 }}
           className="relative overflow-hidden"
+          id="recruitment-banner"
         >
-          <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white">
-            <div className="relative">
+            <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white">
+              <div className="relative">
               {/* Animated background effect */}
               <div className="absolute inset-0 bg-black opacity-10"></div>
               <motion.div
@@ -126,7 +128,7 @@ const RecruitmentBanner: React.FC = () => {
             </div>
           </div>
         </motion.div>
-      )}
+      ) : null}
     </AnimatePresence>
   );
 };

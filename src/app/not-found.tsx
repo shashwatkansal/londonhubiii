@@ -30,11 +30,12 @@ export default function NotFound() {
           Oops! The page you’re looking for doesn’t exist. Let’s get you back
           on track.
         </p>
-        <Link href="/" passHref>
-          <a className="inline-flex items-center space-x-2 btn btn-primary px-6 py-3 text-lg font-medium transition-transform hover:scale-105">
-            <ArrowLeft className="w-5 h-5" />
-            <span>Return Home</span>
-          </a>
+        <Link 
+          href="/" 
+          className="inline-flex items-center space-x-2 btn btn-primary px-6 py-3 text-lg font-medium transition-transform hover:scale-105"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span>Return Home</span>
         </Link>
       </div>
     </div>

@@ -13,6 +13,7 @@ import { User } from "firebase/auth";
 import * as SETTINGS from "@/lib/settings";
 import type { UserFeedback } from "@/app/database/models";
 import { userFeedbackConverter } from "@/app/database/models";
+import RecruitmentBanner from "./RecruitmentBanner";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -94,13 +95,14 @@ export default function Header() {
 
   return (
     <>
+      <RecruitmentBanner />
       <motion.header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           pathname === "/"
             ? isScrolled
               ? "bg-wef-gradient shadow-lg"
               : "bg-transparent"
-            : "bg-wef-gradient shadow-lg relative"
+            : "bg-wef-gradient shadow-lg"
         }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
