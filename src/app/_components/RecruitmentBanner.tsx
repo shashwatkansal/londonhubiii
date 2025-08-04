@@ -25,8 +25,15 @@ const RecruitmentBanner: React.FC = () => {
     getAllSiteSettings().then((data) => {
       setSiteSettings(data);
       setLoading(false);
-      // Check if recruitment is enabled
-      if (data.recruitment_banner_enabled === 'true' && !dismissed) {
+      const currDate = new Date();
+      const enable = currDate.getMonth() <= 10 && currDate.getFullYear() === 2025;
+      if (enable && !dismissed) {
+        setIsVisible(true);
+      }
+    }).catch(() => {
+      // If there's an error loading settings, show banner by default
+      setLoading(false);
+      if (!dismissed) {
         setIsVisible(true);
       }
     });
