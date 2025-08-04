@@ -39,7 +39,7 @@ export const HUB_CONFIG = {
   ABOUT_PAGE_VIDEO_URL: process.env.NEXT_PUBLIC_ABOUT_PAGE_VIDEO_URL || "https://www.youtube.com/embed/your-video-id",
 
   // Join/Application URLs
-  APPLICATION_URL: process.env.NEXT_PUBLIC_APPLICATION_URL || "https://forms.gle/your-application-form",
+  APPLICATION_URL: process.env.NEXT_PUBLIC_APPLICATION_URL || "https://docs.google.com/forms/d/e/1FAIpQLSeQG2i-YIVhJHKhmmBk8HcwUbj4iGRwzItB8yPK-6PULPN50A/viewform",
   TRANSFER_APPLICATION_URL: process.env.NEXT_PUBLIC_TRANSFER_APPLICATION_URL || "https://forms.gle/your-transfer-form",
 
   // Newsletter & External Links

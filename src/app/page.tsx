@@ -624,27 +624,22 @@ export default function Index() {
             {TEXTS.join.readyDesc}
           </p>
           <div className="flex flex-wrap justify-center gap-6">
-            <button
-              onClick={() =>
-                toast.error(
-                  siteSettings.error_404_text || TEXTS.join.closed,
-                  {
-                    duration: 5000,
-                    style: {
-                      background: "#333",
-                      color: "#fff",
-                    },
-                  }
-                )
-              }
-              className="px-10 py-5 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
-              aria-label={`Become a Shaper in ${SETTINGS.HUB_CONFIG.CITY_NAME}`}
-            >
-              {TEXTS.join.becomeShaper}
-            </button>
             <Link
-              href={siteSettings.join_form_url || "https://docs.google.com/forms/d/e/1FAIpQLScdWAWxr--Z4_c9piHxW8wZSitKUcRquNp4VKVtb3HUFcbSGw/viewform"}
+              href={siteSettings.recruitment_url || SETTINGS.HUB_CONFIG.APPLICATION_URL}
               target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button
+                className="px-10 py-5 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                aria-label={`Become a Shaper in ${SETTINGS.HUB_CONFIG.CITY_NAME}`}
+              >
+                {TEXTS.join.becomeShaper}
+              </button>
+            </Link>
+            <Link
+              href={siteSettings.transfer_form_url || SETTINGS.HUB_CONFIG.TRANSFER_APPLICATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <button
                 className="px-10 py-5 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"

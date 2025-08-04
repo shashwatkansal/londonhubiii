@@ -1,5 +1,6 @@
 import Footer from "@/app/_components/footer";
 import Header from "@/app/_components/header";
+import RecruitmentBanner from "@/app/_components/RecruitmentBanner";
 import * as SETTINGS from "@/lib/settings";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -126,6 +127,8 @@ export default function RootLayout({
 
         <Toaster position="top-center" reverseOrder={false} />
 
+        <RecruitmentBanner />
+        
         <Header />
 
         <AuthProvider>
