@@ -40,7 +40,7 @@ export const HUB_CONFIG = {
 
   // Join/Application URLs
   APPLICATION_URL: process.env.NEXT_PUBLIC_APPLICATION_URL || "https://docs.google.com/forms/d/e/1FAIpQLSeQG2i-YIVhJHKhmmBk8HcwUbj4iGRwzItB8yPK-6PULPN50A/viewform",
-  TRANSFER_APPLICATION_URL: process.env.NEXT_PUBLIC_TRANSFER_APPLICATION_URL || "https://forms.gle/your-transfer-form",
+  TRANSFER_APPLICATION_URL: process.env.NEXT_PUBLIC_TRANSFER_APPLICATION_URL || "https://forms.gle/RbZh7udiVLsNng7J8",
 
   // Newsletter & External Links
   NEWSLETTER_URL: process.env.NEXT_PUBLIC_NEWSLETTER_URL || "https://www.canva.com/design/your-newsletter-link",
